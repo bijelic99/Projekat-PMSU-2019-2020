@@ -3,11 +3,12 @@ package com.ftn.mailClient.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Message extends Identifiable {
-    private Account from;
-    private List<Account> to;
-    private List<Account> cc;
-    private List<Account> bcc;
+public class Message extends FolderElement {
+    private Account account;
+    private Contact from;
+    private List<Contact> to;
+    private List<Contact> cc;
+    private List<Contact> bcc;
     private LocalDateTime dateTime;
     private String subject;
     private String content;
@@ -15,12 +16,13 @@ public class Message extends Identifiable {
     private List<Tag> tags;
 
     public Message(){
-        this(null, null, null, null, null, null, null, null);
+        this(null, null, null, null, null, null, null, null, null, null);
     }
 
-    public Message(Account from, List<Account> from1, List<Account> to, List<Account> cc, List<Account> bcc, LocalDateTime dateTime, String subject, String content) {
+    public Message(int id, Folder parentFolder, Account account, Contact from, List<Contact> to, List<Contact> cc, List<Contact> bcc, LocalDateTime dateTime, String subject, String content) {
+        super(id, parentFolder);
+        this.account = account;
         this.from = from;
-        this.from = from1;
         this.to = to;
         this.cc = cc;
         this.bcc = bcc;
@@ -29,35 +31,55 @@ public class Message extends Identifiable {
         this.content = content;
     }
 
-    public Account getFrom() {
+    public Message(Account account, Contact from, List<Contact> to, List<Contact> cc, List<Contact> bcc, LocalDateTime dateTime, String subject, String content) {
+        super(null, null);
+        this.account = account;
+        this.from = from;
+        this.to = to;
+        this.cc = cc;
+        this.bcc = bcc;
+        this.dateTime = dateTime;
+        this.subject = subject;
+        this.content = content;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public Contact getFrom() {
         return from;
     }
 
-    public void setFrom(List<Account> from) {
+    public void setFrom(Contact from) {
         this.from = from;
     }
 
-    public List<Account> getTo() {
+    public List<Contact> getTo() {
         return to;
     }
 
-    public void setTo(List<Account> to) {
+    public void setTo(List<Contact> to) {
         this.to = to;
     }
 
-    public List<Account> getCc() {
+    public List<Contact> getCc() {
         return cc;
     }
 
-    public void setCc(List<Account> cc) {
+    public void setCc(List<Contact> cc) {
         this.cc = cc;
     }
 
-    public List<Account> getBcc() {
+    public List<Contact> getBcc() {
         return bcc;
     }
 
-    public void setBcc(List<Account> bcc) {
+    public void setBcc(List<Contact> bcc) {
         this.bcc = bcc;
     }
 
@@ -85,7 +107,19 @@ public class Message extends Identifiable {
         this.content = content;
     }
 
-    public void setFrom(Account from) {
-        this.from = from;
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 }

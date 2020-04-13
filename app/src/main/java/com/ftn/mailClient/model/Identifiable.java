@@ -4,10 +4,14 @@ public abstract class Identifiable {
     protected int id;
 
     public Identifiable() {
-        this.id = null;
+        this(null);
     }
 
-    private Identifiable(int id) {
+    private Identifiable(int id){
+        this.id = id
+    }
+
+    public Identifiable(int id) {
         this.id = id;
     }
 
