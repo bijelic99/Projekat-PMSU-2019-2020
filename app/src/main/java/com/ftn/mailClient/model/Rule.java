@@ -7,7 +7,7 @@ public class Rule extends Identifiable {
     private String value;
 
     public Rule(){
-        this(null, null);
+        this(null, null, null, null);
     }
     public Rule(Condition condition, Operation operation, Folder destinationFolder, String value) {
         this.condition = condition;

@@ -10,7 +10,7 @@ public class Folder extends FolderElement {
         this(null, null, null, null);
     }
 
-    public Folder(int id, Folder parentFolder, String name, List<FolderElement> folderContents) {
+    public Folder(Integer id, Folder parentFolder, String name, List<FolderElement> folderContents) {
         super(id, parentFolder);
         this.name = name;
         this.folderContents = folderContents;

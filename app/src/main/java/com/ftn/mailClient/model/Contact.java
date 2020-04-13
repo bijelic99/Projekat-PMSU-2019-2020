@@ -6,9 +6,9 @@ public class Contact extends Identifiable {
     private String displayName;
     private String email;
     private Photo photo;
-    private String format
+    private String format;
 
-    public Contact(int id, String firstName, String lastName, String displayName, String email, Photo photo, String format) {
+    public Contact(Integer id, String firstName, String lastName, String displayName, String email, Photo photo, String format) {
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;

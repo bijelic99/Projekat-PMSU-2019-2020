@@ -3,7 +3,7 @@ package com.ftn.mailClient.model;
 public class Tag extends Identifiable {
     private  String name;
 
-    public Tag(int id, String name) {
+    public Tag(Integer id, String name) {
         super(id);
         this.name = name;
     }

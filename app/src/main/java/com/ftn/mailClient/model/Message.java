@@ -19,7 +19,7 @@ public class Message extends FolderElement {
         this(null, null, null, null, null, null, null, null, null, null);
     }
 
-    public Message(int id, Folder parentFolder, Account account, Contact from, List<Contact> to, List<Contact> cc, List<Contact> bcc, LocalDateTime dateTime, String subject, String content) {
+    public Message(Integer id, Folder parentFolder, Account account, Contact from, List<Contact> to, List<Contact> cc, List<Contact> bcc, LocalDateTime dateTime, String subject, String content) {
         super(id, parentFolder);
         this.account = account;
         this.from = from;

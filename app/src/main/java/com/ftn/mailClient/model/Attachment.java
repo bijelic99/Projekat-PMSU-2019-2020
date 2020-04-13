@@ -9,7 +9,7 @@ public class Attachment extends Identifiable {
     public Attachment(){
         this(null,null,null,null);
     }
-    public Attachment(int id, String base64Data, String type, String name) {
+    public Attachment(Integer id, String base64Data, String type, String name) {
         super(id);
         this.base64Data = base64Data;
         this.type = type;

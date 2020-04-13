@@ -7,7 +7,7 @@ public abstract class FolderElement extends Identifiable {
         this(null, null);
     }
 
-    public FolderElement(int id, Folder parentFolder) {
+    public FolderElement(Integer id, Folder parentFolder) {
         super(id);
         this.parentFolder = parentFolder;
     }

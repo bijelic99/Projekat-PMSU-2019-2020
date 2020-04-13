@@ -3,12 +3,12 @@ package com.ftn.mailClient.model;
 public class Photo extends Identifiable {
     private String base64Photo;
 
-    public Photo(int id, String base64Photo) {
+    public Photo(Integer id, String base64Photo) {
         super(id);
         this.base64Photo = base64Photo;
     }
     public Photo() {
-        super(null, null);
+        super(null);
     }
 
     public String getBase64Photo() {

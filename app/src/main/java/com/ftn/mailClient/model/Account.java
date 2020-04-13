@@ -11,7 +11,7 @@ public class Account extends Identifiable {
         this(null,null,null,null,null,null);
     }
 
-    public Account(int id, String smtpAdress, IncomingMailProtocol incomingMailProtocol, String incomingMailAddress, String username, String password) {
+    public Account(Integer id, String smtpAdress, IncomingMailProtocol incomingMailProtocol, String incomingMailAddress, String username, String password) {
         super(id);
         this.smtpAdress = smtpAdress;
         this.incomingMailProtocol = incomingMailProtocol;
