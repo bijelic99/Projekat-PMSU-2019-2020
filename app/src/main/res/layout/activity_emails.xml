@@ -8,12 +8,13 @@
 
 
     <fragment
-        android:id="@+id/list"
-        android:name="com.ftn.mailClient.activities.emailsActivity.EmailFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/emails_list_fragment"
+        android:name="com.ftn.mailClient.activities.emailsActivity.EmailListFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_email_list" />
 </androidx.constraintlayout.widget.ConstraintLayout>
