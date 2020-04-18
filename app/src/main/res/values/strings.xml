@@ -11,4 +11,10 @@
     <string name="content_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nisi erat, aliquam quis purus ac, posuere venenatis sapien. Nullam vitae mollis magna, at posuere est.</string>
     <string name="filter">Filter</string>
     <string name="add_new_email">Add new email</string>
+    <string name="profile">Profile</string>
+    <string name="change_account">Change account</string>
+    <string name="settings">Settings</string>
+    <string name="folders">Folders</string>
+    <string name="nav_drawer_open">Open navigation drawer</string>
+    <string name="nav_drawer_close">Close navigation drawer</string>
 </resources>
