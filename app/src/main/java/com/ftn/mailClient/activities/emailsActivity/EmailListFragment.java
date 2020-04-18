@@ -15,6 +15,9 @@ import com.ftn.mailClient.R;
 import com.ftn.mailClient.adapters.EmailRecyclerViewAdapter;
 import com.ftn.mailClient.model.Contact;
 import com.ftn.mailClient.model.Message;
+import com.ftn.mailClient.model.Tag;
+
+import java.util.ArrayList;
 
 
 public class EmailListFragment extends Fragment {
@@ -44,6 +47,12 @@ public class EmailListFragment extends Fragment {
         // Inflate the layout for this fragment
         View inflate = inflater.inflate(R.layout.fragment_email_list, container, false);
 
+        Tag tag = new Tag(null, "Work");
+        Tag tag1 = new Tag(null, "Important");
+        ArrayList<Tag> tags = new ArrayList<>();
+        tags.add(tag);
+        tags.add(tag1);
+
         Message message1 = new Message();
         message1.setSubject("dasdsada");
         message1.setContent("dasdadasad");
@@ -51,6 +60,7 @@ public class EmailListFragment extends Fragment {
         c.setFirstName("A");
         c.setLastName("B");
         message1.setFrom(c);
+        message1.setTags(tags);
 
         Message message2 = new Message();
         message2.setSubject("Subject");
@@ -59,8 +69,12 @@ public class EmailListFragment extends Fragment {
         c2.setFirstName("C");
         c2.setLastName("D");
         message2.setFrom(c);
+        message2.setTags(tags);
 
-        Message[] messages = {message1, message2};
+        // TODO Static data, promeni da ucitava dinamicki
+        ArrayList<Message> messages = new ArrayList<>();
+        messages.add(message1);
+        messages.add(message2);
 
         RecyclerView recyclerView = inflate.findViewById(R.id.emails_list);
         EmailRecyclerViewAdapter emailRecyclerViewAdapter = new EmailRecyclerViewAdapter(getContext(), messages);

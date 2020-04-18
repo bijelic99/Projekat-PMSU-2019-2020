@@ -1,6 +1,7 @@
 package com.ftn.mailClient.adapters;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,15 +14,19 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.model.Message;
+import com.ftn.mailClient.model.Tag;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
+import java.util.stream.*;
 
 public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecyclerViewAdapter.EmailViewHolder> {
 
-    Message[] messages;
+    ArrayList<Message> messages;
     Context context;
 
-    public EmailRecyclerViewAdapter(Context context, Message[] messages){
+    public EmailRecyclerViewAdapter(Context context, ArrayList<Message> messages){
         this.messages = messages;
         this.context = context;
     }
@@ -36,13 +41,13 @@ public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecycler
 
     @Override
     public void onBindViewHolder(@NonNull EmailViewHolder holder, int position) {
-        holder.setMessage(messages[position]);
+        holder.setMessage(messages.get(position));
         holder.bindData();
     }
 
     @Override
     public int getItemCount() {
-        return messages.length;
+        return messages.size();
     }
 
     public static class EmailViewHolder extends ViewHolder{
@@ -50,7 +55,7 @@ public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecycler
 
         TextView fullName;
         TextView subject;
-        TextView tags;
+        ChipGroup tags;
         TextView content;
 
         public Message getMessage() {
@@ -73,7 +78,7 @@ public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecycler
                 subject = (TextView)itemView.findViewById(R.id.textViewSubject);
             }
             if(tags == null){
-                tags = (TextView)itemView.findViewById(R.id.textViewTags);
+                tags = (ChipGroup)itemView.findViewById(R.id.chipGroupEmailTag);
             }
             if(content == null){
                 content = (TextView)itemView.findViewById(R.id.textViewContent);
@@ -81,8 +86,15 @@ public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecycler
 
             fullName.setText(itemView.getResources().getString(R.string.users_fullname, getMessage().getFrom().getFirstName(), getMessage().getFrom().getLastName()));
             subject.setText(message.getSubject());
-            //TODO napraviti isto listview za tagove
-            tags.setText(itemView.getResources().getString(R.string.tags_placeholder));
+            tags.removeAllViews();
+            LayoutInflater layoutInflater = LayoutInflater.from(itemView.getContext());
+            getMessage().getTags().stream().map( t -> {
+                Chip chip = (Chip) layoutInflater.inflate(R.layout.fragment_email_tag, null, false);
+                //chip.setBackgroundColor(R.color.white);
+                //chip.setTextColor(R.color.black);
+                chip.setText(t.getName());
+                return chip;
+            }).forEach(c -> tags.addView(c));
             content.setText(message.getContent());
         }
     }

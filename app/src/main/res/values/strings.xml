@@ -5,8 +5,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="users_profile_picture">Users profile picture</string>
     <string name="users_fullname">%1$s %2$s</string>
-    <string name="tags_placeholder">important, work</string>
+    <string name="tags_placeholder">work</string>
     <string name="fullname_placeholder">John Doe</string>
     <string name="subject_placeholder">Subject</string>
-    <string name="content_placeholder">Lorem ipsum</string>
+    <string name="content_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nisi erat, aliquam quis purus ac, posuere venenatis sapien. Nullam vitae mollis magna, at posuere est.</string>
 </resources>
