@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="240dp"
-    tools:context=".activities.emailsActivity.EmailFragment"
+    tools:context=".activities.emailsActivity.fragments.EmailFragment"
     android:columnCount="2"
     android:rowCount="4"
     android:padding="8dp"

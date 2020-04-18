@@ -1,4 +1,4 @@
-package com.ftn.mailClient.activities.emailsActivity;
+package com.ftn.mailClient.activities.emailsActivity.fragments;
 
 import android.os.Bundle;
 
