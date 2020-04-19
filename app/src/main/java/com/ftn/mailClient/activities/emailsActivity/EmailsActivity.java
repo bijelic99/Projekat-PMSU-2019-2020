@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.ftn.mailClient.R;
+import com.ftn.mailClient.navigationRouter.NavigationRouter;
 import com.google.android.material.navigation.NavigationView;
 
 public class EmailsActivity extends AppCompatActivity {
@@ -31,6 +33,14 @@ public class EmailsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         NavigationView navigationView = findViewById(R.id.emails_nav_view);
+        Context context = this;
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                return NavigationRouter.routeFromMenuItem(context, menuItem);
+
+            }
+        });
         drawer = findViewById(R.id.emails_activity);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close );
@@ -76,4 +86,5 @@ public class EmailsActivity extends AppCompatActivity {
     private void newEmailButtonClocked(){
         Toast.makeText(this, "Email", Toast.LENGTH_SHORT).show();
     }
+
 }

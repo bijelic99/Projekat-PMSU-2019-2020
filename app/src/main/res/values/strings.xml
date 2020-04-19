@@ -23,4 +23,6 @@
     <string name="folders">Folders</string>
     <string name="nav_drawer_open">Open navigation drawer</string>
     <string name="nav_drawer_close">Close navigation drawer</string>
+    <string name="contacts">Contacts</string>
+    <string name="emails">Emails</string>
 </resources>
