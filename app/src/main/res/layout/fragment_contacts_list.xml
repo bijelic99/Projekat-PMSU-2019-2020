@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         tools:listitem="@layout/fragment_contact"
         android:layout_marginHorizontal="8dp"
+        android:id="@+id/contacts_recycler_view"
         />
 
 </FrameLayout>

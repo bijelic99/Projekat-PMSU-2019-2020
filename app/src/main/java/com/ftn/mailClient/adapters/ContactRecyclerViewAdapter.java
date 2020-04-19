@@ -1,6 +1,7 @@
 package com.ftn.mailClient.adapters;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -88,7 +89,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
             }
             else {
-                profilePicture.setImageDrawable(itemView.getResources().getDrawable(R.drawable.ic_person_outline_white_24dp, null));
+                profilePicture.setImageResource(R.drawable.ic_person_outline_white_24dp);
             }
 
         }

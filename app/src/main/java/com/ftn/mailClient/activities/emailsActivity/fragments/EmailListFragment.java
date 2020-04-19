@@ -45,7 +45,7 @@ public class EmailListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View inflate = inflater.inflate(R.layout.fragment_email_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_email_list, container, false);
 
         Tag tag = new Tag(null, "Work");
         Tag tag1 = new Tag(null, "Important");
@@ -76,11 +76,11 @@ public class EmailListFragment extends Fragment {
         messages.add(message1);
         messages.add(message2);
 
-        RecyclerView recyclerView = inflate.findViewById(R.id.emails_list);
+        RecyclerView recyclerView = view.findViewById(R.id.emails_list);
         EmailRecyclerViewAdapter emailRecyclerViewAdapter = new EmailRecyclerViewAdapter(getContext(), messages);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(emailRecyclerViewAdapter);
-        return inflate;
+        return view;
     }
 }
