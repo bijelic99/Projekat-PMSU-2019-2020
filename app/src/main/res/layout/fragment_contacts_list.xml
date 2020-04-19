@@ -6,9 +6,11 @@
     tools:context=".activities.contactsActivity.fragments.ContactsListFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        tools:listitem="@layout/fragment_contact"
+        android:layout_marginHorizontal="8dp"
+        />
 
 </FrameLayout>
