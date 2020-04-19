@@ -31,7 +31,7 @@ public class SplashScreen extends AppCompatActivity {
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         if(networkInfo != null && networkInfo.isConnected()){
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         } else {
             Toast toast=Toast.makeText(getApplicationContext(),"You are not connected to internet",Toast.LENGTH_LONG);

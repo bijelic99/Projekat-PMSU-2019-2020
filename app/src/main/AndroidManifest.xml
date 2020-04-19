@@ -23,14 +23,10 @@
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
-        <activity android:name=".activities.MainActivity">
-            
-    
-        <activity android:name=".activities.LoginActivity" >
-        </activity>
-            
 
-        <activity android:name=".activities.MainActivity" />
+
+        <activity android:name=".activities.LoginActivity"></activity>
+
     </application>
 
 </manifest>
