@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Mail Client</string>
     <string name="splash_desc">Splashscreen image</string>
+    <string name="username">Username:</string>
+    <string name="password">Password:</string>
+    <string name="button">Login</string>
+    <string name="remember_me">Remember me</string>
+    <string name="login_image">Login image</string>
 </resources>
