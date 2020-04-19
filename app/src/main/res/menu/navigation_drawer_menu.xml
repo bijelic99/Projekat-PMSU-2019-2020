@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/fragment_navigation_drawer"
+    >
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/profile"
+            android:icon="@drawable/ic_person_outline_white_24dp"
+            android:title="@string/profile" />
+        <item
+            android:id="@+id/change_account"
+            android:icon="@drawable/ic_swap_vertical_circle_white_24dp"
+            android:title="@string/change_account" />
+        <item
+            android:id="@+id/folders"
+            android:icon="@drawable/ic_folder_white_24dp"
+            android:title="@string/folders" />
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_settings_white_24dp"
+            android:title="@string/settings" />
+    </group>
+
+
+</menu>

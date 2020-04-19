@@ -5,7 +5,22 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="colorAccent">@color/colorSecondary</item>
+        <item name="android:colorSecondary">@color/colorSecondary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+    </style>
+    <style name="MatTheme" parent="Theme.MaterialComponents">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="colorAccent">@color/colorSecondary</item>
+        <item name="android:colorSecondary">@color/colorSecondary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+    </style>
+    <style name="AppTheme.NoActionBar" parent="Theme.MaterialComponents.Light">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.NoBar" parent="Theme.AppCompat.NoActionBar" />

@@ -6,4 +6,21 @@
     <string name="button">Login</string>
     <string name="remember_me">Remember me</string>
     <string name="login_image">Login image</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="users_profile_picture">Users profile picture</string>
+    <string name="users_fullname">%1$s %2$s</string>
+    <string name="tags_placeholder">work</string>
+    <string name="fullname_placeholder">John Doe</string>
+    <string name="subject_placeholder">Subject</string>
+    <string name="content_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nisi erat, aliquam quis purus ac, posuere venenatis sapien. Nullam vitae mollis magna, at posuere est.</string>
+    <string name="filter">Filter</string>
+    <string name="add_new_email">Add new email</string>
+    <string name="profile">Profile</string>
+    <string name="change_account">Change account</string>
+    <string name="settings">Settings</string>
+    <string name="folders">Folders</string>
+    <string name="nav_drawer_open">Open navigation drawer</string>
+    <string name="nav_drawer_close">Close navigation drawer</string>
 </resources>
