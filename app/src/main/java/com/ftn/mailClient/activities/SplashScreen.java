@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.ftn.mailClient.R;
@@ -14,27 +15,27 @@ public class SplashScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_splash_screen);
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_splash_screen);
-        final Context c = this;
-        isNetworkAvailable();
+        setContentView(R.layout.activity_splash_screen);
         (new Handler()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(c, MainActivity.class);
-                startActivity(intent);
+                isNetworkAvailable();
             }
-        }, 5000);
-        finish();
+        }, 2500);
     }
 
     protected void isNetworkAvailable() {
-
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-        Log.d("*************MYLOG************", (networkInfo != null && networkInfo.isConnected()) + "");
+        if(networkInfo != null && networkInfo.isConnected()){
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        } else {
+            Toast toast=Toast.makeText(getApplicationContext(),"You are not connected to internet",Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 }
