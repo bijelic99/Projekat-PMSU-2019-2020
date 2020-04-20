@@ -39,6 +39,6 @@
     <string name="email_contact">Email</string>
     <string name="format_contact">Format</string>
 
-    <string name="button_save_contact1">Save</string>
-    <string name="button_back_contact1">Back</string>
+    <string name="button_save_contact">Save</string>
+    <string name="button_back_contact">Back</string>
 </resources>

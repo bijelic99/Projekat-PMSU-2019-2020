@@ -27,8 +27,8 @@ public class CreateContactActivity extends AppCompatActivity {
     }
 
     public void clickHandler(View v) {
-        Intent i = new Intent(this, EmailsActivity.class);
-        startActivity(i);
+        Intent intent = new Intent(this, EmailsActivity.class);
+        startActivity(intent);
     }
 
     //Disable back button
