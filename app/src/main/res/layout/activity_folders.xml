@@ -4,20 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.emailsActivity.EmailsActivity"
+    tools:context=".activities.foldersActivity.FoldersActivity"
     android:fitsSystemWindows="true"
-    android:id="@+id/emails_activity"
+    android:id="@+id/folders_activity"
+
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/emails_activity_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:id="@+id/toolbar"
             android:background="@color/colorPrimary"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -25,24 +25,22 @@
             android:title="@string/app_name"
             android:navigationIcon="@drawable/ic_menu_white_24dp"
             />
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.ftn.mailClient.activities.foldersActivity.fragments.FolderListFragment"
+        android:id="@+id/folders_list"
+        tools:layout="@layout/fragment_folder_list"
+        />
 
-        <fragment
-            android:id="@+id/emails_list_fragment"
-            android:name="com.ftn.mailClient.activities.emailsActivity.fragments.EmailListFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout="@layout/fragment_email_list" />
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:id="@+id/emails_nav_view"
+        android:id="@+id/navigation_view"
         app:menu="@menu/navigation_drawer_menu"
+        android:layout_gravity="start"
         />
-
-
-
 
 </androidx.drawerlayout.widget.DrawerLayout>
