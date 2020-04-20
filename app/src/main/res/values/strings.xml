@@ -23,4 +23,6 @@
     <string name="folders">Folders</string>
     <string name="nav_drawer_open">Open navigation drawer</string>
     <string name="nav_drawer_close">Close navigation drawer</string>
+    <string name="zero">0</string>
+    <string name="folder_name_placeholder">Folder name</string>
 </resources>
