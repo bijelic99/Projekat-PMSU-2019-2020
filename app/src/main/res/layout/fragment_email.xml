@@ -1,73 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    android:theme="@style/MatTheme"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="240dp"
     tools:context=".activities.emailsActivity.fragments.EmailFragment"
-    android:columnCount="2"
-    android:rowCount="4"
-    android:padding="8dp"
-    android:elevation="10dp"
-    android:background="@color/colorPrimary"
-    android:layout_marginTop="4dp"
-    android:layout_marginHorizontal="4dp"
+    android:layout_marginTop="8dp"
     >
 
-
-    <TextView
-        android:id="@+id/textViewFullName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_row="0"
-        android:layout_column="0"
-        android:layout_columnWeight="1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/textColorSecondary"
-        tools:text="@string/fullname_placeholder" />
+    <GridLayout
 
 
+        android:columnCount="2"
+        android:rowCount="4"
+        android:padding="8dp"
+        android:background="@color/colorPrimary"
 
-    <TextView
-        android:id="@+id/textViewSubject"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_row="1"
-        android:layout_column="0"
-        android:layout_columnWeight="1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/textColorSecondary"
-        tools:text="@string/subject_placeholder" />
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+
+
+        <TextView
+            android:id="@+id/textViewFullName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/textColorSecondary"
+            tools:text="@string/fullname_placeholder" />
 
 
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipGroupEmailTag"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_row="2"
-        android:layout_column="0"
-        android:layout_columnWeight="1"
-        android:theme="@style/MatTheme"
-        android:layout_marginVertical="8dp"
-        app:chipSpacingHorizontal="8dp"
-        app:singleLine="true">
-        <com.google.android.material.chip.Chip
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:text="@string/tags_placeholder"/>
-    </com.google.android.material.chip.ChipGroup>
+        <TextView
+            android:id="@+id/textViewSubject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/textColorSecondary"
+            tools:text="@string/subject_placeholder" />
+
+
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupEmailTag"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:theme="@style/MatTheme"
+            android:layout_marginVertical="8dp"
+            app:chipSpacingHorizontal="8dp"
+            app:singleLine="true">
+            <com.google.android.material.chip.Chip
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="@string/tags_placeholder"/>
+        </com.google.android.material.chip.ChipGroup>
 
 
 
 
-    <TextView
-        android:id="@+id/textViewContent"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_row="3"
-        android:layout_rowWeight="1"
-        android:layout_column="0"
-        android:layout_columnWeight="1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        tools:text="@string/content_placeholder" />
-</GridLayout>
+        <TextView
+            android:id="@+id/textViewContent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_row="3"
+            android:layout_rowWeight="1"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            tools:text="@string/content_placeholder" />
+    </GridLayout>
+</com.google.android.material.card.MaterialCardView>
+

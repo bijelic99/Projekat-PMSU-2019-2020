@@ -4,18 +4,27 @@
     tools:showIn="@layout/fragment_navigation_drawer"
     >
     <group android:checkableBehavior="single">
+
         <item
             android:id="@+id/profile"
             android:icon="@drawable/ic_person_outline_white_24dp"
             android:title="@string/profile" />
         <item
-            android:id="@+id/change_account"
-            android:icon="@drawable/ic_swap_vertical_circle_white_24dp"
-            android:title="@string/change_account" />
+            android:id="@+id/emails"
+            android:icon="@drawable/ic_email_black_24dp"
+            android:title="@string/emails" />
+        <item
+            android:id="@+id/contacts"
+            android:icon="@drawable/ic_contacts_black_24dp"
+            android:title="@string/contacts" />
         <item
             android:id="@+id/folders"
             android:icon="@drawable/ic_folder_white_24dp"
             android:title="@string/folders" />
+        <item
+            android:id="@+id/change_account"
+            android:icon="@drawable/ic_swap_vertical_circle_white_24dp"
+            android:title="@string/change_account" />
         <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_settings_white_24dp"
