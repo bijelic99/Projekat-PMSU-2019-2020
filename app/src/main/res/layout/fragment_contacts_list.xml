@@ -10,8 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/fragment_contact"
-        android:layout_marginHorizontal="8dp"
+        android:layout_marginHorizontal="@dimen/rec_view_horizontal_margin"
         android:id="@+id/contacts_recycler_view"
+
         />
 
 </FrameLayout>

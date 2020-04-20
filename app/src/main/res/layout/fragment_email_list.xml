@@ -10,5 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:itemCount="5"
-        tools:listitem="@layout/fragment_email" />
+        tools:listitem="@layout/fragment_email"
+        android:layout_marginHorizontal="@dimen/rec_view_horizontal_margin"
+        />
 </FrameLayout>
