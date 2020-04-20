@@ -25,4 +25,9 @@
     <string name="nav_drawer_close">Close navigation drawer</string>
     <string name="zero">0</string>
     <string name="folder_name_placeholder">Folder name</string>
+    <string name="contacts">Contacts</string>
+    <string name="emails">Emails</string>
+    <string name="display_name_placeholder">John Doe</string>
+    <string name="email_placeholder">john.doe@mail.com</string>
+    <string name="add_contact">Add contact</string>
 </resources>

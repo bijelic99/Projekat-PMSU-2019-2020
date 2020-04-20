@@ -13,6 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.foldersActivity.FoldersActivity" android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".activities.contactsActivity.ContactsActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activities.SplashScreen"
             android:theme="@style/AppTheme.NoBar">
@@ -24,8 +26,9 @@
         </activity>
         <activity
             android:name=".activities.emailsActivity.EmailsActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".activities.LoginActivity" />
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".activities.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

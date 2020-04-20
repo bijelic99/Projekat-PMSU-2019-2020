@@ -24,5 +24,8 @@
     </style>
 
     <style name="AppTheme.NoBar" parent="Theme.AppCompat.NoActionBar" />
+    <style name="AppTheme.Card" parent="Widget.MaterialComponents.CardView">
+        <item name="cardCornerRadius">@dimen/cardview_default_radius</item>
+    </style>
 
 </resources>
