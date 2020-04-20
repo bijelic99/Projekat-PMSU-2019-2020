@@ -98,13 +98,13 @@
             android:id="@+id/buttonContactSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/button_save_contact" />
+            android:text="@string/button_save_contact1" />
 
         <Button
             android:id="@+id/buttonContactBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/button_back_contact" />
+            android:text="@string/button_back_contact1" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
