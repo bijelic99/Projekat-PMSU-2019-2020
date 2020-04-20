@@ -25,7 +25,13 @@
             android:title="@string/app_name"
             android:navigationIcon="@drawable/ic_menu_white_24dp"
             />
-
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.ftn.mailClient.activities.foldersActivity.fragments.FolderListFragment"
+        android:id="@+id/folders_list"
+        tools:layout="@layout/fragment_folder_list"
+        />
 
     </LinearLayout>
 

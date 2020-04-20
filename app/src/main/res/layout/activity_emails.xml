@@ -29,8 +29,8 @@
         <fragment
             android:id="@+id/emails_list_fragment"
             android:name="com.ftn.mailClient.activities.emailsActivity.fragments.EmailListFragment"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             tools:layout="@layout/fragment_email_list" />
     </LinearLayout>
 

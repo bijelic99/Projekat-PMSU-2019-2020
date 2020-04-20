@@ -30,4 +30,6 @@
     <string name="display_name_placeholder">John Doe</string>
     <string name="email_placeholder">john.doe@mail.com</string>
     <string name="add_contact">Add contact</string>
+    <string name="folder_icon">Folder icon</string>
+    <string name="add_folder">Create new folder</string>
 </resources>
