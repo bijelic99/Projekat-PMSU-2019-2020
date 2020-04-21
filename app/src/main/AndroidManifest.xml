@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.CreateContactActivity"></activity>
+        <activity android:name=".activities.CreateEmailActivity"></activity>
         <activity
             android:name=".activities.foldersActivity.FoldersActivity"
             android:theme="@style/AppTheme.NoActionBar" />

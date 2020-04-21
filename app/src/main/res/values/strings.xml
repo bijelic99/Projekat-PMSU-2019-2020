@@ -41,4 +41,13 @@
 
     <string name="button_save_contact">Save</string>
     <string name="button_back_contact">Back</string>
+    <string name="email_to">To:</string>
+    <string name="email_cc">Cc:</string>
+    <string name="email_bcc">Bcc:</string>
+    <string name="email_datetime">Date:</string>
+    <string name="email_subject">Subject:</string>
+    <string name="email_content">Content:</string>
+    <string name="email_button">Send</string>
+    <string name="email_button_cancel">Cancel</string>
+    <string name="email_tags">Tags:</string>
 </resources>
