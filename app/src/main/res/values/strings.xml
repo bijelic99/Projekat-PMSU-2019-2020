@@ -32,4 +32,14 @@
     <string name="add_contact">Add contact</string>
     <string name="folder_icon">Folder icon</string>
     <string name="add_folder">Create new folder</string>
+
+    <string name="email_to">To:</string>
+    <string name="email_cc">Cc:</string>
+    <string name="email_bcc">Bcc:</string>
+    <string name="email_datetime">Date:</string>
+    <string name="email_subject">Subject:</string>
+    <string name="email_content">Content:</string>
+    <string name="email_button">Send</string>
+    <string name="email_button_cancel">Cancel</string>
+    <string name="email_tags">Tags:</string>
 </resources>
