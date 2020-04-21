@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.folderActivity.FolderActivity"
+    android:columnCount="1"
+    android:rowCount="2"
+    >
+
+    <fragment
+        android:name="com.ftn.mailClient.activities.folderActivity.fragments.FolderDataFragment"
+        tools:layout="@layout/fragment_folder_data"
+        android:id="@+id/folder_data"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_rowWeight="1"/>
+
+    <fragment
+        android:name="com.ftn.mailClient.activities.folderActivity.fragments.FolderContentsFragment"
+        tools:layout="@layout/fragment_folder_contents"
+        android:id="@+id/folder_contents"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_rowWeight="3"/>
+
+
+</GridLayout>

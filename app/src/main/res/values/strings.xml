@@ -42,4 +42,16 @@
     <string name="email_button">Send</string>
     <string name="email_button_cancel">Cancel</string>
     <string name="email_tags">Tags:</string>
+    <string name="title_activity_te">TeAct</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="folder_no_of_messages_placeholder">Messages: 2</string>
+    <string name="folder_no_of_files_placeholder">Files: 0</string>
+    <string name="folder_name_label">Folder name:</string>
 </resources>
