@@ -36,7 +36,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:importantForAutofill="no" />
+            android:importantForAutofill="no"
+            android:inputType="textEmailAddress" />
 
         <TextView
             android:id="@+id/textViewForEmailCc"
@@ -50,7 +51,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:importantForAutofill="no" />
+            android:importantForAutofill="no"
+            android:inputType="textEmailAddress" />
 
         <TextView
             android:id="@+id/textViewForEmailBcc"
@@ -64,21 +66,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:importantForAutofill="no" />
-
-        <TextView
-            android:id="@+id/textViewForEmailDatetime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:labelFor="@id/editEmailDatetime"
-            android:text="@string/email_datetime" />
-
-        <EditText
-            android:id="@+id/editEmailDatetime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:importantForAutofill="no" />
+            android:importantForAutofill="no"
+            android:inputType="textEmailAddress" />
 
         <TextView
             android:id="@+id/textViewForEmailSubject"
@@ -92,7 +81,41 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:importantForAutofill="no" />
+            android:importantForAutofill="no"
+            android:inputType="textEmailSubject" />
+
+        <TextView
+            android:id="@+id/textViewLabelForTags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/multiAutoCompleteTextViewTags"
+            android:text="@string/email_tags" />
+
+        <MultiAutoCompleteTextView
+            android:id="@+id/multiAutoCompleteTextViewTags"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="@string/email_tags" />
+
+        <TextView
+            android:id="@+id/textViewLabelForContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/editTextContent"
+            android:text="@string/email_content" />
+
+        <EditText
+            android:id="@+id/editTextContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:lines="8"
+            tools:text="@string/content_placeholder"
+            android:autofillHints="no"
+            />
+
         <Button
             android:id="@+id/buttonCreateEmail"
             android:layout_width="match_parent"
