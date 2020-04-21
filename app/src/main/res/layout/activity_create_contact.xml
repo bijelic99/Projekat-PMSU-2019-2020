@@ -39,20 +39,6 @@
             android:inputType="textPersonName" />
 
         <TextView
-            android:id="@+id/textViewDisplayContact"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:labelFor="@id/editDisplayContact"
-            android:text="@string/display_contact" />
-
-        <EditText
-            android:id="@+id/editDisplayContact"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:importantForAutofill="no"/>
-
-        <TextView
             android:id="@+id/textViewLastContact"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,7 +50,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:importantForAutofill="no"/>
+            android:importantForAutofill="no"
+            android:inputType="textPersonName|text" />
+
+        <TextView
+            android:id="@+id/textViewDisplayContact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/editDisplayContact"
+            android:text="@string/display_contact" />
+
+        <EditText
+            android:id="@+id/editDisplayContact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName" />
 
         <TextView
             android:id="@+id/textViewEmailContact"
@@ -78,7 +80,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:importantForAutofill="no"/>
+            android:importantForAutofill="no"
+            android:inputType="textEmailAddress" />
 
         <TextView
             android:id="@+id/textViewFormatContact"
@@ -92,7 +95,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:importantForAutofill="no"/>
+            android:importantForAutofill="no"
+            android:inputType="text" />
 
         <Button
             android:id="@+id/buttonContactSave"
