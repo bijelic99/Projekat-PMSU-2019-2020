@@ -34,7 +34,7 @@
     <string name="add_folder">Create new folder</string>
 
     <string name="create_folder_name">Name</string>
-    <string name="create_folder_text">Create folder</string>
+    <string name="create_folder_text">Select parent folder</string>
 
     <string name="folder_save_att">Save</string>
     <string name="folder_button_cancel">Cancel</string>
