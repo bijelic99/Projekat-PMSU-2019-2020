@@ -10,6 +10,7 @@
     >
 
     <fragment
+        android:theme="@style/AppTheme"
         android:name="com.ftn.mailClient.activities.folderActivity.fragments.FolderDataFragment"
         tools:layout="@layout/fragment_folder_data"
         android:id="@+id/folder_data"

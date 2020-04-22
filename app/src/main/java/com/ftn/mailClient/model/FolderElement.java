@@ -1,6 +1,8 @@
 package com.ftn.mailClient.model;
 
-public abstract class FolderElement extends Identifiable {
+import java.io.Serializable;
+
+public abstract class FolderElement extends Identifiable implements Serializable {
     private Folder parentFolder;
 
     public  FolderElement(){
