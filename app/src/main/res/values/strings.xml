@@ -33,6 +33,11 @@
     <string name="folder_icon">Folder icon</string>
     <string name="add_folder">Create new folder</string>
 
+    <string name="create_folder_name">Name</string>
+    <string name="create_folder_text">Select parent folder</string>
+
+    <string name="folder_save_att">Save</string>
+    <string name="folder_button_cancel">Cancel</string>
     <string name="first_contact">First</string>
     <string name="display_contact">Display</string>
     <string name="last_contact">Last</string>
