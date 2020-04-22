@@ -1,7 +1,10 @@
 package com.ftn.mailClient.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +15,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.mailClient.R;
+import com.ftn.mailClient.activities.folderActivity.FolderActivity;
 import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.Message;
 
@@ -69,7 +73,15 @@ public class FoldersListRecyclerViewAdapter extends RecyclerView.Adapter<Folders
         public void bindData(){
             if(name == null) name = (TextView)itemView.findViewById(R.id.folder_name);
             if(noOfMessages == null) noOfMessages = (TextView)itemView.findViewById(R.id.folder_no_of_messages);
-
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("aaa", "clckd");
+                    Intent intent = new Intent(itemView.getContext(), FolderActivity.class);
+                    intent.putExtra("folder", getFolder());
+                    itemView.getContext().startActivity(intent);
+                }
+            });
             name.setText(folder.getName());
             noOfMessages.setText(folder.getFolderContents() != null ? folder.getFolderContents().stream().filter( f -> f.getClass() == Message.class).count()+"" : "0");
 
