@@ -17,7 +17,7 @@ public class CreateFolderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_folder);
 
-        Button b = findViewById(R.id.buttonLogin);
+        Button b = findViewById(R.id.buttonForCreateFolder);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -31,7 +31,8 @@ public class CreateFolderActivity extends AppCompatActivity {
     }
 
     //Disable back button
+    /*
     @Override
     public void onBackPressed() { }
-
+    */
 }

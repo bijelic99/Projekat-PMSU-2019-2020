@@ -8,6 +8,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.ftn.mailClient.R;
+import com.ftn.mailClient.activities.CreateEmailActivity;
 import com.ftn.mailClient.navigationRouter.NavigationRouter;
 import com.google.android.material.navigation.NavigationView;
 
@@ -86,7 +88,8 @@ public class EmailsActivity extends AppCompatActivity {
         Toast.makeText(this, "Filter", Toast.LENGTH_SHORT).show();
     }
     private void newEmailButtonClocked(){
-        Toast.makeText(this, "Email", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, CreateEmailActivity.class);
+        this.startActivity(intent);
     }
 
 }

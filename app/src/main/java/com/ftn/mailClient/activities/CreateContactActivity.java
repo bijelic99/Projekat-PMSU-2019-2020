@@ -32,6 +32,8 @@ public class CreateContactActivity extends AppCompatActivity {
     }
 
     //Disable back button
+    /*
     @Override
     public void onBackPressed() { }
+    */
 }
