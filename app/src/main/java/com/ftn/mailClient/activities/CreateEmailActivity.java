@@ -32,6 +32,8 @@ public class CreateEmailActivity extends AppCompatActivity {
     }
 
     //Disable back button
+    /*
     @Override
     public void onBackPressed() { }
+    */
 }
