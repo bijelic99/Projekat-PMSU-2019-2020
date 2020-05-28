@@ -3,7 +3,7 @@ package com.ftn.mailClient.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Message extends FolderElement {
+public class Message extends Identifiable {
     private Account account;
     private Contact from;
     private List<Contact> to;
@@ -14,13 +14,14 @@ public class Message extends FolderElement {
     private String content;
     private List<Attachment> attachments;
     private List<Tag> tags;
+    private Boolean unread;
 
     public Message(){
-        this(null, null, null, null, null, null, null, null, null, null);
+        this(null, null, null, null, null, null, null, null, null, true);
     }
 
-    public Message(Integer id, Folder parentFolder, Account account, Contact from, List<Contact> to, List<Contact> cc, List<Contact> bcc, LocalDateTime dateTime, String subject, String content) {
-        super(id, parentFolder);
+    public Message(Long id, Account account, Contact from, List<Contact> to, List<Contact> cc, List<Contact> bcc, LocalDateTime dateTime, String subject, String content, Boolean unread) {
+        super(id);
         this.account = account;
         this.from = from;
         this.to = to;
@@ -29,10 +30,11 @@ public class Message extends FolderElement {
         this.dateTime = dateTime;
         this.subject = subject;
         this.content = content;
+        this.unread = unread;
     }
 
     public Message(Account account, Contact from, List<Contact> to, List<Contact> cc, List<Contact> bcc, LocalDateTime dateTime, String subject, String content) {
-        super(null, null);
+        super(null);
         this.account = account;
         this.from = from;
         this.to = to;
@@ -121,5 +123,13 @@ public class Message extends FolderElement {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public Boolean getUnread() {
+        return unread;
+    }
+
+    public void setUnread(Boolean unread) {
+        this.unread = unread;
     }
 }
