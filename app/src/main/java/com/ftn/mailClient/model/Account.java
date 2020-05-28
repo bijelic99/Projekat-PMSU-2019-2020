@@ -1,5 +1,6 @@
 package com.ftn.mailClient.model;
 
+
 public class Account extends Identifiable {
     private String smtpAdress;
     private IncomingMailProtocol incomingMailProtocol;
@@ -19,6 +20,7 @@ public class Account extends Identifiable {
         this.username = username;
         this.password = password;
     }
+
 
     public String getSmtpAdress() {
         return smtpAdress;

@@ -1,21 +1,21 @@
 package com.ftn.mailClient.model;
 
 public abstract class Identifiable {
-    protected Integer id;
+    protected Long id;
 
     public Identifiable() {
         this(null);
     }
 
-    public Identifiable(Integer id) {
+    public Identifiable(Long id) {
         this.id = id;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

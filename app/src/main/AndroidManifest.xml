@@ -13,27 +13,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+                android:name=".activities.SplashScreen"
+                android:theme="@style/AppTheme.NoBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activities.folderActivity.FolderActivity"
             android:theme="@style/AppTheme" />
         <activity android:name=".activities.CreateEmailActivity" />
-        <activity android:name=".activities.CreateFolderActivity"></activity>
-        <activity android:name=".activities.CreateContactActivity"></activity>
-        <activity android:name=".activities.CreateEmailActivity"></activity>
+        <activity android:name=".activities.CreateFolderActivity"/>
+        <activity android:name=".activities.CreateContactActivity"/>
         <activity
             android:name=".activities.foldersActivity.FoldersActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.contactsActivity.ContactsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.SplashScreen"
-            android:theme="@style/AppTheme.NoBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".activities.emailsActivity.EmailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
