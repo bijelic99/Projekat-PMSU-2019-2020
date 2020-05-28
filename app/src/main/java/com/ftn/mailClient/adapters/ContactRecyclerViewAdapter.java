@@ -82,10 +82,10 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             email.setText(getContact().getEmail());
             if(getContact().getPhoto() != null){
                 //TODO potencijalan problem, ne mogu sad da testiram
-
+                /*
                 byte[] byteImg = Base64.decode(getContact().getPhoto().getBase64Photo(), Base64.DEFAULT);
                 Drawable image = new BitmapDrawable(itemView.getResources(), BitmapFactory.decodeByteArray(byteImg, 0, byteImg.length));
-                profilePicture.setImageDrawable(image);
+                profilePicture.setImageDrawable(image);*/
 
             }
             else {

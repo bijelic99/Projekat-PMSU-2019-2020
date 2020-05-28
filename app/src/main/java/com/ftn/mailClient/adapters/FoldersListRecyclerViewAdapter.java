@@ -71,6 +71,7 @@ public class FoldersListRecyclerViewAdapter extends RecyclerView.Adapter<Folders
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         public void bindData(){
+            /*
             if(name == null) name = (TextView)itemView.findViewById(R.id.folder_name);
             if(noOfMessages == null) noOfMessages = (TextView)itemView.findViewById(R.id.folder_no_of_messages);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +85,7 @@ public class FoldersListRecyclerViewAdapter extends RecyclerView.Adapter<Folders
             });
             name.setText(folder.getName());
             noOfMessages.setText(folder.getFolderContents() != null ? folder.getFolderContents().stream().filter( f -> f.getClass() == Message.class).count()+"" : "0");
-
+            */
         }
     }
 }

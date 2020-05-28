@@ -29,7 +29,9 @@ public class FolderContentRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
 
     @Override
     public int getItemViewType(int position) {
-        return contents.get(position).getClass() == Message.class ? contentTypes.EMAIL.ordinal() : contentTypes.FOLDER.ordinal();
+        //TODO namestiti ovo da radi sa novim modelom
+        //return contents.get(position).getClass() == Message.class ? contentTypes.EMAIL.ordinal() : contentTypes.FOLDER.ordinal();
+        return 0;
     }
 
     @NonNull
@@ -60,6 +62,7 @@ public class FolderContentRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        /*
         contentTypes enumViewType = contentTypes.values()[getItemViewType(position)];
         switch (enumViewType){
             case EMAIL:{
@@ -74,7 +77,7 @@ public class FolderContentRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
                 vh.bindData();
                 return;
             }
-        }
+        }*/
     }
 
     @Override

@@ -35,7 +35,7 @@ public class FolderContentsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_folder_contents, container, false);
 
         //TODO Change data to dynamic data
-
+        /*
         Tag tag = new Tag(null, "Work");
         Tag tag1 = new Tag(null, "Important");
         ArrayList<Tag> tags = new ArrayList<>();
@@ -72,7 +72,7 @@ public class FolderContentsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(folderContentRecyclerViewAdapter);
-
+        */
         return view;
     }
 }
