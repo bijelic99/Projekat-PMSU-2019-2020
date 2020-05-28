@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.ftn.mailClient.R;
+import com.ftn.mailClient.activities.CreateFolderActivity;
 import com.ftn.mailClient.navigationRouter.NavigationRouter;
 import com.google.android.material.navigation.NavigationView;
 
@@ -65,6 +67,7 @@ public class FoldersActivity extends AppCompatActivity {
     }
 
     private void addFolderClicked() {
-        Toast.makeText(this, "New folder", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, CreateFolderActivity.class);
+        this.startActivity(intent);
     }
 }

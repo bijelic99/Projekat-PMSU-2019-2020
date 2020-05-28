@@ -22,7 +22,8 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="40sp" />
+            android:layout_height="0dp"
+            android:layout_weight="0.5"/>
 
         <TextView
             android:id="@+id/textViewForEmailTo"
@@ -107,14 +108,13 @@
         <EditText
             android:id="@+id/editTextContent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:autofillHints="no"
             android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine"
-            android:lines="8"
-            tools:text="@string/content_placeholder"
-            android:autofillHints="no"
-            />
+            android:layout_weight="1"
+            tools:text="@string/content_placeholder" />
 
         <Button
             android:id="@+id/buttonCreateEmail"
@@ -126,6 +126,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/email_button_cancel" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
