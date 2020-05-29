@@ -1,5 +1,7 @@
 package com.ftn.mailClient.model;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.List;
 import java.util.Set;
 
@@ -37,6 +39,7 @@ public class Folder extends Identifiable {
     public void setParentFolder(Long parentFolder) {
         this.parentFolder = parentFolder;
     }
+
 
     public Set<Long> getFolders() {
         return folders;

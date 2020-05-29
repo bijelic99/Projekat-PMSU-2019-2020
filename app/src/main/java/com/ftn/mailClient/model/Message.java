@@ -1,14 +1,19 @@
 package com.ftn.mailClient.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.ftn.mailClient.utill.deserializer.LocalDateTimeDeserializer;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class Message extends Identifiable {
-    private Account account;
+    private Long account;
     private Contact from;
     private List<Contact> to;
     private List<Contact> cc;
     private List<Contact> bcc;
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime dateTime;
     private String subject;
     private String content;
@@ -20,7 +25,7 @@ public class Message extends Identifiable {
         this(null, null, null, null, null, null, null, null, null, true);
     }
 
-    public Message(Long id, Account account, Contact from, List<Contact> to, List<Contact> cc, List<Contact> bcc, LocalDateTime dateTime, String subject, String content, Boolean unread) {
+    public Message(Long id, Long account, Contact from, List<Contact> to, List<Contact> cc, List<Contact> bcc, LocalDateTime dateTime, String subject, String content, Boolean unread) {
         super(id);
         this.account = account;
         this.from = from;
@@ -33,7 +38,7 @@ public class Message extends Identifiable {
         this.unread = unread;
     }
 
-    public Message(Account account, Contact from, List<Contact> to, List<Contact> cc, List<Contact> bcc, LocalDateTime dateTime, String subject, String content) {
+    public Message(Long account, Contact from, List<Contact> to, List<Contact> cc, List<Contact> bcc, LocalDateTime dateTime, String subject, String content) {
         super(null);
         this.account = account;
         this.from = from;
@@ -45,11 +50,11 @@ public class Message extends Identifiable {
         this.content = content;
     }
 
-    public Account getAccount() {
+    public Long getAccount() {
         return account;
     }
 
-    public void setAccount(Account account) {
+    public void setAccount(Long account) {
         this.account = account;
     }
 
@@ -84,6 +89,7 @@ public class Message extends Identifiable {
     public void setBcc(List<Contact> bcc) {
         this.bcc = bcc;
     }
+
 
     public LocalDateTime getDateTime() {
         return dateTime;

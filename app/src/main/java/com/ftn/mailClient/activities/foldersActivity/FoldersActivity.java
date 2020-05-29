@@ -1,5 +1,7 @@
 package com.ftn.mailClient.activities.foldersActivity;
 
+import android.hardware.camera2.CameraCharacteristics;
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,11 +19,20 @@ import android.widget.Toast;
 
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.CreateFolderActivity;
+import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.navigationRouter.NavigationRouter;
+import com.ftn.mailClient.retrofit.AccountApi;
+import com.ftn.mailClient.retrofit.RetrofitClient;
 import com.google.android.material.navigation.NavigationView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import java.util.Set;
 
 public class FoldersActivity extends AppCompatActivity {
     private DrawerLayout drawer;
+    private Set<Folder> accountFolders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +59,8 @@ public class FoldersActivity extends AppCompatActivity {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close );
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        fetchFolders();
     }
 
     @Override
@@ -70,4 +83,25 @@ public class FoldersActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CreateFolderActivity.class);
         this.startActivity(intent);
     }
+
+    private void fetchFolders(){
+        AccountApi api = RetrofitClient.<AccountApi>getApi(AccountApi.class);
+        api.getAccountFolders(4L).enqueue(new Callback<Set<Folder>>() {
+            @Override
+            public void onResponse(Call<Set<Folder>> call, Response<Set<Folder>> response) {
+                if(response.code() == 200){
+                    accountFolders = response.body();
+                }
+                else Toast.makeText( getApplicationContext(),"Cannot get account folders", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<Set<Folder>> call, Throwable t) {
+                Log.d("fetch-fail", t.getMessage());
+                Toast.makeText( getApplicationContext(),"Cannot get account folders", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 }

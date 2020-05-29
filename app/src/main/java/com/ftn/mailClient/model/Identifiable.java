@@ -1,6 +1,11 @@
 package com.ftn.mailClient.model;
 
-public abstract class Identifiable {
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+import java.io.Serializable;
+
+public abstract class Identifiable implements Serializable {
     protected Long id;
 
     public Identifiable() {
@@ -11,10 +16,12 @@ public abstract class Identifiable {
         this.id = id;
     }
 
+    @JsonProperty("id")
     public Long getId() {
         return id;
     }
 
+    @JsonProperty("id")
     public void setId(Long id) {
         this.id = id;
     }
