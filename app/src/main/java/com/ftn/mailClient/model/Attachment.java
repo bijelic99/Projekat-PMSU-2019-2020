@@ -1,6 +1,8 @@
 package com.ftn.mailClient.model;
 
 import android.util.Base64;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class Attachment extends Identifiable {
     private String base64Data;
@@ -9,17 +11,18 @@ public class Attachment extends Identifiable {
     public Attachment(){
         this(null,null,null,null);
     }
-    public Attachment(Integer id, String base64Data, String type, String name) {
+    public Attachment(Long id, String base64Data, String type, String name) {
         super(id);
         this.base64Data = base64Data;
         this.type = type;
         this.name = name;
     }
 
+    @JsonGetter("data")
     public String getBase64Data() {
         return base64Data;
     }
-
+    @JsonSetter("data")
     public void setBase64Data(String base64Data) {
         this.base64Data = base64Data;
     }

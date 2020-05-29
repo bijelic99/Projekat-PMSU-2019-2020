@@ -1,26 +1,30 @@
 package com.ftn.mailClient.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"color", "textColor"})
 public class Tag extends Identifiable {
     private  String name;
     private  String color;
     private  String textColor;
 
-    public Tag(Integer id, String name) {
+    public Tag(){
+        color = "white";
+        textColor = "black";
+    }
+
+    public Tag(Long id, String name) {
         super(id);
         this.name = name;
         this.color = "white";
         this.textColor = "black";
     }
 
-    public Tag(Integer id, String name, String color, String textColor) {
+    public Tag(Long id, String name, String color, String textColor) {
         super(id);
         this.name = name;
         this.color = color;
         this.textColor = textColor;
-    }
-
-    public  Tag(){
-        this(null,null);
     }
 
     public String getName() {

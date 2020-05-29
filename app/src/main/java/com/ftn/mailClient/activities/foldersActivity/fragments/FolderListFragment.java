@@ -31,7 +31,8 @@ public class FolderListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_folder_list, container, false);
-
+        //TODO dodati dynamic data
+        /*
         Folder f1 = new Folder();
         f1.setName("First folder");
         ArrayList<FolderElement> messages = new ArrayList<>();
@@ -52,7 +53,7 @@ public class FolderListFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(foldersListRecyclerViewAdapter);
-
+        */
         return view;
     }
 }

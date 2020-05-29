@@ -1,20 +1,24 @@
 package com.ftn.mailClient.model;
 
-import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
-public class Folder extends FolderElement {
+public class Folder extends Identifiable {
     private String name;
-    private List<FolderElement> folderContents;
+    private Long parentFolder;
+    private Set<Long> folders;
+    private Set<Message> messages;
 
     public Folder() {
-        this(null, null, null, null);
+        this(null, null, null, null, null);
     }
 
-    public Folder(Integer id, Folder parentFolder, String name, List<FolderElement> folderContents) {
-        super(id, parentFolder);
+    public Folder(Long id, String name, Long parentFolder, Set<Long> folders, Set<Message> messages) {
+        super(id);
         this.name = name;
-        this.folderContents = folderContents;
+        this.parentFolder = parentFolder;
+        this.folders = folders;
+        this.messages = messages;
     }
 
     public String getName() {
@@ -25,11 +29,28 @@ public class Folder extends FolderElement {
         this.name = name;
     }
 
-    public List<FolderElement> getFolderContents() {
-        return folderContents;
+
+    public Long getParentFolder() {
+        return parentFolder;
     }
 
-    public void setFolderContents(List<FolderElement> folderContents) {
-        this.folderContents = folderContents;
+    public void setParentFolder(Long parentFolder) {
+        this.parentFolder = parentFolder;
+    }
+
+    public Set<Long> getFolders() {
+        return folders;
+    }
+
+    public void setFolders(Set<Long> folders) {
+        this.folders = folders;
+    }
+
+    public Set<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Set<Message> messages) {
+        this.messages = messages;
     }
 }

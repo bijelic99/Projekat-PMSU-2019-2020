@@ -2,6 +2,7 @@ package com.ftn.mailClient.model;
 
 import java.io.Serializable;
 
+//TODO Obrisati kada se sve refaktorise
 public abstract class FolderElement extends Identifiable implements Serializable {
     private Folder parentFolder;
 
@@ -9,7 +10,7 @@ public abstract class FolderElement extends Identifiable implements Serializable
         this(null, null);
     }
 
-    public FolderElement(Integer id, Folder parentFolder) {
+    public FolderElement(Long id, Folder parentFolder) {
         super(id);
         this.parentFolder = parentFolder;
     }
