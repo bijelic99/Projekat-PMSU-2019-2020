@@ -67,4 +67,5 @@
     <string name="folder_no_of_messages">Messages: %1$d</string>
     <string name="folder_no_of_files">Files: %1$d</string>
     <string name="folder_name_label">Folder name:</string>
+    <string name="cant_get_folders">Can\'t fetch folders from server</string>
 </resources>

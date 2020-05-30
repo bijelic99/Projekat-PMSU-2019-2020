@@ -32,7 +32,7 @@ import java.util.Set;
 
 public class FoldersActivity extends AppCompatActivity {
     private DrawerLayout drawer;
-    private Set<Folder> accountFolders;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public class FoldersActivity extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        fetchFolders();
+
     }
 
     @Override
@@ -84,24 +84,7 @@ public class FoldersActivity extends AppCompatActivity {
         this.startActivity(intent);
     }
 
-    private void fetchFolders(){
-        AccountApi api = RetrofitClient.<AccountApi>getApi(AccountApi.class);
-        api.getAccountFolders(4L).enqueue(new Callback<Set<Folder>>() {
-            @Override
-            public void onResponse(Call<Set<Folder>> call, Response<Set<Folder>> response) {
-                if(response.code() == 200){
-                    accountFolders = response.body();
-                }
-                else Toast.makeText( getApplicationContext(),"Cannot get account folders", Toast.LENGTH_SHORT).show();
-            }
 
-            @Override
-            public void onFailure(Call<Set<Folder>> call, Throwable t) {
-                Log.d("fetch-fail", t.getMessage());
-                Toast.makeText( getApplicationContext(),"Cannot get account folders", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
 
 
 }

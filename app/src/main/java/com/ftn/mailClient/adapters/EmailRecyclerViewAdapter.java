@@ -83,8 +83,13 @@ public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecycler
             if(content == null){
                 content = (TextView)itemView.findViewById(R.id.textViewContent);
             }
+            //Potrebno kako bi ispisivao pravilno od koga je mail...
+            String name = "";
+            if(getMessage().getFrom().getDisplayName() != null) name = getMessage().getFrom().getDisplayName();
+            else if(getMessage().getFrom().getFirstName() != null && getMessage().getFrom().getLastName() != null) name = itemView.getResources().getString(R.string.users_fullname, getMessage().getFrom().getFirstName(), getMessage().getFrom().getLastName());
+            else if(getMessage().getFrom().getFirstName() == null || getMessage().getFrom().getLastName() == null) name = getMessage().getFrom().getFirstName() != null ? getMessage().getFrom().getFirstName() : getMessage().getFrom().getLastName() != null ? getMessage().getFrom().getLastName() : getMessage().getFrom().getEmail();
 
-            fullName.setText(itemView.getResources().getString(R.string.users_fullname, getMessage().getFrom().getFirstName(), getMessage().getFrom().getLastName()));
+            fullName.setText(name);
             subject.setText(message.getSubject());
             tags.removeAllViews();
             LayoutInflater layoutInflater = LayoutInflater.from(itemView.getContext());

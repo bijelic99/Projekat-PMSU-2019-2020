@@ -6,13 +6,17 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 public class RetrofitClient <T extends Api>{
 
     private static final String BASE_URL = "http://192.168.1.250:8080/";
-    private Retrofit retrofit;
+
     private Class<T> tClass;
 
+    private static Retrofit retrofit;
+
     private RetrofitClient(){
-        this.retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
-            .addConverterFactory(JacksonConverterFactory.create())
-        .build();
+        if(retrofit == null) {
+            this.retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+                    .addConverterFactory(JacksonConverterFactory.create())
+                    .build();
+        }
     }
 
     /**

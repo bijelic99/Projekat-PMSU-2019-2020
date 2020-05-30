@@ -20,16 +20,24 @@ import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.Message;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FoldersListRecyclerViewAdapter extends RecyclerView.Adapter<FoldersListRecyclerViewAdapter.FolderViewHolder> {
-    private ArrayList<Folder> folders;
+    private List<Folder> folders;
     private Context context;
 
-    public FoldersListRecyclerViewAdapter(Context context, ArrayList<Folder> folders){
+    public FoldersListRecyclerViewAdapter(Context context, List<Folder> folders){
         this.folders = folders;
         this.context = context;
     }
 
+    public List<Folder> getFolders() {
+        return folders;
+    }
+
+    public void setFolders(List<Folder> folders) {
+        this.folders = folders;
+    }
 
     @NonNull
     @Override
@@ -71,7 +79,7 @@ public class FoldersListRecyclerViewAdapter extends RecyclerView.Adapter<Folders
 
         @RequiresApi(api = Build.VERSION_CODES.N)
         public void bindData(){
-            /*
+
             if(name == null) name = (TextView)itemView.findViewById(R.id.folder_name);
             if(noOfMessages == null) noOfMessages = (TextView)itemView.findViewById(R.id.folder_no_of_messages);
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -84,8 +92,8 @@ public class FoldersListRecyclerViewAdapter extends RecyclerView.Adapter<Folders
                 }
             });
             name.setText(folder.getName());
-            noOfMessages.setText(folder.getFolderContents() != null ? folder.getFolderContents().stream().filter( f -> f.getClass() == Message.class).count()+"" : "0");
-            */
+            noOfMessages.setText(folder.getMessages().size()+"");
+
         }
     }
 }

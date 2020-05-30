@@ -19,10 +19,14 @@ import com.ftn.mailClient.model.Message;
 import java.util.List;
 
 public class FolderContentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<FolderElement> contents;
+    private List<Object> contents;
     Context context;
 
-    public FolderContentRecyclerViewAdapter(Context context, List<FolderElement> contents){
+    public void setContents(List<Object> contents) {
+        this.contents = contents;
+    }
+
+    public FolderContentRecyclerViewAdapter(Context context, List<Object> contents){
         this.context = context;
         this.contents = contents;
     }
@@ -31,7 +35,7 @@ public class FolderContentRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     public int getItemViewType(int position) {
         //TODO namestiti ovo da radi sa novim modelom
         //return contents.get(position).getClass() == Message.class ? contentTypes.EMAIL.ordinal() : contentTypes.FOLDER.ordinal();
-        return 0;
+        return contents.get(position).getClass() == Message.class ? contentTypes.EMAIL.ordinal() : contentTypes.FOLDER.ordinal();
     }
 
     @NonNull
@@ -62,7 +66,7 @@ public class FolderContentRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        /*
+
         contentTypes enumViewType = contentTypes.values()[getItemViewType(position)];
         switch (enumViewType){
             case EMAIL:{
@@ -77,7 +81,7 @@ public class FolderContentRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
                 vh.bindData();
                 return;
             }
-        }*/
+        }
     }
 
     @Override
