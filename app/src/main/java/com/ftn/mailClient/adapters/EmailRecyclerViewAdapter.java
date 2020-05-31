@@ -18,6 +18,7 @@ import com.ftn.mailClient.model.Tag;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.stream.*;
 
@@ -57,6 +58,7 @@ public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecycler
         TextView subject;
         ChipGroup tags;
         TextView content;
+        TextView timeRecived;
 
         public Message getMessage() {
             return message;
@@ -83,6 +85,7 @@ public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecycler
             if(content == null){
                 content = (TextView)itemView.findViewById(R.id.textViewContent);
             }
+            if(timeRecived == null) timeRecived = (TextView)itemView.findViewById(R.id.textViewDateTime);
             //Potrebno kako bi ispisivao pravilno od koga je mail...
             String name = "";
             if(getMessage().getFrom().getDisplayName() != null) name = getMessage().getFrom().getDisplayName();
@@ -101,6 +104,7 @@ public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecycler
                 return chip;
             }).forEach(c -> tags.addView(c));
             content.setText(message.getContent());
+            timeRecived.setText(message.getDateTime() != null ? message.getDateTime().format(DateTimeFormatter.ISO_DATE_TIME) : itemView.getResources().getText(R.string.no_receive_time));
         }
     }
 }

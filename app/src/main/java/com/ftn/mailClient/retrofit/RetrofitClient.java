@@ -1,7 +1,10 @@
 package com.ftn.mailClient.retrofit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
+
+import java.util.concurrent.TimeUnit;
 
 public class RetrofitClient <T extends Api>{
 
@@ -13,8 +16,14 @@ public class RetrofitClient <T extends Api>{
 
     private RetrofitClient(){
         if(retrofit == null) {
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(2, TimeUnit.MINUTES)
+                    .build();
+
             this.retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
                     .addConverterFactory(JacksonConverterFactory.create())
+                    .client(okHttpClient)
                     .build();
         }
     }

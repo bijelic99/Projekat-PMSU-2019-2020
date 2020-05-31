@@ -22,6 +22,10 @@ public class FolderContentRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
     private List<Object> contents;
     Context context;
 
+    public List<Object> getContents() {
+        return contents;
+    }
+
     public void setContents(List<Object> contents) {
         this.contents = contents;
     }
