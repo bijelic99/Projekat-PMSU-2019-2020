@@ -49,8 +49,8 @@ public class SyncFolderService extends Service {
                     if(response.isSuccessful()){
                         Map<String, Object> resData = response.body();
                         Intent i = new Intent();
-                        i.putExtra("folders", (Serializable) response.body().get("folders"));
-                        i.putExtra("messages", (Serializable) response.body().get("messages"));
+                        i.putExtra("folders", (Serializable) resData.get("folders"));
+                        i.putExtra("messages", (Serializable) resData.get("messages"));
                         String actionName = folderId+"_folderSync";
                         i.setAction(actionName);
                         sendBroadcast(i);
