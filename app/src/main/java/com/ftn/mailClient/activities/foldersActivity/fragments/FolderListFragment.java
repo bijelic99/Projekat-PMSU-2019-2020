@@ -64,7 +64,7 @@ public class FolderListFragment extends Fragment {
 
     private void fetchFolders(){
         AccountApi api = RetrofitClient.<AccountApi>getApi(AccountApi.class);
-        api.getAccountFolders(5L).enqueue(new Callback<Set<Folder>>() {
+        api.getAccountFolders(4L).enqueue(new Callback<Set<Folder>>() {
             @Override
             public void onResponse(Call<Set<Folder>> call, Response<Set<Folder>> response) {
                 if(response.code() == 200){
