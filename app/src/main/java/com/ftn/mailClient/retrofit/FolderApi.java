@@ -1,6 +1,7 @@
 package com.ftn.mailClient.retrofit;
 
 import com.ftn.mailClient.model.Folder;
+import com.ftn.mailClient.utill.FolderSyncWrapper;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -15,5 +16,5 @@ public interface FolderApi extends Api{
     Call<Set<Folder>> getInnerFolders(@Path("id") Long id);
 
     @PUT("api/folders/{id}/sync")
-    Call<Map<String, Object>> syncFolder(@Path("id") Long id, @Body Map<String, Object> data);
+    Call<FolderSyncWrapper> syncFolder(@Path("id") Long id, @Body Map<String, Object> data);
 }

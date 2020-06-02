@@ -25,14 +25,13 @@ import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.retrofit.FolderApi;
 import com.ftn.mailClient.retrofit.RetrofitClient;
 import com.ftn.mailClient.services.SyncFolderService;
+import com.ftn.mailClient.utill.FolderContentsComparatorInterface;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -48,10 +47,24 @@ public class FolderContentsFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void setFolder(Folder folder) {
         this.folder = folder;
+        List<Object> folderContents = new ArrayList<>(folder.getMessages());
 
-        folderContentRecyclerViewAdapter = new FolderContentRecyclerViewAdapter(getContext(), getFolderContents(folder));
+        Intent intent = new Intent(getContext(), SyncFolderService.class);
+        intent.putExtra("folderId", folder.getId());
+        intent.putExtra("latestMessageTimestamp", folder.getMessages().stream()
+                .map(message -> message.getDateTime())
+                .max((o1, o2) -> o1.isAfter(o2) ? 1 : o1.isBefore(o2) ? -1 : 0)
+                .orElse(null));
+        intent.putExtra("folderList", new ArrayList<>(folder.getFolders()));
+        swipeRefreshLayout.setRefreshing(true);
+        getContext().startService(intent);
+
+        folderContentRecyclerViewAdapter = new FolderContentRecyclerViewAdapter(getContext(), folderContents);
+        Collections.sort(folderContentRecyclerViewAdapter.getContents(), FolderContentsComparatorInterface::folderContentsComparator);
+        folderContentRecyclerViewAdapter.notifyDataSetChanged();
         RecyclerView recyclerView = getView().findViewById(R.id.recyclerViewFolderContent);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -111,40 +124,14 @@ public class FolderContentsFragment extends Fragment {
             if(folderContentRecyclerViewAdapter != null){
                 folderContentRecyclerViewAdapter.getContents()
                         .addAll(Stream.concat(messages.stream(), folders.stream()).collect(Collectors.toList()));
+                Collections.sort(folderContentRecyclerViewAdapter.getContents(), FolderContentsComparatorInterface::folderContentsComparator);
                 folderContentRecyclerViewAdapter.notifyDataSetChanged();
             }
             if(swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
         }
     };
 
-    /**
-     * Povlaci listu foldera sa servera, kombinuje je sa listom foldera i tako vraca je kao listu.
-     * Posto je ucitavanje foldera sa servera async zadatak oni nece odmah biti ucitani vec po izvrsenju callback-a.
-     * Takodje obavestava FolderContentRecyclerViewAdapter kada se folderi ucitaju.
-     * @param folder
-     * @return Lista koja sadrzi foldere i poruke
-     */
-    private List<Object> getFolderContents(Folder folder) {
-        List<Object> list = new ArrayList<>(folder.getMessages());
-        FolderApi folderApi = RetrofitClient.<FolderApi>getApi(FolderApi.class);
-        folderApi.getInnerFolders(folder.getId()).enqueue(new Callback<Set<Folder>>() {
-            @Override
-            public void onResponse(Call<Set<Folder>> call, Response<Set<Folder>> response) {
-                if(response.isSuccessful()) {
-                    list.addAll(response.body());
-                    folderContentRecyclerViewAdapter.notifyDataSetChanged();
-                }
-                else Toast.makeText(getContext(), R.string.cant_get_folders, Toast.LENGTH_SHORT).show();
-            }
 
-            @Override
-            public void onFailure(Call<Set<Folder>> call, Throwable t) {
-                Log.e("folder-fetch-err", t.getMessage());
-                Toast.makeText(getContext(), R.string.cant_get_folders, Toast.LENGTH_SHORT).show();
-            }
-        });
-        return list;
-    }
 
     @Override
     public void onDestroyView() {

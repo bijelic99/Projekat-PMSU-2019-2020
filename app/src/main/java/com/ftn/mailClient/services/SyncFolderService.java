@@ -5,17 +5,17 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import com.ftn.mailClient.model.Identifiable;
 import com.ftn.mailClient.retrofit.FolderApi;
 import com.ftn.mailClient.retrofit.RetrofitClient;
+import com.ftn.mailClient.utill.FolderSyncWrapper;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -43,27 +43,26 @@ public class SyncFolderService extends Service {
             syncData.put("folderList", folderList);
 
             FolderApi folderApi = RetrofitClient.<FolderApi>getApi(FolderApi.class);
-            folderApi.syncFolder(folderId, syncData).enqueue(new Callback<Map<String, Object>>() {
-                @Override
-                public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-                    if(response.isSuccessful()){
-                        Map<String, Object> resData = response.body();
-                        Intent i = new Intent();
-                        i.putExtra("folders", (Serializable) resData.get("folders"));
-                        i.putExtra("messages", (Serializable) resData.get("messages"));
-                        String actionName = folderId+"_folderSync";
-                        i.setAction(actionName);
-                        sendBroadcast(i);
-                    }
-                }
+            folderApi.syncFolder(folderId, syncData).enqueue(new Callback<FolderSyncWrapper>() {
+                     @Override
+                     public void onResponse(Call<FolderSyncWrapper> call, Response<FolderSyncWrapper> response) {
+                         if(response.isSuccessful()){
+                             FolderSyncWrapper resData = response.body();
+                             Intent i = new Intent();
+                             i.putExtra("folders", (Serializable) resData.getFolders());
+                             i.putExtra("messages", (Serializable) resData.getMessages());
+                             String actionName = folderId+"_folderSync";
+                             i.setAction(actionName);
+                             sendBroadcast(i);
+                         }
+                     }
 
-                @Override
-                public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-                    Log.e("fetch-error", t.getMessage());
-                }
-            });
+                     @Override
+                     public void onFailure(Call<FolderSyncWrapper> call, Throwable t) {
+                         Log.e("fetch-error", t.getMessage());
+                     }
+                 });
         }
-
         stopSelf();
         return START_STICKY;
     }
