@@ -1,5 +1,7 @@
 package com.ftn.mailClient.activities.foldersActivity.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -64,7 +66,16 @@ public class FolderListFragment extends Fragment {
 
     private void fetchFolders(){
         AccountApi api = RetrofitClient.<AccountApi>getApi(AccountApi.class);
-        api.getAccountFolders(4L).enqueue(new Callback<Set<Folder>>() {
+        Long accountId = null;
+        try {
+            SharedPreferences sharedPreferences  = getContext().getSharedPreferences(getString(R.string.user_details_file_key), Context.MODE_PRIVATE);
+            accountId = sharedPreferences.getLong(getString(R.string.user_account_id), -1);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        api.getAccountFolders(accountId).enqueue(new Callback<Set<Folder>>() {
             @Override
             public void onResponse(Call<Set<Folder>> call, Response<Set<Folder>> response) {
                 if(response.code() == 200){

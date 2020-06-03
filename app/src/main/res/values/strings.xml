@@ -69,4 +69,7 @@
     <string name="folder_name_label">Folder name:</string>
     <string name="cant_get_folders">Can\'t fetch folders from server</string>
     <string name="no_receive_time">time not available</string>
+    <string name="user_details_file_key">user_details</string>
+    <string name="user_account_id">user_account_id</string>
+    <string name="user_id">user_id</string>
 </resources>
