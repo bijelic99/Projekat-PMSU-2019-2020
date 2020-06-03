@@ -14,7 +14,7 @@
     <string name="tags_placeholder">work</string>
     <string name="fullname_placeholder">John Doe</string>
     <string name="subject_placeholder">Subject</string>
-    <string name="content_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nisi erat, aliquam quis purus ac, posuere venenatis sapien. Nullam vitae mollis magna, at posuere est.</string>
+    <string name="content_placeholder">Type your message here</string>
     <string name="filter">Filter</string>
     <string name="add_new_email">Add new email</string>
     <string name="profile">Profile</string>

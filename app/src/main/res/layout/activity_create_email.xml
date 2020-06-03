@@ -109,12 +109,12 @@
             android:id="@+id/editTextContent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="1"
             android:autofillHints="no"
             android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine"
-            android:layout_weight="1"
-            tools:text="@string/content_placeholder" />
+            android:hint="@string/content_placeholder" />
 
         <Button
             android:id="@+id/buttonCreateEmail"
