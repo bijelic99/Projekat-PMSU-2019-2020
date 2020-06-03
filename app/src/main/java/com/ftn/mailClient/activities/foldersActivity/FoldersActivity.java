@@ -33,7 +33,6 @@ import java.util.Set;
 public class FoldersActivity extends AppCompatActivity {
     private DrawerLayout drawer;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
