@@ -11,11 +11,13 @@ import android.widget.Toast;
 
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.folderActivity.FolderActivity;
+import com.ftn.mailClient.activities.foldersActivity.FoldersActivity;
 import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.retrofit.FolderApi;
 import com.ftn.mailClient.retrofit.RetrofitClient;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
 import retrofit2.Call;
@@ -39,26 +41,30 @@ public class CreateFolderActivity extends AppCompatActivity {
         mFolderName = findViewById(R.id.editCreateFolderName);
         mParentFolder = findViewById(R.id.autoCompleteTextViewParentFolder);
 
-        folder = (Folder) this.getIntent().getExtras().get("parent");
-        mParentFolder.setText(folder.getName());
+        Serializable parentFolderSerializable = getIntent().getSerializableExtra("parent");
+
+        folder = parentFolderSerializable != null ? (Folder) parentFolderSerializable : null;
+        mParentFolder.setText(folder != null ? folder.getName() : "");
 
         Button b = findViewById(R.id.buttonForCreateFolder);
         b.setOnClickListener(v -> clickHandler(v));
+
+        Button cancelBtn = findViewById(R.id.buttonForCancelCreateFolder);
+        cancelBtn.setOnClickListener(v -> activityEndRedirect());
     }
     public void clickHandler(View v) {
 
         folderName = mFolderName.getText().toString();
-        Folder newFolder = new Folder(null, folderName, folder.getId(), new HashSet<Long>(), new HashSet<Message>());
+        Folder newFolder = new Folder(null, folderName, folder != null ? folder.getId() : null, new HashSet<Long>(), new HashSet<Message>());
 
         FolderApi folderApi = RetrofitClient.getApi(FolderApi.class);
         folderApi.saveFolder(newFolder).enqueue(new Callback<Folder>() {
             @Override
             public void onResponse(Call<Folder> call, Response<Folder> response) {
                 if(response.isSuccessful()) {
-                    Intent intent = new Intent(getBaseContext(), FolderActivity.class);
-                    intent.putExtra("folder", getFolder());
-                    startActivity(intent);
+                    activityEndRedirect();
                 }
+                else Toast.makeText(getBaseContext(), "There was a problem, folder isn't created "+response.code(), Toast.LENGTH_LONG);
             }
 
             @Override
@@ -68,6 +74,18 @@ public class CreateFolderActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void activityEndRedirect(){
+        if(folder != null) {
+            Intent intent = new Intent(getBaseContext(), FolderActivity.class);
+            intent.putExtra("folder", getFolder());
+            startActivity(intent);
+        }
+        else {
+            Intent intent = new Intent(getBaseContext(), FoldersActivity.class);
+            startActivity(intent);
+        }
     }
 
     public Folder getFolder() {
