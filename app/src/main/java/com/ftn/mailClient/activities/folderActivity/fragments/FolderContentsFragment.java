@@ -58,7 +58,7 @@ public class FolderContentsFragment extends Fragment {
                 .map(message -> message.getDateTime())
                 .max((o1, o2) -> o1.isAfter(o2) ? 1 : o1.isBefore(o2) ? -1 : 0)
                 .orElse(null));
-        intent.putExtra("folderList", new ArrayList<>(folder.getFolders()));
+        intent.putExtra("folderList", new ArrayList<>());
         swipeRefreshLayout.setRefreshing(true);
         getContext().startService(intent);
 
