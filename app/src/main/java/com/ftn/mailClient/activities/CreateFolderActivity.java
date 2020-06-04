@@ -58,20 +58,26 @@ public class CreateFolderActivity extends AppCompatActivity {
         Folder newFolder = new Folder(null, folderName, folder != null ? folder.getId() : null, new HashSet<Long>(), new HashSet<Message>());
 
         FolderApi folderApi = RetrofitClient.getApi(FolderApi.class);
-        folderApi.saveFolder(newFolder).enqueue(new Callback<Folder>() {
-            @Override
-            public void onResponse(Call<Folder> call, Response<Folder> response) {
-                if(response.isSuccessful()) {
-                    activityEndRedirect();
+        if(folder != null) {
+            folderApi.saveFolder(newFolder).enqueue(new Callback<Folder>() {
+                @Override
+                public void onResponse(Call<Folder> call, Response<Folder> response) {
+                    if (response.isSuccessful()) {
+                        activityEndRedirect();
+                    } else
+                        Toast.makeText(getBaseContext(), "There was a problem, folder isn't created " + response.code(), Toast.LENGTH_LONG);
                 }
-                else Toast.makeText(getBaseContext(), "There was a problem, folder isn't created "+response.code(), Toast.LENGTH_LONG);
-            }
 
-            @Override
-            public void onFailure(Call<Folder> call, Throwable t) {
-                Toast.makeText(getBaseContext(), "There was a problem, folder isn't created", Toast.LENGTH_LONG);
-            }
-        });
+                @Override
+                public void onFailure(Call<Folder> call, Throwable t) {
+                    Toast.makeText(getBaseContext(), "There was a problem, folder isn't created", Toast.LENGTH_LONG);
+                }
+            });
+        }
+        else {
+            
+            folderApi.addAccountFolder()
+        }
 
 
     }
