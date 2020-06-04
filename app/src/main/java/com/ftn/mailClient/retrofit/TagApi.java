@@ -21,5 +21,5 @@ public interface TagApi extends Api{
     Call<Tag> saveTag(@Body Tag tag);
 
     @PUT("api/tags/{id}")
-    Call<Tag> setTag(@Path("id") Long id, @Body Map<String, Object> data);
+    Call<Tag> setTag(@Path("id") Long id, @Body Tag data);
 }

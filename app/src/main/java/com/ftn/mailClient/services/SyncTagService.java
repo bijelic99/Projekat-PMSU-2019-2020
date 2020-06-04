@@ -8,6 +8,7 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.ftn.mailClient.model.Tag;
 import com.ftn.mailClient.retrofit.RetrofitClient;
 import com.ftn.mailClient.retrofit.TagApi;
 
@@ -27,8 +28,8 @@ public class SyncTagService extends Service {
                 nameTag = (String) intent.getSerializableExtra("name");
             }
 
-            Map<String, Object> syncData = new HashMap<>();
-            syncData.put("name", nameTag);
+            Tag syncData = new Tag();
+            syncData.setName(nameTag);
 
             TagApi tagApi = RetrofitClient.getApi(TagApi.class);
             tagApi.setTag(tagId, syncData);
