@@ -22,6 +22,6 @@ public interface FolderApi extends Api{
     @PUT("api/folders/{id}/sync")
     Call<FolderSyncWrapper> syncFolder(@Path("id") Long id, @Body Map<String, Object> data);
 
-    @POST("api/accounts/{id}/folder")
+    @POST("api/accounts/{id}/folders")
     Call<Folder> addAccountFolder(@Path("id") Long accountId, @Body Folder folder);
 }

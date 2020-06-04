@@ -1,5 +1,7 @@
 package com.ftn.mailClient.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -58,6 +60,7 @@ public class CreateFolderActivity extends AppCompatActivity {
         Folder newFolder = new Folder(null, folderName, folder != null ? folder.getId() : null, new HashSet<Long>(), new HashSet<Message>());
 
         FolderApi folderApi = RetrofitClient.getApi(FolderApi.class);
+        Context currentContext = this;
         if(folder != null) {
             folderApi.saveFolder(newFolder).enqueue(new Callback<Folder>() {
                 @Override
@@ -65,18 +68,35 @@ public class CreateFolderActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         activityEndRedirect();
                     } else
-                        Toast.makeText(getBaseContext(), "There was a problem, folder isn't created " + response.code(), Toast.LENGTH_LONG);
+                        Toast.makeText(currentContext, "There was a problem, folder isn't created " + response.code(), Toast.LENGTH_LONG);
                 }
 
                 @Override
                 public void onFailure(Call<Folder> call, Throwable t) {
-                    Toast.makeText(getBaseContext(), "There was a problem, folder isn't created", Toast.LENGTH_LONG);
+                    Toast.makeText(currentContext, "There was a problem, folder isn't created", Toast.LENGTH_LONG);
                 }
             });
         }
         else {
-            
-            folderApi.addAccountFolder()
+            SharedPreferences sharedPreferences = this.getSharedPreferences(getString(R.string.user_details_file_key),MODE_PRIVATE);
+            if(sharedPreferences != null){
+                Long accountId = sharedPreferences.getLong(getString(R.string.user_account_id), -5L);
+                folderApi.addAccountFolder(accountId, newFolder).enqueue(new Callback<Folder>() {
+                    @Override
+                    public void onResponse(Call<Folder> call, Response<Folder> response) {
+                        if (response.isSuccessful()) {
+                            activityEndRedirect();
+                        } else
+                            Toast.makeText(currentContext, "There was a problem, folder isn't created " + response.code(), Toast.LENGTH_LONG);
+                    }
+
+                    @Override
+                    public void onFailure(Call<Folder> call, Throwable t) {
+                        Toast.makeText(currentContext, "There was a problem, folder isn't created", Toast.LENGTH_LONG);
+                    }
+                });
+            }
+
         }
 
 

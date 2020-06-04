@@ -14,9 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.FolderElement;
+import com.ftn.mailClient.model.Identifiable;
 import com.ftn.mailClient.model.Message;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FolderContentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Object> contents;
@@ -26,13 +29,14 @@ public class FolderContentRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
         return contents;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void setContents(List<Object> contents) {
-        this.contents = contents;
+        this.contents = (new HashSet<Object>(contents)).stream().collect(Collectors.toList());
     }
 
     public FolderContentRecyclerViewAdapter(Context context, List<Object> contents){
         this.context = context;
-        this.contents = contents;
+        setContents(contents);
     }
 
     @Override
