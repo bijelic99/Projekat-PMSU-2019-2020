@@ -45,10 +45,11 @@
             android:labelFor="@id/autoCompleteTextViewParentFolder"
             android:text="@string/create_folder_text" />
 
-        <AutoCompleteTextView
+        <EditText
             android:id="@+id/autoCompleteTextViewParentFolder"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:clickable="false"/>
 
         <Button
             android:id="@+id/buttonForCreateFolder"
