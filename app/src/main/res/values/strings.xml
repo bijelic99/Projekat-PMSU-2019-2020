@@ -72,4 +72,9 @@
     <string name="tag">Name</string>
     <string name="tag_save_att">Save</string>
     <string name="tag_button_cancel">Cancel</string>
+    <string name="my_profile_picture">My profile picture</string>
+    <string name="my_username">Username</string>
+    <string name="my_password">Password</string>
+    <string name="my_first_name">First name</string>
+    <string name="my_last_name">Last name</string>
 </resources>
