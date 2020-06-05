@@ -11,19 +11,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="top"
-        android:orientation="horizontal">
-
+        android:orientation="vertical">
+    <Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:popupTheme="@style/Theme.AppCompat.Light"
+        android:title="@string/app_name">
+        <Button
+            android:id="@+id/buttonLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_logout"/>
+    </Toolbar>
     <ImageView
         android:id="@+id/imageViewMyProfilePic"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
         android:layout_weight="1"
         android:contentDescription="@string/my_profile_picture"
         tools:srcCompat="@tools:sample/avatars" />
 
+
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="2"
         android:gravity="top"
@@ -94,9 +108,8 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="40sp" />
+
     </LinearLayout>
-
-
 
 </LinearLayout>
 <com.google.android.material.navigation.NavigationView
@@ -106,4 +119,5 @@
     android:id="@+id/profile_nav_view"
     app:menu="@menu/navigation_drawer_menu"
     />
+
 </androidx.drawerlayout.widget.DrawerLayout>

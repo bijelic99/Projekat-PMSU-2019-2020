@@ -63,7 +63,7 @@ public class CreateTagActivity extends AppCompatActivity {
     }
 
     private void activityEndRedirect() {
-        Intent intent = new Intent(getBaseContext(), CreateTagActivity.class);//dok ne napravim profile activity
+        Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
         startActivity(intent);
     }
 }
