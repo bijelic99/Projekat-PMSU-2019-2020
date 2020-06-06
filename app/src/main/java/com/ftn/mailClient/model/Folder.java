@@ -1,16 +1,18 @@
 package com.ftn.mailClient.model;
 
 import androidx.room.Entity;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import androidx.room.TypeConverters;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.ftn.mailClient.utill.converters.FolderListTypeConverter;
+import com.ftn.mailClient.utill.converters.FolderTypeConverter;
+import com.ftn.mailClient.utill.converters.MessageListTypeConverter;
 import com.ftn.mailClient.utill.deserializer.InnerFoldersDeserializer;
 import com.ftn.mailClient.utill.deserializer.ParentFolderDeserializer;
 import com.ftn.mailClient.utill.serializer.InnerFoldersSerializer;
 import com.ftn.mailClient.utill.serializer.ParentFolderSerializer;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,10 +20,13 @@ public class Folder extends Identifiable {
     private String name;
     @JsonDeserialize(using = ParentFolderDeserializer.class)
     @JsonSerialize(using = ParentFolderSerializer.class)
+    @TypeConverters(FolderTypeConverter.class)
     private Folder parentFolder;
     @JsonDeserialize(using = InnerFoldersDeserializer.class)
     @JsonSerialize(using = InnerFoldersSerializer.class)
+    @TypeConverters(FolderListTypeConverter.class)
     private Set<Folder> folders;
+    @TypeConverters(MessageListTypeConverter.class)
     private Set<Message> messages;
 
     public Folder() {

@@ -1,11 +1,18 @@
 package com.ftn.mailClient.model;
 
 import androidx.room.Entity;
+import androidx.room.TypeConverters;
+import com.ftn.mailClient.utill.converters.ConditionTypeConverter;
+import com.ftn.mailClient.utill.converters.FolderTypeConverter;
+import com.ftn.mailClient.utill.converters.OperationTypeConverter;
 
 @Entity
 public class Rule extends Identifiable {
+    @TypeConverters(ConditionTypeConverter.class)
     private Condition condition;
+    @TypeConverters(OperationTypeConverter.class)
     private Operation operation;
+    @TypeConverters(FolderTypeConverter.class)
     private Folder destinationFolder;
     private String value;
 

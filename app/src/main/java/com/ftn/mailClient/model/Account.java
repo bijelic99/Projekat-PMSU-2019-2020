@@ -2,11 +2,14 @@ package com.ftn.mailClient.model;
 
 
 import androidx.room.Entity;
+import androidx.room.TypeConverters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.ftn.mailClient.utill.converters.IncomingMailProtocolTypeConverter;
 
 public class Account extends Identifiable {
     private String smtpAddress;
+    @TypeConverters(IncomingMailProtocolTypeConverter.class)
     private IncomingMailProtocol incomingMailProtocol;
     private String incomingMailAddress;
     private String username;
