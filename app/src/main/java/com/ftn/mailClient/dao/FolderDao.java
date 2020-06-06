@@ -1,4 +1,6 @@
 package com.ftn.mailClient.dao;
 
-public class FolderDao {
+import com.ftn.mailClient.model.Folder;
+
+public interface FolderDao extends DaoInterface<Folder> {
 }
