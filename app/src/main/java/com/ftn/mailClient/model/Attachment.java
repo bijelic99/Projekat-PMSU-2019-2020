@@ -1,9 +1,11 @@
 package com.ftn.mailClient.model;
 
 import android.util.Base64;
+import androidx.room.Entity;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
+@Entity
 public class Attachment extends Identifiable {
     private String base64Data;
     private String type;

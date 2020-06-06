@@ -1,5 +1,8 @@
 package com.ftn.mailClient.model;
 
+import androidx.room.Entity;
+
+@Entity
 public class User extends Identifiable{
     private String username;
     private String password;

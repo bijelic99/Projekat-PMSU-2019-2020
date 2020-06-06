@@ -1,12 +1,14 @@
 package com.ftn.mailClient.model;
 
 import androidx.annotation.Nullable;
+import androidx.room.PrimaryKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.io.Serializable;
 
 public abstract class Identifiable implements Serializable {
+    @PrimaryKey
     protected Long id;
 
     public Identifiable() {

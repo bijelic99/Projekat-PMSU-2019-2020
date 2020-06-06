@@ -1,21 +1,34 @@
 package com.ftn.mailClient.model;
 
+import androidx.room.Entity;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.ftn.mailClient.utill.deserializer.InnerFoldersDeserializer;
+import com.ftn.mailClient.utill.deserializer.ParentFolderDeserializer;
+import com.ftn.mailClient.utill.serializer.InnerFoldersSerializer;
+import com.ftn.mailClient.utill.serializer.ParentFolderSerializer;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Entity
 public class Folder extends Identifiable {
     private String name;
-    private Long parentFolder;
-    private Set<Long> folders;
+    @JsonDeserialize(using = ParentFolderDeserializer.class)
+    @JsonSerialize(using = ParentFolderSerializer.class)
+    private Folder parentFolder;
+    @JsonDeserialize(using = InnerFoldersDeserializer.class)
+    @JsonSerialize(using = InnerFoldersSerializer.class)
+    private Set<Folder> folders;
     private Set<Message> messages;
 
     public Folder() {
-        this(null, null, null, null, null);
+        this(null, null, null, new HashSet<>(), null);
     }
 
-    public Folder(Long id, String name, Long parentFolder, Set<Long> folders, Set<Message> messages) {
+    public Folder(Long id, String name, Folder parentFolder, Set<Folder> folders, Set<Message> messages) {
         super(id);
         this.name = name;
         this.parentFolder = parentFolder;
@@ -32,20 +45,20 @@ public class Folder extends Identifiable {
     }
 
 
-    public Long getParentFolder() {
+    public Folder getParentFolder() {
         return parentFolder;
     }
 
-    public void setParentFolder(Long parentFolder) {
+    public void setParentFolder(Folder parentFolder) {
         this.parentFolder = parentFolder;
     }
 
 
-    public Set<Long> getFolders() {
+    public Set<Folder> getFolders() {
         return folders;
     }
 
-    public void setFolders(Set<Long> folders) {
+    public void setFolders(Set<Folder> folders) {
         this.folders = folders;
     }
 

@@ -1,5 +1,8 @@
 package com.ftn.mailClient.model;
 
+import androidx.room.Entity;
+
+@Entity
 public class Photo extends Identifiable {
     private String path;
 

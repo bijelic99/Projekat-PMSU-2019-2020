@@ -1,13 +1,16 @@
 package com.ftn.mailClient.model;
 
+import androidx.room.Entity;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@Entity
 public class Contact extends Identifiable {
     private String firstName;
     private String lastName;
     private String displayName;
     private String email;
+
     private Photo photo;
     private String format;
 

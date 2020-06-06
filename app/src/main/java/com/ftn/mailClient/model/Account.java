@@ -1,11 +1,12 @@
 package com.ftn.mailClient.model;
 
 
+import androidx.room.Entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class Account extends Identifiable {
-    private String smtpAdress;
+    private String smtpAddress;
     private IncomingMailProtocol incomingMailProtocol;
     private String incomingMailAddress;
     private String username;
@@ -15,9 +16,9 @@ public class Account extends Identifiable {
         this(null,null,null,null,null,null);
     }
 
-    public Account(Long id, String smtpAdress, IncomingMailProtocol incomingMailProtocol, String incomingMailAddress, String username, String password) {
+    public Account(Long id, String smtpAddress, IncomingMailProtocol incomingMailProtocol, String incomingMailAddress, String username, String password) {
         super(id);
-        this.smtpAdress = smtpAdress;
+        this.smtpAddress = smtpAddress;
         this.incomingMailProtocol = incomingMailProtocol;
         this.incomingMailAddress = incomingMailAddress;
         this.username = username;
@@ -25,13 +26,13 @@ public class Account extends Identifiable {
     }
 
     @JsonProperty("smtp")
-    public String getSmtpAdress() {
-        return smtpAdress;
+    public String getSmtpAddress() {
+        return smtpAddress;
     }
 
     @JsonSetter("smtp")
-    public void setSmtpAdress(String smtpAdress) {
-        this.smtpAdress = smtpAdress;
+    public void setSmtpAddress(String smtpAddress) {
+        this.smtpAddress = smtpAddress;
     }
 
     @JsonProperty("inServerType")

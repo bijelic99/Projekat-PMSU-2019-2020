@@ -1,12 +1,13 @@
 package com.ftn.mailClient.model;
 
+import androidx.room.Entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.ftn.mailClient.utill.deserializer.LocalDateTimeDeserializer;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+@Entity
 public class Message extends Identifiable {
     private Long account;
     private Contact from;

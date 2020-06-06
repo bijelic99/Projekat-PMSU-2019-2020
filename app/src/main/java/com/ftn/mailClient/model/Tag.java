@@ -1,7 +1,9 @@
 package com.ftn.mailClient.model;
 
+import androidx.room.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@Entity
 @JsonIgnoreProperties({"color", "textColor"})
 public class Tag extends Identifiable {
     private  String name;

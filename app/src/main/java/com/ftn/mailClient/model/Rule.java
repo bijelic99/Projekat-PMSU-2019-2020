@@ -1,5 +1,8 @@
 package com.ftn.mailClient.model;
 
+import androidx.room.Entity;
+
+@Entity
 public class Rule extends Identifiable {
     private Condition condition;
     private Operation operation;
