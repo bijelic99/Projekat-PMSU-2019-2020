@@ -5,14 +5,14 @@ import com.ftn.mailClient.model.Contact;
 
 public class ContactTypeConverter {
     @TypeConverter
-    public static Contact fromLong(Long id){
+    public Contact fromLong(Long id){
         Contact contact = new Contact();
         contact.setId(id);
         return contact;
     }
 
     @TypeConverter
-    public static Long toLong(Contact contact){
+    public Long toLong(Contact contact){
         return contact != null ? contact.getId() : null;
     }
 }

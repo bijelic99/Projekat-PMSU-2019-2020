@@ -1,6 +1,7 @@
 package com.ftn.mailClient.model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.TypeConverters;
 import com.ftn.mailClient.utill.converters.ConditionTypeConverter;
 import com.ftn.mailClient.utill.converters.FolderTypeConverter;
@@ -13,13 +14,14 @@ public class Rule extends Identifiable {
     @TypeConverters(OperationTypeConverter.class)
     private Operation operation;
     @TypeConverters(FolderTypeConverter.class)
-    private Folder destinationFolder;
+    private FolderMetadata destinationFolder;
     private String value;
 
+    @Ignore
     public Rule(){
 
     }
-    public Rule(Long id, Condition condition, Operation operation, Folder destinationFolder, String value) {
+    public Rule(Long id, Condition condition, Operation operation, FolderMetadata destinationFolder, String value) {
         super(id);
         this.condition = condition;
         this.operation = operation;
@@ -43,11 +45,11 @@ public class Rule extends Identifiable {
         this.operation = operation;
     }
 
-    public Folder getDestinationFolder() {
+    public FolderMetadata getDestinationFolder() {
         return destinationFolder;
     }
 
-    public void setDestinationFolder(Folder destinationFolder) {
+    public void setDestinationFolder(FolderMetadata destinationFolder) {
         this.destinationFolder = destinationFolder;
     }
 

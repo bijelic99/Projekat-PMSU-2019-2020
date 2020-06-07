@@ -8,15 +8,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ftn.mailClient.model.Attachment;
 import com.ftn.mailClient.model.Contact;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class AttachmentListTypeConverter {
     @TypeConverter
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static Set<Attachment> fromJsonString(String s){
+    public List<Attachment> fromJsonString(String s){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             Long[] ids = objectMapper.readValue(s, Long[].class);
@@ -25,17 +23,17 @@ public class AttachmentListTypeConverter {
                 Attachment attachment = new Attachment();
                 attachment.setId(aLong);
                 return attachment;
-            }).collect(Collectors.toSet());
+            }).collect(Collectors.toList());
         }
         catch (Exception e ){
             Log.e("ConverterError", e.getMessage());
-            return new HashSet<>();
+            return new ArrayList<>();
         }
 
     }
     @TypeConverter
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static String toJsonString(Set<Attachment> attachments){
+    public String toJsonString(List<Attachment> attachments){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(attachments.stream().mapToLong(value -> value.getId()).toArray());

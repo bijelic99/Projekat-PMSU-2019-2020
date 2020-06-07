@@ -5,6 +5,7 @@ import com.ftn.mailClient.model.Identifiable;
 
 import java.util.List;
 
+@Dao
 public interface DaoInterface<T extends Identifiable> {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

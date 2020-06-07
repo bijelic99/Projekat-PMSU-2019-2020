@@ -12,9 +12,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ContactListTypeConverter {
+
     @TypeConverter
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static List<Contact> fromJsonString(String s){
+    public List<Contact> toList(String s){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             Long[] ids = objectMapper.readValue(s, Long[].class);
@@ -33,7 +34,7 @@ public class ContactListTypeConverter {
     }
     @TypeConverter
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static String toJsonString(Set<Contact> contacts){
+    public String toJson(List<Contact> contacts){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(contacts.stream().mapToLong(value -> value.getId()).toArray());

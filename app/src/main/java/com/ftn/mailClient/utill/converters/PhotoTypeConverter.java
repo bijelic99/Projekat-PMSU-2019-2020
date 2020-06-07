@@ -7,14 +7,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class PhotoTypeConverter {
     @TypeConverter
-    public static Photo fromLong(Long id){
+    public Photo fromLong(Long id){
         Photo p = new Photo();
         p.setId(id);
         return p;
     }
 
     @TypeConverter
-    public static Long toLong(Photo photo){
+    public Long toLong(Photo photo){
         return photo != null ? photo.getId() : null;
     }
 }

@@ -12,10 +12,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.mailClient.R;
-import com.ftn.mailClient.model.Folder;
-import com.ftn.mailClient.model.FolderElement;
-import com.ftn.mailClient.model.Identifiable;
-import com.ftn.mailClient.model.Message;
+import com.ftn.mailClient.model.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -85,7 +82,7 @@ public class FolderContentRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
             }
             case FOLDER:{
                 FoldersListRecyclerViewAdapter.FolderViewHolder vh = (FoldersListRecyclerViewAdapter.FolderViewHolder) holder;
-                vh.setFolder((Folder) contents.get(position));
+                vh.setFolder((FolderMetadata) contents.get(position));
                 vh.bindData();
                 return;
             }

@@ -1,6 +1,7 @@
 package com.ftn.mailClient.model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 
 @Entity
 public class User extends Identifiable{
@@ -17,6 +18,7 @@ public class User extends Identifiable{
         this.lastName = lastName;
     }
 
+    @Ignore
     public User() {
     }
 

@@ -1,5 +1,7 @@
 package com.ftn.mailClient.model;
 
+import androidx.room.Ignore;
+
 import java.io.Serializable;
 
 public class FolderMetadata implements Serializable {
@@ -8,6 +10,11 @@ public class FolderMetadata implements Serializable {
     private Integer numberOfFolders;
     private Integer numberOfMessages;
 
+    @Ignore
+    public FolderMetadata(){
+
+    }
+
     public FolderMetadata(Long id, String name, Integer numberOfFolders, Integer numberOfMessages) {
         this.id = id;
         this.name = name;
@@ -15,6 +22,7 @@ public class FolderMetadata implements Serializable {
         this.numberOfMessages = numberOfMessages;
     }
 
+    @Ignore
     public FolderMetadata(Folder folder){
         this.id = folder.getId();
         this.name = folder.getName();

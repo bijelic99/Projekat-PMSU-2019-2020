@@ -8,7 +8,7 @@ import com.ftn.mailClient.R;
 import com.ftn.mailClient.dao.*;
 import com.ftn.mailClient.model.*;
 
-@Database(entities = {Account.class, Attachment.class, Contact.class, Folder.class, Message.class, Photo.class, Rule.class, Tag.class, User.class}, version = 1)
+@Database(entities = {Account.class, Attachment.class, Contact.class, Folder.class, Message.class, Photo.class, Rule.class, Tag.class, User.class}, version = 1, exportSchema = false)
 public abstract class LocalDatabase extends RoomDatabase {
     private static LocalDatabase instance;
 

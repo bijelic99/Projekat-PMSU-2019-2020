@@ -1,6 +1,8 @@
 package com.ftn.mailClient.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.TypeConverters;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -12,8 +14,10 @@ import java.util.List;
 @Entity
 public class Message extends Identifiable {
     private Long account;
+    @ColumnInfo(name = "_from")
     @TypeConverters(ContactTypeConverter.class)
     private Contact from;
+    @ColumnInfo(name = "_to")
     @TypeConverters(ContactListTypeConverter.class)
     private List<Contact> to;
     @TypeConverters(ContactListTypeConverter.class)
@@ -31,6 +35,7 @@ public class Message extends Identifiable {
     private List<Tag> tags;
     private Boolean unread;
 
+    @Ignore
     public Message(){
         this(null, null, null, null, null, null, null, null, null, true);
     }
@@ -48,6 +53,7 @@ public class Message extends Identifiable {
         this.unread = unread;
     }
 
+    @Ignore
     public Message(Long account, Contact from, List<Contact> to, List<Contact> cc, List<Contact> bcc, LocalDateTime dateTime, String subject, String content) {
         super(null);
         this.account = account;

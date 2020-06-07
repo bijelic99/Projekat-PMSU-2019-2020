@@ -18,6 +18,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,17 +50,20 @@ public class FoldersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_folders);
 
+
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawer = findViewById(R.id.folders_activity);
+
+
         accountViewModel =new ViewModelProvider(this).get(AccountViewModel.class);
         SharedPreferences sharedPreferences = this.getSharedPreferences(getString(R.string.user_details_file_key), MODE_PRIVATE);
         if(sharedPreferences.contains(getString(R.string.user_account_id))){
             Long currentAccountId = sharedPreferences.getLong(getString(R.string.user_account_id), -99);
             accountViewModel.setAccount(currentAccountId);
         }
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        drawer = findViewById(R.id.folders_activity);
 
         Context context = this;
         NavigationView navigationView = findViewById(R.id.navigation_view);
@@ -82,11 +87,21 @@ public class FoldersActivity extends AppCompatActivity {
 
         FoldersListRecyclerViewAdapter adapter = new FoldersListRecyclerViewAdapter(context, new ArrayList<>());
         recyclerView.setAdapter(adapter);
+        try {
+            accountViewModel.getAccountFolders().observe(this, folderMetadata -> {
+                try {
+                    if (folderMetadata != null) adapter.setFolders(folderMetadata);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
 
-        accountViewModel.getAccountFolders().observe(this, folderMetadata -> {
-            if(folderMetadata != null)  adapter.setFolders(folderMetadata);
+            });
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
-        });
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.ftn.mailClient.model;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.TypeConverters;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,6 +26,7 @@ public class Contact extends Identifiable {
         this.photo = photo;
         this.format = format;
     }
+    @Ignore
     public Contact() {
         this(null, null, null, null, null, null, null);
     }

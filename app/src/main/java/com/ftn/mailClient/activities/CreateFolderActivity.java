@@ -15,11 +15,13 @@ import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.folderActivity.FolderActivity;
 import com.ftn.mailClient.activities.foldersActivity.FoldersActivity;
 import com.ftn.mailClient.model.Folder;
+import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.retrofit.FolderApi;
 import com.ftn.mailClient.retrofit.RetrofitClient;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import retrofit2.Call;
@@ -57,7 +59,7 @@ public class CreateFolderActivity extends AppCompatActivity {
     public void clickHandler(View v) {
 
         folderName = mFolderName.getText().toString();
-        Folder newFolder = new Folder(null, folderName, folder != null ? folder.getId() : null, new HashSet<Long>(), new HashSet<Message>());
+        Folder newFolder = new Folder(null, folderName, folder != null ? new FolderMetadata(folder) : null, new ArrayList<>(), new ArrayList<>());
 
         FolderApi folderApi = RetrofitClient.getApi(FolderApi.class);
         Context currentContext = this;

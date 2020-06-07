@@ -2,6 +2,7 @@ package com.ftn.mailClient.model;
 
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.TypeConverters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
@@ -9,7 +10,9 @@ import com.ftn.mailClient.utill.converters.FolderListTypeConverter;
 import com.ftn.mailClient.utill.converters.FolderTypeConverter;
 import com.ftn.mailClient.utill.converters.IncomingMailProtocolTypeConverter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,13 +24,14 @@ public class Account extends Identifiable {
     private String username;
     private String password;
     @TypeConverters(FolderListTypeConverter.class)
-    private Set<FolderMetadata> accountFolders;
+    private List<FolderMetadata> accountFolders;
 
+    @Ignore
     public  Account(){
-        this(null,null,null,null,null,null, new HashSet<>());
+        this(null,null,null,null,null,null, new ArrayList<>());
     }
 
-    public Account(Long id, String smtpAddress, IncomingMailProtocol incomingMailProtocol, String incomingMailAddress, String username, String password, Set<FolderMetadata> accountFolders) {
+    public Account(Long id, String smtpAddress, IncomingMailProtocol incomingMailProtocol, String incomingMailAddress, String username, String password, List<FolderMetadata> accountFolders) {
         super(id);
         this.smtpAddress = smtpAddress;
         this.incomingMailProtocol = incomingMailProtocol;
@@ -82,11 +86,11 @@ public class Account extends Identifiable {
         this.password = password;
     }
 
-    public Set<FolderMetadata> getAccountFolders() {
+    public List<FolderMetadata> getAccountFolders() {
         return accountFolders;
     }
 
-    public void setAccountFolders(Set<FolderMetadata> accountFolders) {
+    public void setAccountFolders(List<FolderMetadata> accountFolders) {
         this.accountFolders = accountFolders;
     }
 }

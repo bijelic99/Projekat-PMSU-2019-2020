@@ -1,11 +1,13 @@
 package com.ftn.mailClient.dao;
 
 import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
 import androidx.room.Query;
 import com.ftn.mailClient.model.Message;
 
 import java.util.List;
 
+@Dao
 public interface MessageDao extends DaoInterface<Message> {
     @Query("SELECT * FROM MESSAGE WHERE ID IN(:ids)")
     public LiveData<List<Message>> getMessages(List<Long> ids);

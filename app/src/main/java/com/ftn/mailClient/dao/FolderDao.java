@@ -1,11 +1,13 @@
 package com.ftn.mailClient.dao;
 
 import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
 import androidx.room.Query;
 import com.ftn.mailClient.model.Folder;
 
 import java.util.List;
 
+@Dao
 public interface FolderDao extends DaoInterface<Folder> {
     @Query("SELECT * FROM FOLDER ORDER BY ID DESC")
     LiveData<List<Folder>> getAllFolders();

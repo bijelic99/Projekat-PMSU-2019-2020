@@ -95,7 +95,7 @@ public class FoldersListRecyclerViewAdapter extends RecyclerView.Adapter<Folders
                 }
             });
             name.setText(folder.getName());
-            noOfMessages.setText(folder.getNumberOfMessages());
+            noOfMessages.setText(folder.getNumberOfMessages().toString());
 
         }
     }

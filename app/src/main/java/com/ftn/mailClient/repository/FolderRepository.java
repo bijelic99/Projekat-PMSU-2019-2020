@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import com.ftn.mailClient.dao.FolderDao;
 import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Folder;
@@ -57,14 +58,17 @@ public class FolderRepository extends Repository<Folder, FolderDao> {
         if(folderLiveData.getValue() == null) fetchFolder(id);
         MutableLiveData<Folder> folderMutableLiveData = new MutableLiveData<>(null);
 
-        folderLiveData.observe((LifecycleOwner) application.getBaseContext(), folder -> {
-            Set<Message> messages = new HashSet<>(Objects.requireNonNull(database.messageDao().getMessages(
-                    folder.getMessages().stream()
-                            .map(value -> value.getId())
-                            .collect(Collectors.toList())
-            ).getValue()));
-            folder.setMessages(messages);
-            folderMutableLiveData.setValue(folder);
+        folderLiveData.observeForever(new Observer<Folder>() {
+            @Override
+            public void onChanged(Folder folder) {
+                Set<Message> messages = new HashSet<>(Objects.requireNonNull(database.messageDao().getMessages(
+                        folder.getMessages().stream()
+                                .map(value -> value.getId())
+                                .collect(Collectors.toList())
+                ).getValue()));
+                folder.setMessages(messages.stream().collect(Collectors.toList()));
+                folderMutableLiveData.postValue(folder);
+            }
         });
 
 

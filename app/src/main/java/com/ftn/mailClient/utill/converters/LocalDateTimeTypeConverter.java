@@ -10,13 +10,13 @@ import java.time.ZoneOffset;
 public class LocalDateTimeTypeConverter {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @TypeConverter
-    public static LocalDateTime fromTimestamp(Long timeStamp){
+    public LocalDateTime fromTimestamp(Long timeStamp){
         return timeStamp != null ? LocalDateTime.ofEpochSecond(timeStamp, 0, ZoneOffset.UTC) : null;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @TypeConverter
-    public static Long toTimestamp(LocalDateTime dateTime){
+    public Long toTimestamp(LocalDateTime dateTime){
         return dateTime != null ?   dateTime.toEpochSecond(ZoneOffset.UTC): null;
     }
 }
