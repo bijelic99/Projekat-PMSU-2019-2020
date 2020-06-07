@@ -13,10 +13,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public interface MessageListTypeConverter {
+public class MessageListTypeConverter {
     @TypeConverter
     @RequiresApi(api = Build.VERSION_CODES.N)
-    static Set<Message> fromJsonString(String s){
+    public static Set<Message> fromJsonString(String s){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             Long[] ids = objectMapper.readValue(s, Long[].class);
@@ -35,7 +35,7 @@ public interface MessageListTypeConverter {
     }
     @TypeConverter
     @RequiresApi(api = Build.VERSION_CODES.N)
-    static String toJsonString(Set<Message> messages){
+    public static String toJsonString(Set<Message> messages){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(messages.stream().mapToLong(value -> value.getId()).toArray());

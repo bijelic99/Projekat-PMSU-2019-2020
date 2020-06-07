@@ -5,16 +5,16 @@ import com.ftn.mailClient.model.Photo;
 import org.jetbrains.annotations.NotNull;
 
 
-public interface PhotoTypeConverter {
+public class PhotoTypeConverter {
     @TypeConverter
-    static Photo fromLong(Long id){
+    public static Photo fromLong(Long id){
         Photo p = new Photo();
         p.setId(id);
         return p;
     }
 
     @TypeConverter
-    static Long toLong(Photo photo){
+    public static Long toLong(Photo photo){
         return photo != null ? photo.getId() : null;
     }
 }

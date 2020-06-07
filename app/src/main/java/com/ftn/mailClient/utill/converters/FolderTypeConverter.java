@@ -8,9 +8,9 @@ import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Photo;
 
-public interface FolderTypeConverter {
+public class FolderTypeConverter {
     @TypeConverter
-    static FolderMetadata fromString(String json){
+    public static FolderMetadata fromString(String json){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.readValue(json, FolderMetadata.class);
@@ -21,7 +21,7 @@ public interface FolderTypeConverter {
     }
 
     @TypeConverter
-    static String toString(FolderMetadata folder){
+    public static String toString(FolderMetadata folder){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(folder);

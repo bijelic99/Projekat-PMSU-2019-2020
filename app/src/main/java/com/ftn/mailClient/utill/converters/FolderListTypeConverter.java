@@ -13,10 +13,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public interface FolderListTypeConverter {
+public class FolderListTypeConverter {
     @TypeConverter
     @RequiresApi(api = Build.VERSION_CODES.N)
-    static Set<FolderMetadata> fromJsonString(String s){
+    public static Set<FolderMetadata> fromJsonString(String s){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
 
@@ -31,7 +31,7 @@ public interface FolderListTypeConverter {
     }
     @TypeConverter
     @RequiresApi(api = Build.VERSION_CODES.N)
-    static String toJsonString(Set<FolderMetadata> folders){
+    public static String toJsonString(Set<FolderMetadata> folders){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(folders);

@@ -13,10 +13,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public interface TagListTypeConverter {
+public class TagListTypeConverter {
     @TypeConverter
     @RequiresApi(api = Build.VERSION_CODES.N)
-    static Set<Tag> fromJsonString(String s){
+    public static Set<Tag> fromJsonString(String s){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             Long[] ids = objectMapper.readValue(s, Long[].class);
@@ -35,7 +35,7 @@ public interface TagListTypeConverter {
     }
     @TypeConverter
     @RequiresApi(api = Build.VERSION_CODES.N)
-    static String toJsonString(Set<Tag> tags){
+    public static String toJsonString(Set<Tag> tags){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(tags.stream().mapToLong(value -> value.getId()).toArray());

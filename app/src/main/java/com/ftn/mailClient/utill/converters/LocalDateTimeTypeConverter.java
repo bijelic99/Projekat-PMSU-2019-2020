@@ -7,16 +7,16 @@ import androidx.room.TypeConverter;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-public interface LocalDateTimeTypeConverter {
+public class LocalDateTimeTypeConverter {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @TypeConverter
-    static LocalDateTime fromTimestamp(Long timeStamp){
+    public static LocalDateTime fromTimestamp(Long timeStamp){
         return timeStamp != null ? LocalDateTime.ofEpochSecond(timeStamp, 0, ZoneOffset.UTC) : null;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @TypeConverter
-    static Long toTimestamp(LocalDateTime dateTime){
+    public static Long toTimestamp(LocalDateTime dateTime){
         return dateTime != null ?   dateTime.toEpochSecond(ZoneOffset.UTC): null;
     }
 }

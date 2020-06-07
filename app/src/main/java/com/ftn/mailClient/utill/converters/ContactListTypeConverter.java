@@ -8,15 +8,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ftn.mailClient.model.Contact;
 import com.ftn.mailClient.model.Message;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ContactListTypeConverter {
     @TypeConverter
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static Set<Contact> fromJsonString(String s){
+    public static List<Contact> fromJsonString(String s){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             Long[] ids = objectMapper.readValue(s, Long[].class);
@@ -25,11 +23,11 @@ public class ContactListTypeConverter {
                 Contact contact = new Contact();
                 contact.setId(aLong);
                 return contact;
-            }).collect(Collectors.toSet());
+            }).collect(Collectors.toList());
         }
         catch (Exception e ){
             Log.e("ConverterError", e.getMessage());
-            return new HashSet<>();
+            return new ArrayList<>();
         }
 
     }

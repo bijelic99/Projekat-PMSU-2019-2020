@@ -3,16 +3,16 @@ package com.ftn.mailClient.utill.converters;
 import androidx.room.TypeConverter;
 import com.ftn.mailClient.model.Contact;
 
-public interface ContactTypeConverter {
+public class ContactTypeConverter {
     @TypeConverter
-    static Contact fromLong(Long id){
+    public static Contact fromLong(Long id){
         Contact contact = new Contact();
         contact.setId(id);
         return contact;
     }
 
     @TypeConverter
-    static Long toLong(Contact contact){
+    public static Long toLong(Contact contact){
         return contact != null ? contact.getId() : null;
     }
 }

@@ -4,14 +4,14 @@ import androidx.room.TypeConverter;
 import com.ftn.mailClient.model.IncomingMailProtocol;
 import org.jetbrains.annotations.NotNull;
 
-public interface IncomingMailProtocolTypeConverter {
+public class IncomingMailProtocolTypeConverter {
     @TypeConverter
-    static IncomingMailProtocol fromString(String value){
+    public static IncomingMailProtocol fromString(String value){
         return IncomingMailProtocol.valueOf(value);
     }
 
     @TypeConverter
-    static String toString(IncomingMailProtocol value){
+    public static String toString(IncomingMailProtocol value){
         return value != null ? value.toString() : null;
     }
 }
