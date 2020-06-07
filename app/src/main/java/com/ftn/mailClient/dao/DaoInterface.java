@@ -1,13 +1,17 @@
 package com.ftn.mailClient.dao;
 
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Update;
+import androidx.room.*;
 import com.ftn.mailClient.model.Identifiable;
 
+import java.util.List;
+
 public interface DaoInterface<T extends Identifiable> {
-    @Insert
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(T value);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(List<T> values);
 
     @Update
     void update(T value);

@@ -1,5 +1,6 @@
 package com.ftn.mailClient.activities.foldersActivity;
 
+import android.content.SharedPreferences;
 import android.hardware.camera2.CameraCharacteristics;
 import android.util.Log;
 import androidx.annotation.NonNull;
@@ -17,26 +18,42 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.CreateFolderActivity;
+import com.ftn.mailClient.adapters.FoldersListRecyclerViewAdapter;
 import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.navigationRouter.NavigationRouter;
 import com.ftn.mailClient.retrofit.AccountApi;
 import com.ftn.mailClient.retrofit.RetrofitClient;
+import com.ftn.mailClient.viewModel.AccountViewModel;
 import com.google.android.material.navigation.NavigationView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public class FoldersActivity extends AppCompatActivity {
     private DrawerLayout drawer;
+    private AccountViewModel accountViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_folders);
+
+        accountViewModel =new ViewModelProvider(this).get(AccountViewModel.class);
+        SharedPreferences sharedPreferences = this.getSharedPreferences(getString(R.string.user_details_file_key), MODE_PRIVATE);
+        if(sharedPreferences.contains(getString(R.string.user_account_id))){
+            Long currentAccountId = sharedPreferences.getLong(getString(R.string.user_account_id), -99);
+            accountViewModel.setAccount(currentAccountId);
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,7 +76,17 @@ public class FoldersActivity extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
 
+        FoldersListRecyclerViewAdapter adapter = new FoldersListRecyclerViewAdapter(context, new ArrayList<>());
+        recyclerView.setAdapter(adapter);
+
+        accountViewModel.getAccountFolders().observe(this, folderMetadata -> {
+            if(folderMetadata != null)  adapter.setFolders(folderMetadata);
+
+        });
     }
 
     @Override

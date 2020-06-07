@@ -7,7 +7,6 @@
     tools:context=".activities.foldersActivity.FoldersActivity"
     android:fitsSystemWindows="true"
     android:id="@+id/folders_activity"
-
     >
 
     <LinearLayout
@@ -25,13 +24,18 @@
             android:title="@string/app_name"
             android:navigationIcon="@drawable/ic_menu_white_24dp"
             />
-    <fragment
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.ftn.mailClient.activities.foldersActivity.fragments.FolderListFragment"
-        android:id="@+id/folders_list"
-        tools:layout="@layout/fragment_folder_list"
+        android:id="@+id/swipe_refresh_layout">
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/recycler_view"
+                tools:listitem="@layout/fragment_folder"
+                android:layout_marginHorizontal="@dimen/rec_view_horizontal_margin"
         />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 

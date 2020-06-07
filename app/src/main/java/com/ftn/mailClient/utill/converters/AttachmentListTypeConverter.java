@@ -13,10 +13,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public interface AttachmentListTypeConverter {
+public class AttachmentListTypeConverter {
     @TypeConverter
     @RequiresApi(api = Build.VERSION_CODES.N)
-    static Set<Attachment> fromJsonString(String s){
+    public static Set<Attachment> fromJsonString(String s){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             Long[] ids = objectMapper.readValue(s, Long[].class);
@@ -35,7 +35,7 @@ public interface AttachmentListTypeConverter {
     }
     @TypeConverter
     @RequiresApi(api = Build.VERSION_CODES.N)
-    static String toJsonString(Set<Attachment> attachments){
+    public static String toJsonString(Set<Attachment> attachments){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(attachments.stream().mapToLong(value -> value.getId()).toArray());

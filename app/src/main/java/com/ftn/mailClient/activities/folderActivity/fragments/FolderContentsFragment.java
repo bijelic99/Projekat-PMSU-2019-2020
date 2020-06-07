@@ -48,7 +48,7 @@ public class FolderContentsFragment extends Fragment {
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void setFolder(Folder folder) {
+    public void setFolder(Folder folder) {/*
         this.folder = folder;
         List<Object> folderContents = new ArrayList<>(folder.getMessages());
 
@@ -71,7 +71,7 @@ public class FolderContentsFragment extends Fragment {
         recyclerView.setAdapter(folderContentRecyclerViewAdapter);
 
         IntentFilter intentFilter = new IntentFilter(folder.getId()+"_folderSync");
-        getContext().registerReceiver(contentReceiver, intentFilter);
+        getContext().registerReceiver(contentReceiver, intentFilter);*/
     }
 
     @Override
@@ -114,7 +114,7 @@ public class FolderContentsFragment extends Fragment {
     BroadcastReceiver contentReceiver = new BroadcastReceiver() {
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, Intent intent) {/*
             List<Message> messages = (List<Message>) intent.getExtras().getSerializable("messages");
             List<Folder> folders = (List<Folder>) intent.getExtras().getSerializable("folders");
 
@@ -127,7 +127,7 @@ public class FolderContentsFragment extends Fragment {
                 Collections.sort(folderContentRecyclerViewAdapter.getContents(), FolderContentsComparatorInterface::folderContentsComparator);
                 folderContentRecyclerViewAdapter.notifyDataSetChanged();
             }
-            if(swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
+            if(swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);*/
         }
     };
 

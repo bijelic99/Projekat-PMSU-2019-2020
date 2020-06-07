@@ -18,14 +18,10 @@ import java.util.Set;
 @Entity
 public class Folder extends Identifiable {
     private String name;
-    @JsonDeserialize(using = ParentFolderDeserializer.class)
-    @JsonSerialize(using = ParentFolderSerializer.class)
     @TypeConverters(FolderTypeConverter.class)
-    private Folder parentFolder;
-    @JsonDeserialize(using = InnerFoldersDeserializer.class)
-    @JsonSerialize(using = InnerFoldersSerializer.class)
+    private FolderMetadata parentFolder;
     @TypeConverters(FolderListTypeConverter.class)
-    private Set<Folder> folders;
+    private Set<FolderMetadata> folders;
     @TypeConverters(MessageListTypeConverter.class)
     private Set<Message> messages;
 
@@ -33,7 +29,7 @@ public class Folder extends Identifiable {
         this(null, null, null, new HashSet<>(), null);
     }
 
-    public Folder(Long id, String name, Folder parentFolder, Set<Folder> folders, Set<Message> messages) {
+    public Folder(Long id, String name, FolderMetadata parentFolder, Set<FolderMetadata> folders, Set<Message> messages) {
         super(id);
         this.name = name;
         this.parentFolder = parentFolder;
@@ -50,20 +46,20 @@ public class Folder extends Identifiable {
     }
 
 
-    public Folder getParentFolder() {
+    public FolderMetadata getParentFolder() {
         return parentFolder;
     }
 
-    public void setParentFolder(Folder parentFolder) {
+    public void setParentFolder(FolderMetadata parentFolder) {
         this.parentFolder = parentFolder;
     }
 
 
-    public Set<Folder> getFolders() {
+    public Set<FolderMetadata> getFolders() {
         return folders;
     }
 
-    public void setFolders(Set<Folder> folders) {
+    public void setFolders(Set<FolderMetadata> folders) {
         this.folders = folders;
     }
 

@@ -13,10 +13,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public interface ContactListTypeConverter {
+public class ContactListTypeConverter {
     @TypeConverter
     @RequiresApi(api = Build.VERSION_CODES.N)
-    static Set<Contact> fromJsonString(String s){
+    public static Set<Contact> fromJsonString(String s){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             Long[] ids = objectMapper.readValue(s, Long[].class);
@@ -35,7 +35,7 @@ public interface ContactListTypeConverter {
     }
     @TypeConverter
     @RequiresApi(api = Build.VERSION_CODES.N)
-    static String toJsonString(Set<Contact> contacts){
+    public static String toJsonString(Set<Contact> contacts){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(contacts.stream().mapToLong(value -> value.getId()).toArray());
