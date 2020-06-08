@@ -18,12 +18,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LifecycleRegistry;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.*;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.CreateFolderActivity;
 import com.ftn.mailClient.adapters.FoldersListRecyclerViewAdapter;
@@ -31,6 +29,7 @@ import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.navigationRouter.NavigationRouter;
 import com.ftn.mailClient.retrofit.AccountApi;
 import com.ftn.mailClient.retrofit.RetrofitClient;
+import com.ftn.mailClient.utill.enums.FetchStatus;
 import com.ftn.mailClient.viewModel.AccountViewModel;
 import com.google.android.material.navigation.NavigationView;
 import retrofit2.Call;
@@ -102,6 +101,20 @@ public class FoldersActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            LiveData<FetchStatus> statusLiveData = accountViewModel.syncAccountFolders();
+            statusLiveData.observe(this, new Observer<FetchStatus>() {
+                @Override
+                public void onChanged(FetchStatus fetchStatus) {
+                    if(fetchStatus.equals(FetchStatus.ERROR)) Toast.makeText(getApplicationContext(), R.string.refreshError, Toast.LENGTH_SHORT).show();
+                    if(fetchStatus.equals(FetchStatus.DONE) || fetchStatus.equals(FetchStatus.ERROR)){
+                        swipeRefreshLayout.setRefreshing(false);
+                        statusLiveData.removeObserver(this);
+                    }
+                }
+            });
+        });
     }
 
     @Override

@@ -13,6 +13,7 @@ import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.retrofit.FolderApi;
 import com.ftn.mailClient.retrofit.RetrofitClient;
 import com.ftn.mailClient.utill.FolderSyncWrapper;
+import com.ftn.mailClient.utill.OnPostExecuteFunctionFunctionalInterface;
 import retrofit2.Response;
 
 import java.io.IOException;
@@ -40,7 +41,7 @@ public class FolderAsyncTasks {
                     Response<Folder> response = folderApi.getFolder(longs[0]).execute();
                     if (response.isSuccessful()) {
                         folder = response.body();
-                        localDatabase.messageDao().insertAll(folder.getMessages().stream().collect(Collectors.toList()));
+                        localDatabase.messageDao().insertAll(folder.getMessages());
                         folderDao.insert(folder);
                         return folder;
                     } else return null;
@@ -54,16 +55,23 @@ public class FolderAsyncTasks {
         }
     }
 
-    public static class FolderSyncAsyncTask extends AsyncTask<Long, Void, Folder>{
+    public static class FolderSyncAsyncTask extends AsyncTask<Long, Void, Boolean>{
         private LocalDatabase localDatabase;
+        private OnPostExecuteFunctionFunctionalInterface onPostExecuteFunctionFunctionalInterface;
+
+        public FolderSyncAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface){
+            this.localDatabase = localDatabase;
+            this.onPostExecuteFunctionFunctionalInterface = onPostExecuteFunctionFunctionalInterface;
+        }
 
         public FolderSyncAsyncTask(LocalDatabase localDatabase){
             this.localDatabase = localDatabase;
+            this.onPostExecuteFunctionFunctionalInterface = null;
         }
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
-        protected Folder doInBackground(Long... longs) {
+        protected Boolean doInBackground(Long... longs) {
             FolderDao folderDao = localDatabase.folderDao();
             MessageDao messageDao = localDatabase.messageDao();
 
@@ -89,15 +97,21 @@ public class FolderAsyncTasks {
                             .collect(Collectors.toList());
                     folder.getFolders().addAll(folderMetadataList);
                     folderDao.update(folder);
-                    return folder;
+                    return true;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                return null;
+                return false;
             }
 
 
-            return null;
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if(onPostExecuteFunctionFunctionalInterface != null) onPostExecuteFunctionFunctionalInterface.postExecuteFunction(aBoolean);
         }
     }
 }

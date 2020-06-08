@@ -9,6 +9,7 @@ import com.ftn.mailClient.model.Account;
 import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.repository.asyncTasks.AccountAsyncTasks;
 import com.ftn.mailClient.utill.AccountFoldersWrapper;
+import com.ftn.mailClient.utill.enums.FetchStatus;
 
 import java.util.List;
 
@@ -68,5 +69,15 @@ public class AccountRepository extends Repository<Account, AccountDao> {
 
 
         return (LiveData<List<FolderMetadata>>) listLiveData;
+    }
+
+    public LiveData<FetchStatus> syncAccountFolders(Long accountId){
+        MutableLiveData<FetchStatus> fetchStatus = new MutableLiveData<>(FetchStatus.FETCHING);
+        new AccountAsyncTasks.FetchAccountFoldersAsyncTask(database,
+                isSuccess -> {
+                    if(isSuccess) fetchStatus.setValue(FetchStatus.DONE);
+                    else fetchStatus.setValue(FetchStatus.ERROR);
+                }).execute(accountId);
+        return fetchStatus;
     }
 }

@@ -72,4 +72,5 @@
     <string name="user_details_file_key">user_details</string>
     <string name="user_account_id">user_account_id</string>
     <string name="user_id">user_id</string>
+    <string name="refreshError">There was an error when trying to refresh</string>
 </resources>

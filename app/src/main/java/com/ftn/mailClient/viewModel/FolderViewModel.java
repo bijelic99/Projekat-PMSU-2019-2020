@@ -12,6 +12,7 @@ import com.ftn.mailClient.repository.FolderRepository;
 public class FolderViewModel extends AndroidViewModel {
     private FolderRepository folderRepository;
     private LiveData<Folder> folder;
+    private Long folderId;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public FolderViewModel(@NonNull Application application) {

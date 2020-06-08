@@ -25,4 +25,6 @@ public abstract class Repository<T extends Identifiable, D extends DaoInterface>
     public abstract LiveData<List<T>> getAll();
     public abstract LiveData<T> getById(Long id);
     public abstract LiveData<List<T>> getByIdList(List<Long> ids);
+
+
 }

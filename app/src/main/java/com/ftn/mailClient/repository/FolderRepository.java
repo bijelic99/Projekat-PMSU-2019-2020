@@ -12,6 +12,7 @@ import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.repository.asyncTasks.FolderAsyncTasks;
+import com.ftn.mailClient.utill.enums.FetchStatus;
 
 import java.util.HashSet;
 import java.util.List;
@@ -56,23 +57,9 @@ public class FolderRepository extends Repository<Folder, FolderDao> {
     public LiveData<Folder> getById(Long id) {
         LiveData<Folder> folderLiveData = dao.getLiveDataFolderById(id);
         if(folderLiveData.getValue() == null) fetchFolder(id);
-        MutableLiveData<Folder> folderMutableLiveData = new MutableLiveData<>(null);
-
-        folderLiveData.observeForever(new Observer<Folder>() {
-            @Override
-            public void onChanged(Folder folder) {
-                Set<Message> messages = new HashSet<>(Objects.requireNonNull(database.messageDao().getMessages(
-                        folder.getMessages().stream()
-                                .map(value -> value.getId())
-                                .collect(Collectors.toList())
-                ).getValue()));
-                folder.setMessages(messages.stream().collect(Collectors.toList()));
-                folderMutableLiveData.postValue(folder);
-            }
-        });
 
 
-        return (LiveData<Folder>)folderMutableLiveData;
+        return folderLiveData;
     }
 
     @Override
@@ -84,7 +71,12 @@ public class FolderRepository extends Repository<Folder, FolderDao> {
         new FolderAsyncTasks.FolderFetchAsyncTask(database).execute(folderId);
     }
 
-    public void syncFolder(Long folderId){
-        new FolderAsyncTasks.FolderSyncAsyncTask(database).execute(folderId);
+    public LiveData<FetchStatus> syncFolder(Long folderId){
+        MutableLiveData<FetchStatus> fetchStatus = new MutableLiveData<>(FetchStatus.FETCHING);
+        new FolderAsyncTasks.FolderSyncAsyncTask(database, value -> {
+            if(value) fetchStatus.setValue(FetchStatus.DONE);
+            else fetchStatus.setValue(FetchStatus.ERROR);
+        }).execute(folderId);
+        return fetchStatus;
     }
 }

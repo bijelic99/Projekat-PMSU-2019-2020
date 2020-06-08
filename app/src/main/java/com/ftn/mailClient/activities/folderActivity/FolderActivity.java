@@ -30,6 +30,7 @@ public class FolderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_folder);
+        /*
         Intent intent = getIntent();
         if(intent != null && intent.getSerializableExtra("folder") != null){
             folder = (Folder) intent.getSerializableExtra("folder");
@@ -45,7 +46,7 @@ public class FolderActivity extends AppCompatActivity {
 
             IntentFilter intentFilter = new IntentFilter(folder.getId()+"_folderSync");
             this.registerReceiver(broadcastReceiver, intentFilter);
-        }
+        }*/
     }
 
     @Override
