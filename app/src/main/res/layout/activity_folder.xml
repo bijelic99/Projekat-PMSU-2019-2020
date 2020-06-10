@@ -60,6 +60,7 @@
                     android:layout_height="match_parent"
                     tools:listitem="@layout/fragment_email"
                     android:id="@+id/recycler_view"
+                    android:paddingHorizontal="@dimen/folder_rec_view_padding"
             />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

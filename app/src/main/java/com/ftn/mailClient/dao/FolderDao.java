@@ -8,6 +8,7 @@ import androidx.room.Query;
 import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
+import com.ftn.mailClient.model.linkingClasses.FolderInnerFolders;
 import com.ftn.mailClient.model.linkingClasses.FolderMessage;
 
 import java.util.List;
@@ -43,5 +44,8 @@ public interface FolderDao extends DaoInterface<Folder> {
 
     @Query("Select f.id as id, f.name as name, count(fm.messageId) as numberOfMessages, count(fif.childFolderId) as numberOfFolders from Folder f left join foldermessage fm on f.id = fm.messageId left join folderinnerfolders fif on f.id = fif.parentFolderId where f.id = :id group by f.id")
     LiveData<FolderMetadata> getFolderMetadataById(Long id);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertFoldersToFolder(List<FolderInnerFolders> innerFolders);
 
 }

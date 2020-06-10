@@ -11,6 +11,7 @@ import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
+import com.ftn.mailClient.model.linkingClasses.FolderInnerFolders;
 import com.ftn.mailClient.model.linkingClasses.FolderMessage;
 import com.ftn.mailClient.retrofit.FolderApi;
 import com.ftn.mailClient.retrofit.RetrofitClient;
@@ -19,6 +20,8 @@ import com.ftn.mailClient.utill.OnPostExecuteFunctionFunctionalInterface;
 import retrofit2.Response;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -83,44 +86,47 @@ public class FolderAsyncTasks {
             FolderDao folderDao = localDatabase.folderDao();
             MessageDao messageDao = localDatabase.messageDao();
 
-            Folder folder = folderDao.getFolderById(longs[0]);
-            List<Message> messages = folderDao.getMessagesNonLive(folder.getId());
-            List<FolderMetadata> folders = folderDao.getFoldersNonLive(folder.getId());
+            Long folderId = longs[0];
+
+            Folder folder = folderDao.getFolderById(folderId);
+            List<Message> messageList = folderDao.getMessagesNonLive(folderId);
+            List<FolderMetadata> folderList = folderDao.getFoldersNonLive(folderId);
 
             Map<String, Object> syncData = new HashMap<>();
-            syncData.put("latestMessageTimestamp", messages.stream()
+            LocalDateTime localDateTime = messageList.stream()
                     .map(message -> message.getDateTime())
                     .max((o1, o2) -> o1.isAfter(o2) ? 1 : o1.isBefore(o2) ? -1 : 0)
-                    .orElse(null));
-            if(folders != null) {
-                syncData.put("folder_list", folders.stream()
-                        .map(folderMetadata -> folderMetadata.getId())
-                        .collect(Collectors.toList()));
-            }
-            else syncData.put("folder_list", new ArrayList<Long>());
+                    .orElse(null);
+
+            syncData.put("latestMessageTimestamp", localDateTime != null ? localDateTime.format(DateTimeFormatter.ISO_DATE_TIME) : null);
+            syncData.put("folder_list", folderList.stream()
+                    .map(folderMetadata -> folderMetadata.getId())
+                    .collect(Collectors.toList()));
 
             FolderApi folderApi = RetrofitClient.getApi(FolderApi.class);
             Response<FolderSyncWrapper> response = null;
             try {
-                response = folderApi.syncFolder(longs[0], syncData).execute();
+                response = folderApi.syncFolder(folderId, syncData).execute();
                 if(response.isSuccessful()){
-                    List<FolderMetadata> folderMetadataList = response.body().getFolders().stream()
+                    List<FolderMetadata> folders = response.body().getFolders().stream()
                             .map(folder1 -> new FolderMetadata(folder1))
                             .collect(Collectors.toList());
-                    List<Message> messages1 = response.body().getMessages();
-                    messageDao.insertAll(messages1);
+                    List<Message> messages = response.body().getMessages();
+                    messageDao.insertAll(messages);
+                    folderDao.insertMessagesToFolder(messages.stream().map(message -> new FolderMessage(folderId, message.getId())).collect(Collectors.toList()));
+                    folderDao.insertAll(folders.stream()
+                            .map(fd -> new Folder(fd.getId(), fd.getName(), new FolderMetadata(folder)))
+                            .collect(Collectors.toList()));
 
-                    folder.getFolders().addAll(folderMetadataList);
-                    folderDao.update(folder);
+                    folderDao.insertFoldersToFolder(folders.stream()
+                            .map(folderMetadata -> new FolderInnerFolders(folder.getId(), folderMetadata.getId()))
+                            .collect(Collectors.toList()));
+
                     return true;
                 }
-            } catch (Exception e) {
+            } catch (IOException e) {
                 e.printStackTrace();
-                Log.e("Its Me Mario", e.getMessage());
-                return false;
             }
-
-
             return false;
         }
 
