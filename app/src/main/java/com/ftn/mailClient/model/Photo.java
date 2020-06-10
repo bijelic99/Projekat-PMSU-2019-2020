@@ -1,21 +1,21 @@
 package com.ftn.mailClient.model;
 
 public class Photo extends Identifiable {
-    private String base64Photo;
+    private String path;
 
-    public Photo(Integer id, String base64Photo) {
+    public Photo(Long id, String path) {
         super(id);
-        this.base64Photo = base64Photo;
+        this.path = path;
     }
     public Photo() {
         super(null);
     }
 
-    public String getBase64Photo() {
-        return base64Photo;
+    public String getPath() {
+        return path;
     }
 
-    public void setBase64Photo(String base64Photo) {
-        this.base64Photo = base64Photo;
+    public void setPath(String path) {
+        this.path = path;
     }
 }

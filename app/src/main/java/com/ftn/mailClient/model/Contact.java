@@ -1,5 +1,8 @@
 package com.ftn.mailClient.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Contact extends Identifiable {
     private String firstName;
     private String lastName;
@@ -8,7 +11,7 @@ public class Contact extends Identifiable {
     private Photo photo;
     private String format;
 
-    public Contact(Integer id, String firstName, String lastName, String displayName, String email, Photo photo, String format) {
+    public Contact(Long id, String firstName, String lastName, String displayName, String email, Photo photo, String format) {
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -21,26 +24,27 @@ public class Contact extends Identifiable {
         this(null, null, null, null, null, null, null);
     }
 
+    @JsonProperty("first")
     public String getFirstName() {
         return firstName;
     }
-
+    @JsonGetter("first")
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
+    @JsonProperty("last")
     public String getLastName() {
         return lastName;
     }
-
+    @JsonGetter("last")
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
+    @JsonProperty("display")
     public String getDisplayName() {
         return displayName;
     }
-
+    @JsonGetter("display")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
