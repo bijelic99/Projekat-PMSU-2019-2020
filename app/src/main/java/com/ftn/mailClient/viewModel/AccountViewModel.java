@@ -1,7 +1,6 @@
 package com.ftn.mailClient.viewModel;
 
 import android.app.Application;
-import android.database.Observable;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;

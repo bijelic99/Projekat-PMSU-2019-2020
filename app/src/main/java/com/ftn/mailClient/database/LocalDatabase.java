@@ -7,8 +7,11 @@ import androidx.room.RoomDatabase;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.dao.*;
 import com.ftn.mailClient.model.*;
+import com.ftn.mailClient.model.linkingClasses.AccountFolder;
+import com.ftn.mailClient.model.linkingClasses.FolderInnerFolders;
+import com.ftn.mailClient.model.linkingClasses.FolderMessage;
 
-@Database(entities = {Account.class, Attachment.class, Contact.class, Folder.class, Message.class, Photo.class, Rule.class, Tag.class, User.class}, version = 1, exportSchema = false)
+@Database(entities = {Account.class, Attachment.class, Contact.class, Folder.class, Message.class, Photo.class, Rule.class, Tag.class, User.class, FolderMessage.class, FolderInnerFolders.class, AccountFolder.class}, version = 4, exportSchema = false)
 public abstract class LocalDatabase extends RoomDatabase {
     private static LocalDatabase instance;
 

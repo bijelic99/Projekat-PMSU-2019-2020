@@ -1,8 +1,6 @@
 package com.ftn.mailClient.activities.foldersActivity;
 
 import android.content.SharedPreferences;
-import android.hardware.camera2.CameraCharacteristics;
-import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,18 +24,14 @@ import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.CreateFolderActivity;
 import com.ftn.mailClient.adapters.FoldersListRecyclerViewAdapter;
 import com.ftn.mailClient.model.Folder;
+import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.navigationRouter.NavigationRouter;
-import com.ftn.mailClient.retrofit.AccountApi;
-import com.ftn.mailClient.retrofit.RetrofitClient;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 import com.ftn.mailClient.viewModel.AccountViewModel;
 import com.google.android.material.navigation.NavigationView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 public class FoldersActivity extends AppCompatActivity {
     private DrawerLayout drawer;
@@ -86,20 +80,11 @@ public class FoldersActivity extends AppCompatActivity {
 
         FoldersListRecyclerViewAdapter adapter = new FoldersListRecyclerViewAdapter(context, new ArrayList<>());
         recyclerView.setAdapter(adapter);
-        try {
-            accountViewModel.getAccountFolders().observe(this, folderMetadata -> {
-                try {
-                    if (folderMetadata != null) adapter.setFolders(folderMetadata);
-                }
-                catch (Exception e){
-                    e.printStackTrace();
-                }
 
-            });
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+        accountViewModel.getAccountFolders().observe(this, folders -> {
+            adapter.setFolders(folders);
+        });
+
 
         SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(() -> {

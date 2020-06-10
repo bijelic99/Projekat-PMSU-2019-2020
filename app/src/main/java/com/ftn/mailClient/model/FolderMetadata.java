@@ -1,5 +1,6 @@
 package com.ftn.mailClient.model;
 
+import androidx.room.Entity;
 import androidx.room.Ignore;
 
 import java.io.Serializable;

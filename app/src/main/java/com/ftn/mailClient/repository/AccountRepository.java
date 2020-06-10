@@ -1,14 +1,12 @@
 package com.ftn.mailClient.repository;
 
 import android.app.Application;
-import androidx.annotation.NonNull;
 import androidx.lifecycle.*;
 import com.ftn.mailClient.dao.AccountDao;
 import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Account;
 import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.repository.asyncTasks.AccountAsyncTasks;
-import com.ftn.mailClient.utill.AccountFoldersWrapper;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 
 import java.util.List;
@@ -58,17 +56,7 @@ public class AccountRepository extends Repository<Account, AccountDao> {
     }
 
     public LiveData<List<FolderMetadata>> getAccountFolders(Long id){
-        final LiveData<AccountFoldersWrapper> accountFoldersWrapperLiveData = dao.getLiveDataAccountFolders(id);
-        MutableLiveData<List<FolderMetadata>> listLiveData = new MutableLiveData<List<FolderMetadata>>(null);
-        accountFoldersWrapperLiveData.observeForever(new Observer<AccountFoldersWrapper>() {
-            @Override
-            public void onChanged(AccountFoldersWrapper accountFoldersWrapper) {
-                if(accountFoldersWrapper != null) listLiveData.postValue(accountFoldersWrapper.getFolders());
-            }
-        });
-
-
-        return (LiveData<List<FolderMetadata>>) listLiveData;
+        return dao.getAccountFolders(id);
     }
 
     public LiveData<FetchStatus> syncAccountFolders(Long accountId){

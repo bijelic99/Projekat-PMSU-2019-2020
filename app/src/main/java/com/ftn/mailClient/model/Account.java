@@ -23,7 +23,7 @@ public class Account extends Identifiable {
     private String incomingMailAddress;
     private String username;
     private String password;
-    @TypeConverters(FolderListTypeConverter.class)
+    @Ignore
     private List<FolderMetadata> accountFolders;
 
     @Ignore
@@ -31,6 +31,7 @@ public class Account extends Identifiable {
         this(null,null,null,null,null,null, new ArrayList<>());
     }
 
+    @Ignore
     public Account(Long id, String smtpAddress, IncomingMailProtocol incomingMailProtocol, String incomingMailAddress, String username, String password, List<FolderMetadata> accountFolders) {
         super(id);
         this.smtpAddress = smtpAddress;
@@ -39,6 +40,16 @@ public class Account extends Identifiable {
         this.username = username;
         this.password = password;
         this.accountFolders = accountFolders;
+    }
+
+    public Account(Long id, String smtpAddress, IncomingMailProtocol incomingMailProtocol, String incomingMailAddress, String username, String password){
+        super(id);
+        this.smtpAddress = smtpAddress;
+        this.incomingMailProtocol = incomingMailProtocol;
+        this.incomingMailAddress = incomingMailAddress;
+        this.username = username;
+        this.password = password;
+        this.accountFolders = new ArrayList<>();
     }
 
     @JsonProperty("smtp")

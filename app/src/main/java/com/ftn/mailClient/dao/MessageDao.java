@@ -17,4 +17,6 @@ public interface MessageDao extends DaoInterface<Message> {
 
     @Query("SELECT ID FROM MESSAGE WHERE ID IN(:ids)")
     public List<Long> getIdsInList(List<Long> ids);
+
+
 }

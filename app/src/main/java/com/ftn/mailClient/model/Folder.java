@@ -23,22 +23,31 @@ public class Folder extends Identifiable {
     private String name;
     @TypeConverters(FolderTypeConverter.class)
     private FolderMetadata parentFolder;
-    @TypeConverters(FolderListTypeConverter.class)
+    @Ignore
     private List<FolderMetadata> folders;
-    @TypeConverters(MessageListTypeConverter.class)
+    @Ignore
     private List<Message> messages;
 
     @Ignore
     public Folder() {
-        this(null, null, null, new ArrayList<>(), null);
+        this(null, null, null, new ArrayList<>(), new ArrayList<>());
     }
 
+    @Ignore
     public Folder(Long id, String name, FolderMetadata parentFolder, List<FolderMetadata> folders, List<Message> messages) {
         super(id);
         this.name = name;
         this.parentFolder = parentFolder;
         this.folders = folders;
         this.messages = messages;
+    }
+
+    public Folder(Long id, String name, FolderMetadata parentFolder) {
+        this();
+        this.id = id;
+        this.name = name;
+        this.parentFolder = parentFolder;
+
     }
 
     public String getName() {

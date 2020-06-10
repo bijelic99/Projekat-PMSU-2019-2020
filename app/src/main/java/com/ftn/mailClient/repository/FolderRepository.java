@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import com.ftn.mailClient.dao.FolderDao;
+import com.ftn.mailClient.dao.MessageDao;
 import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.Message;
@@ -23,12 +24,15 @@ import java.util.stream.Collectors;
 public class FolderRepository extends Repository<Folder, FolderDao> {
 
     private LiveData<List<Folder>> allFolders;
+    private MessageDao messageDao;
+
 
     public FolderRepository(Application application) {
         super(application);
         database = LocalDatabase.getInstance(application);
         dao = database.folderDao();
         allFolders = dao.getAllFolders();
+        messageDao = database.messageDao();
     }
 
     @Override
@@ -78,5 +82,9 @@ public class FolderRepository extends Repository<Folder, FolderDao> {
             else fetchStatus.setValue(FetchStatus.ERROR);
         }).execute(folderId);
         return fetchStatus;
+    }
+
+    public LiveData<List<Message>> getMessages(Long folderId){
+        return dao.getMessages(folderId);
     }
 }

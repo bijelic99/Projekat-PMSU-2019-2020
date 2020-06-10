@@ -10,6 +10,7 @@ import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
+import com.ftn.mailClient.model.linkingClasses.FolderMessage;
 import com.ftn.mailClient.retrofit.FolderApi;
 import com.ftn.mailClient.retrofit.RetrofitClient;
 import com.ftn.mailClient.utill.FolderSyncWrapper;
@@ -43,6 +44,10 @@ public class FolderAsyncTasks {
                         folder = response.body();
                         localDatabase.messageDao().insertAll(folder.getMessages());
                         folderDao.insert(folder);
+                        Folder finalFolder = folder;
+                        folderDao.insertMessagesToFolder(folder.getMessages().stream()
+                                .map(message -> new FolderMessage(finalFolder.getId(), message.getId()))
+                                .collect(Collectors.toList()));
                         return folder;
                     } else return null;
                 } catch (IOException e) {
@@ -76,7 +81,7 @@ public class FolderAsyncTasks {
             MessageDao messageDao = localDatabase.messageDao();
 
             Folder folder = folderDao.getFolderById(longs[0]);
-            List<Message> messages = messageDao.getCurrentMessages(folder.getMessages().stream().map(message -> message.getId()).collect(Collectors.toList()));
+            List<Message> messages = folderDao.getMessages(folder.getId()).getValue();
 
             Map<String, Object> syncData = new HashMap<>();
             syncData.put("latestMessageTimestamp", folder.getMessages().stream()
@@ -95,6 +100,9 @@ public class FolderAsyncTasks {
                     List<FolderMetadata> folderMetadataList = response.body().getFolders().stream()
                             .map(folder1 -> new FolderMetadata(folder1))
                             .collect(Collectors.toList());
+                    List<Message> messages1 = response.body().getMessages();
+                    messageDao.insertAll(messages1);
+
                     folder.getFolders().addAll(folderMetadataList);
                     folderDao.update(folder);
                     return true;
