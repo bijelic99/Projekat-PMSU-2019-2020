@@ -5,8 +5,7 @@ import androidx.room.Ignore;
 
 import java.io.Serializable;
 
-public class FolderMetadata implements Serializable {
-    private Long id;
+public class FolderMetadata extends Identifiable{
     private String name;
     private Integer numberOfFolders;
     private Integer numberOfMessages;
@@ -29,14 +28,6 @@ public class FolderMetadata implements Serializable {
         this.name = folder.getName();
         this.numberOfFolders = folder.getFolders().size();
         this.numberOfMessages = folder.getMessages().size();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

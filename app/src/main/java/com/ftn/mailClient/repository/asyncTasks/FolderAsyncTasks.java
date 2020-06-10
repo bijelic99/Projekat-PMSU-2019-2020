@@ -2,6 +2,7 @@ package com.ftn.mailClient.repository.asyncTasks;
 
 import android.os.AsyncTask;
 import android.os.Build;
+import android.util.Log;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import com.ftn.mailClient.dao.FolderDao;
@@ -18,6 +19,7 @@ import com.ftn.mailClient.utill.OnPostExecuteFunctionFunctionalInterface;
 import retrofit2.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +54,7 @@ public class FolderAsyncTasks {
                     } else return null;
                 } catch (IOException e) {
                     e.printStackTrace();
+
                     return null;
                 }
 
@@ -81,16 +84,20 @@ public class FolderAsyncTasks {
             MessageDao messageDao = localDatabase.messageDao();
 
             Folder folder = folderDao.getFolderById(longs[0]);
-            List<Message> messages = folderDao.getMessages(folder.getId()).getValue();
+            List<Message> messages = folderDao.getMessagesNonLive(folder.getId());
+            List<FolderMetadata> folders = folderDao.getFoldersNonLive(folder.getId());
 
             Map<String, Object> syncData = new HashMap<>();
-            syncData.put("latestMessageTimestamp", folder.getMessages().stream()
+            syncData.put("latestMessageTimestamp", messages.stream()
                     .map(message -> message.getDateTime())
                     .max((o1, o2) -> o1.isAfter(o2) ? 1 : o1.isBefore(o2) ? -1 : 0)
                     .orElse(null));
-            syncData.put("folder_list", folder.getFolders().stream()
-                    .map(folderMetadata -> folderMetadata.getId())
-                    .collect(Collectors.toSet()));
+            if(folders != null) {
+                syncData.put("folder_list", folders.stream()
+                        .map(folderMetadata -> folderMetadata.getId())
+                        .collect(Collectors.toList()));
+            }
+            else syncData.put("folder_list", new ArrayList<Long>());
 
             FolderApi folderApi = RetrofitClient.getApi(FolderApi.class);
             Response<FolderSyncWrapper> response = null;
@@ -107,8 +114,9 @@ public class FolderAsyncTasks {
                     folderDao.update(folder);
                     return true;
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
+                Log.e("Its Me Mario", e.getMessage());
                 return false;
             }
 

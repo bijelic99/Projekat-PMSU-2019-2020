@@ -26,11 +26,28 @@
         android:rowCount="2"
     >
         <LinearLayout
+            android:paddingVertical="@dimen/smallPadding"
             android:layout_width="match_parent"
-            android:layout_rowWeight="3"
-            android:orientation="horizontal"
+            android:orientation="vertical"
+            android:elevation="@dimen/standardElevation"
         >
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/folder_no_of_messages"
+                android:textSize="20sp"
+                android:id="@+id/folder_no_of_messages"
+            />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="@string/folder_no_of_files"
+                    android:textSize="20sp"
+                    android:id="@+id/folder_no_of_files"
+            />
 
         </LinearLayout>
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

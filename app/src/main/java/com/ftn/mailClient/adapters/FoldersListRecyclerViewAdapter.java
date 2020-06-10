@@ -88,9 +88,8 @@ public class FoldersListRecyclerViewAdapter extends RecyclerView.Adapter<Folders
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("aaa", "clckd");
                     Intent intent = new Intent(itemView.getContext(), FolderActivity.class);
-                    intent.putExtra("folder", getFolder());
+                    intent.putExtra("folderId", getFolder().getId());
                     itemView.getContext().startActivity(intent);
                 }
             });

@@ -11,6 +11,7 @@ import com.ftn.mailClient.dao.FolderDao;
 import com.ftn.mailClient.dao.MessageDao;
 import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Folder;
+import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.repository.asyncTasks.FolderAsyncTasks;
 import com.ftn.mailClient.utill.enums.FetchStatus;
@@ -66,9 +67,17 @@ public class FolderRepository extends Repository<Folder, FolderDao> {
         return folderLiveData;
     }
 
+    public LiveData<FolderMetadata> getMetadataFolderById(Long id){
+        return dao.getFolderMetadataById(id);
+    }
+
     @Override
     public LiveData<List<Folder>> getByIdList(List<Long> ids) {
         return null;
+    }
+
+    public LiveData<List<FolderMetadata>> getFolders(Long folderId){
+        return dao.getFolders(folderId);
     }
 
     public void fetchFolder(Long folderId){

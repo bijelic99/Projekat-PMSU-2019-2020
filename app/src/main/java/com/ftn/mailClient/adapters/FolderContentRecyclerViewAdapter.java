@@ -13,27 +13,34 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.model.*;
+import com.ftn.mailClient.utill.FolderContentsComparatorInterface;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FolderContentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<Object> contents;
+
+    private List<Identifiable> contents;
+
     Context context;
 
-    public List<Object> getContents() {
-        return contents;
+
+
+    public FolderContentRecyclerViewAdapter(Context context){
+        this.context = context;
+        contents = new ArrayList<>();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void setContents(List<Object> contents) {
-        this.contents = (new HashSet<Object>(contents)).stream().collect(Collectors.toList());
-    }
-
-    public FolderContentRecyclerViewAdapter(Context context, List<Object> contents){
-        this.context = context;
-        setContents(contents);
+    public void add(List<Identifiable> identifiables){
+        contents.addAll(identifiables);
+        contents = Stream.concat(contents.stream(), identifiables.stream())
+                .distinct().sorted(FolderContentsComparatorInterface::folderContentsComparator)
+                .collect(Collectors.toList());
+        notifyDataSetChanged();
     }
 
     @Override
