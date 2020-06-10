@@ -81,5 +81,13 @@
     <string name="folder_name_label">Folder name:</string>
     <string name="cant_get_folders">Can\'t fetch folders from server</string>
     <string name="no_receive_time">time not available</string>
-
+    <string name="tag">Name</string>
+    <string name="tag_save_att">Save</string>
+    <string name="tag_button_cancel">Cancel</string>
+    <string name="my_profile_picture">My profile picture</string>
+    <string name="my_username">Username</string>
+    <string name="my_password">Password</string>
+    <string name="my_first_name">First name</string>
+    <string name="my_last_name">Last name</string>
+    <string name="button_logout">Logout</string>
 </resources>
