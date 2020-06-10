@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">Mail Client</string>
     <string name="splash_desc">Splashscreen image</string>
+
+
+    <string name="pref_sync">pref_sync</string>
+    <string name="pref_sync_sum"></string>
+    <string name="pref_sync_title">Sync</string>
+    <string name="pref_syncConnectionType">Refresh</string>
+    <string name="pref_sync_list">pref_sync_list</string>
+    <string name="sort_date">sort_date</string>
+    <string name="pref_sort_by_date">Sort</string>
+    <string name="pref_sort"></string>
+    <string name="pref_sort_list">pref_sort_list</string>
+
     <string name="username">Username:</string>
     <string name="password">Password:</string>
     <string name="button">Login</string>
@@ -69,4 +81,5 @@
     <string name="folder_name_label">Folder name:</string>
     <string name="cant_get_folders">Can\'t fetch folders from server</string>
     <string name="no_receive_time">time not available</string>
+
 </resources>
