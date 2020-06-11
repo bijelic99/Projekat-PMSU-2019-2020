@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">Mail Client</string>
     <string name="splash_desc">Splashscreen image</string>
+
+
+    <string name="pref_sync">pref_sync</string>
+    <string name="pref_sync_sum"></string>
+    <string name="pref_sync_title">Sync</string>
+    <string name="pref_syncConnectionType">Refresh</string>
+    <string name="pref_sync_list">pref_sync_list</string>
+    <string name="sort_date">sort_date</string>
+    <string name="pref_sort_by_date">Sort</string>
+    <string name="pref_sort"></string>
+    <string name="pref_sort_list">pref_sort_list</string>
+
     <string name="username">Username:</string>
     <string name="password">Password:</string>
     <string name="button">Login</string>
@@ -75,4 +87,13 @@
     <string name="refreshError">There was an error when trying to refresh</string>
     <string name="create_error">There was an error while trying to create the resource</string>
     <string name="no_parent_folder">There is no parent folder</string>
+    <string name="tag">Name</string>
+    <string name="tag_save_att">Save</string>
+    <string name="tag_button_cancel">Cancel</string>
+    <string name="my_profile_picture">My profile picture</string>
+    <string name="my_username">Username</string>
+    <string name="my_password">Password</string>
+    <string name="my_first_name">First name</string>
+    <string name="my_last_name">Last name</string>
+    <string name="button_logout">Logout</string>
 </resources>
