@@ -1,7 +1,6 @@
 package com.ftn.mailClient.activities.foldersActivity;
 
-import android.hardware.camera2.CameraCharacteristics;
-import android.util.Log;
+import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,31 +16,47 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.lifecycle.*;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.CreateFolderActivity;
+import com.ftn.mailClient.adapters.FoldersListRecyclerViewAdapter;
 import com.ftn.mailClient.model.Folder;
+import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.navigationRouter.NavigationRouter;
-import com.ftn.mailClient.retrofit.AccountApi;
-import com.ftn.mailClient.retrofit.RetrofitClient;
+import com.ftn.mailClient.utill.enums.FetchStatus;
+import com.ftn.mailClient.viewModel.AccountViewModel;
 import com.google.android.material.navigation.NavigationView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class FoldersActivity extends AppCompatActivity {
     private DrawerLayout drawer;
+    private AccountViewModel accountViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_folders);
 
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.folders_activity);
+
+
+        accountViewModel =new ViewModelProvider(this).get(AccountViewModel.class);
+        SharedPreferences sharedPreferences = this.getSharedPreferences(getString(R.string.user_details_file_key), MODE_PRIVATE);
+        if(sharedPreferences.contains(getString(R.string.user_account_id))){
+            Long currentAccountId = sharedPreferences.getLong(getString(R.string.user_account_id), -99);
+            accountViewModel.setAccount(currentAccountId);
+        }
 
         Context context = this;
         NavigationView navigationView = findViewById(R.id.navigation_view);
@@ -59,7 +74,32 @@ public class FoldersActivity extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
 
+        FoldersListRecyclerViewAdapter adapter = new FoldersListRecyclerViewAdapter(context, new ArrayList<>());
+        recyclerView.setAdapter(adapter);
+
+        accountViewModel.getAccountFolders().observe(this, folders -> {
+            adapter.setFolders(folders);
+        });
+
+
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            LiveData<FetchStatus> statusLiveData = accountViewModel.syncAccountFolders();
+            statusLiveData.observe(this, new Observer<FetchStatus>() {
+                @Override
+                public void onChanged(FetchStatus fetchStatus) {
+                    if(fetchStatus.equals(FetchStatus.ERROR)) Toast.makeText(getApplicationContext(), R.string.refreshError, Toast.LENGTH_SHORT).show();
+                    if(fetchStatus.equals(FetchStatus.DONE) || fetchStatus.equals(FetchStatus.ERROR)){
+                        swipeRefreshLayout.setRefreshing(false);
+                        statusLiveData.removeObserver(this);
+                    }
+                }
+            });
+        });
     }
 
     @Override

@@ -13,6 +13,10 @@ import java.util.Map;
 import java.util.Set;
 
 public interface FolderApi extends Api{
+
+    @GET("api/folders/{id}")
+    Call<Folder> getFolder(@Path("id") Long id);
+
     @GET("api/folders/{id}/innerFolders")
     Call<Set<Folder>> getInnerFolders(@Path("id") Long id);
 
@@ -21,4 +25,7 @@ public interface FolderApi extends Api{
 
     @PUT("api/folders/{id}/sync")
     Call<FolderSyncWrapper> syncFolder(@Path("id") Long id, @Body Map<String, Object> data);
+
+    @POST("api/accounts/{id}/folders")
+    Call<Folder> addAccountFolder(@Path("id") Long accountId, @Body Folder folder);
 }

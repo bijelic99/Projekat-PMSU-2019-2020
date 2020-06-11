@@ -3,4 +3,7 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="rec_view_horizontal_margin">4dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="smallPadding">20dp</dimen>
+    <dimen name="standardElevation">20dp</dimen>
+    <dimen name="rec_view_padding">6dp</dimen>
 </resources>

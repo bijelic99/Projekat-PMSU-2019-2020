@@ -17,26 +17,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.folderActivity.FolderActivity;
 import com.ftn.mailClient.model.Folder;
+import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FoldersListRecyclerViewAdapter extends RecyclerView.Adapter<FoldersListRecyclerViewAdapter.FolderViewHolder> {
-    private List<Folder> folders;
+    private List<FolderMetadata> folders;
     private Context context;
 
-    public FoldersListRecyclerViewAdapter(Context context, List<Folder> folders){
+    public FoldersListRecyclerViewAdapter(Context context, List<FolderMetadata> folders){
         this.folders = folders;
         this.context = context;
     }
 
-    public List<Folder> getFolders() {
+    public List<FolderMetadata> getFolders() {
         return folders;
     }
 
-    public void setFolders(List<Folder> folders) {
+    public void setFolders(List<FolderMetadata> folders) {
         this.folders = folders;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -60,7 +62,7 @@ public class FoldersListRecyclerViewAdapter extends RecyclerView.Adapter<Folders
     }
 
     public static class FolderViewHolder extends RecyclerView.ViewHolder{
-        Folder folder;
+        FolderMetadata folder;
 
         TextView name;
         TextView noOfMessages;
@@ -69,11 +71,12 @@ public class FoldersListRecyclerViewAdapter extends RecyclerView.Adapter<Folders
             super(itemView);
         }
 
-        public Folder getFolder() {
+        public FolderMetadata getFolder() {
             return folder;
         }
 
-        public void setFolder(Folder folder) {
+        public void setFolder(FolderMetadata folder) {
+
             this.folder = folder;
         }
 
@@ -85,14 +88,13 @@ public class FoldersListRecyclerViewAdapter extends RecyclerView.Adapter<Folders
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("aaa", "clckd");
                     Intent intent = new Intent(itemView.getContext(), FolderActivity.class);
-                    intent.putExtra("folder", getFolder());
+                    intent.putExtra("folderId", getFolder().getId());
                     itemView.getContext().startActivity(intent);
                 }
             });
             name.setText(folder.getName());
-            noOfMessages.setText(folder.getMessages().size()+"");
+            noOfMessages.setText(folder.getNumberOfMessages().toString());
 
         }
     }

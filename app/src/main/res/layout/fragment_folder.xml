@@ -46,7 +46,6 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="@color/black"
             tools:text="@string/zero"
-            android:visibility="invisible"
         />
     </LinearLayout>
 

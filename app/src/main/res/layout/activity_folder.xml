@@ -24,24 +24,48 @@
         tools:context=".activities.folderActivity.FolderActivity"
         android:columnCount="1"
         android:rowCount="2"
+
     >
-
-        <fragment
-            android:theme="@style/AppTheme"
-            android:name="com.ftn.mailClient.activities.folderActivity.fragments.FolderDataFragment"
-            tools:layout="@layout/fragment_folder_data"
-            android:id="@+id/folder_data"
+        <LinearLayout
+            android:paddingVertical="@dimen/smallPadding"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_rowWeight="1"/>
+            android:orientation="vertical"
+            android:elevation="@dimen/standardElevation"
+            android:clipToPadding="true"
+        >
 
-        <fragment
-            android:name="com.ftn.mailClient.activities.folderActivity.fragments.FolderContentsFragment"
-            tools:layout="@layout/fragment_folder_contents"
-            android:id="@+id/folder_contents"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/folder_no_of_messages"
+                android:textSize="20sp"
+                android:id="@+id/folder_no_of_messages"
+            />
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="@string/folder_no_of_files"
+                    android:textSize="20sp"
+                    android:id="@+id/folder_no_of_files"
+            />
+
+        </LinearLayout>
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_rowWeight="3"/>
+            android:layout_rowWeight="9"
+        >
+            <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/fragment_email"
+                    android:id="@+id/recycler_view"
+                    android:paddingHorizontal="@dimen/rec_view_padding"
+            />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 
     </GridLayout>

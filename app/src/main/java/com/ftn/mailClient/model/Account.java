@@ -1,37 +1,65 @@
 package com.ftn.mailClient.model;
 
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.TypeConverters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.ftn.mailClient.utill.converters.FolderListTypeConverter;
+import com.ftn.mailClient.utill.converters.FolderTypeConverter;
+import com.ftn.mailClient.utill.converters.IncomingMailProtocolTypeConverter;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@Entity
 public class Account extends Identifiable {
-    private String smtpAdress;
+    private String smtpAddress;
+    @TypeConverters(IncomingMailProtocolTypeConverter.class)
     private IncomingMailProtocol incomingMailProtocol;
     private String incomingMailAddress;
     private String username;
     private String password;
+    @Ignore
+    private List<FolderMetadata> accountFolders;
 
+    @Ignore
     public  Account(){
-        this(null,null,null,null,null,null);
+        this(null,null,null,null,null,null, new ArrayList<>());
     }
 
-    public Account(Long id, String smtpAdress, IncomingMailProtocol incomingMailProtocol, String incomingMailAddress, String username, String password) {
+    @Ignore
+    public Account(Long id, String smtpAddress, IncomingMailProtocol incomingMailProtocol, String incomingMailAddress, String username, String password, List<FolderMetadata> accountFolders) {
         super(id);
-        this.smtpAdress = smtpAdress;
+        this.smtpAddress = smtpAddress;
         this.incomingMailProtocol = incomingMailProtocol;
         this.incomingMailAddress = incomingMailAddress;
         this.username = username;
         this.password = password;
+        this.accountFolders = accountFolders;
+    }
+
+    public Account(Long id, String smtpAddress, IncomingMailProtocol incomingMailProtocol, String incomingMailAddress, String username, String password){
+        super(id);
+        this.smtpAddress = smtpAddress;
+        this.incomingMailProtocol = incomingMailProtocol;
+        this.incomingMailAddress = incomingMailAddress;
+        this.username = username;
+        this.password = password;
+        this.accountFolders = new ArrayList<>();
     }
 
     @JsonProperty("smtp")
-    public String getSmtpAdress() {
-        return smtpAdress;
+    public String getSmtpAddress() {
+        return smtpAddress;
     }
 
     @JsonSetter("smtp")
-    public void setSmtpAdress(String smtpAdress) {
-        this.smtpAdress = smtpAdress;
+    public void setSmtpAddress(String smtpAddress) {
+        this.smtpAddress = smtpAddress;
     }
 
     @JsonProperty("inServerType")
@@ -67,5 +95,13 @@ public class Account extends Identifiable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<FolderMetadata> getAccountFolders() {
+        return accountFolders;
+    }
+
+    public void setAccountFolders(List<FolderMetadata> accountFolders) {
+        this.accountFolders = accountFolders;
     }
 }

@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 
+import android.widget.LinearLayout;
+import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -17,60 +19,89 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.CreateFolderActivity;
 import com.ftn.mailClient.activities.folderActivity.fragments.FolderContentsFragment;
+import com.ftn.mailClient.adapters.FolderContentRecyclerViewAdapter;
 import com.ftn.mailClient.model.Folder;
+import com.ftn.mailClient.model.Identifiable;
+import com.ftn.mailClient.utill.enums.FetchStatus;
+import com.ftn.mailClient.viewModel.AccountViewModel;
+import com.ftn.mailClient.viewModel.FolderViewModel;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class FolderActivity extends AppCompatActivity {
-    private Folder folder;
+    private FolderViewModel folderViewModel;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_folder);
+        TextView noOfMsg = findViewById(R.id.folder_no_of_messages);
+        TextView noOfFiles = findViewById(R.id.folder_no_of_files);
+
+        FolderContentRecyclerViewAdapter folderContentRecyclerViewAdapter = new FolderContentRecyclerViewAdapter(this);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(folderContentRecyclerViewAdapter);
+
         Intent intent = getIntent();
-        if(intent != null && intent.getSerializableExtra("folder") != null){
-            folder = (Folder) intent.getSerializableExtra("folder");
-            FolderContentsFragment folderContentsFragment = (FolderContentsFragment) getSupportFragmentManager().findFragmentById(R.id.folder_contents);
-            folderContentsFragment.setFolder(folder);
+        Long id = intent.getLongExtra("folderId", -55l);
+        if(id != -55l){
+            folderViewModel = new ViewModelProvider(this).get(FolderViewModel.class);
+            folderViewModel.setFolder(id);
+            folderViewModel.getFolder().observe(this, folderMetadata -> {
+                noOfMsg.setText(getString(R.string.folder_no_of_messages, folderMetadata.getNumberOfMessages()));
+                noOfFiles.setText(getString(R.string.folder_no_of_files, folderMetadata.getNumberOfFolders()));
+            });
+            folderViewModel.getMessages().observe(this, messages -> {
+                if(messages != null)
+                folderContentRecyclerViewAdapter.add( messages.stream()
+                        .map(message -> (Identifiable) message)
+                        .collect(Collectors.toList()));
+            });
 
-            View view = findViewById(R.id.folder_data);
-            TextView fName = view.findViewById(R.id.folder_name);
-            fName.setText(folder.getName());
+            folderViewModel.getFolders().observe(this, folderMetadata -> {
+                if(folderMetadata != null)
+                    folderContentRecyclerViewAdapter.add(folderMetadata.stream()
+                        .map(folderMetadata1 -> (Identifiable) folderMetadata1)
+                        .collect(Collectors.toList()));
+            });
 
-            ((TextView)findViewById(R.id.folder_no_of_messages)).setText(getResources().getString(R.string.folder_no_of_messages, folder.getMessages().size()));
-            ((TextView)findViewById(R.id.folder_no_of_files)).setText(getResources().getString(R.string.folder_no_of_files, folder.getFolders().size()));
+            SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+            swipeRefreshLayout.setOnRefreshListener(() -> {
+                LiveData<FetchStatus> fetchStatusLiveData = folderViewModel.syncFolder();
+                fetchStatusLiveData.observe(this, new Observer<FetchStatus>() {
+                    @Override
+                    public void onChanged(FetchStatus fetchStatus) {
+                        if(fetchStatus.equals(FetchStatus.ERROR)) Toast.makeText(getApplicationContext(), R.string.refreshError, Toast.LENGTH_SHORT).show();
+                        if(fetchStatus.equals(FetchStatus.DONE) || fetchStatus.equals(FetchStatus.ERROR)){
+                            if(swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
+                            fetchStatusLiveData.removeObserver(this);
+                        }
+                    }
+                });
+            });
 
-            IntentFilter intentFilter = new IntentFilter(folder.getId()+"_folderSync");
-            this.registerReceiver(broadcastReceiver, intentFilter);
         }
+        
     }
 
     @Override
     protected void onDestroy() {
-        try{
-            this.unregisterReceiver(broadcastReceiver);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
         super.onDestroy();
     }
 
-    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if(folder != null){
-                ((TextView)findViewById(R.id.folder_no_of_messages)).setText(getResources().getString(R.string.folder_no_of_messages, folder.getMessages().size()));
-                ((TextView)findViewById(R.id.folder_no_of_files)).setText(getResources().getString(R.string.folder_no_of_files, folder.getFolders().size()));
-            }
-            else {
-                ((TextView)findViewById(R.id.folder_no_of_messages)).setText(getResources().getString(R.string.folder_no_of_messages, 0));
-                ((TextView)findViewById(R.id.folder_no_of_files)).setText(getResources().getString(R.string.folder_no_of_files, 0));
-            }
-        }
-    };
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,11 +121,8 @@ public class FolderActivity extends AppCompatActivity {
 
     private void addFolderClicked() {
         Intent intent = new Intent(this, CreateFolderActivity.class);
-        intent.putExtra("parent", getFolder());
+        intent.putExtra("parentId", folderViewModel.getFolderId());
         this.startActivity(intent);
     }
 
-    public Folder getFolder() {
-        return folder;
-    }
 }

@@ -1,26 +1,53 @@
 package com.ftn.mailClient.model;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.TypeConverters;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.ftn.mailClient.utill.converters.FolderListTypeConverter;
+import com.ftn.mailClient.utill.converters.FolderTypeConverter;
+import com.ftn.mailClient.utill.converters.MessageListTypeConverter;
+import com.ftn.mailClient.utill.deserializer.InnerFoldersDeserializer;
+import com.ftn.mailClient.utill.deserializer.ParentFolderDeserializer;
+import com.ftn.mailClient.utill.serializer.InnerFoldersSerializer;
+import com.ftn.mailClient.utill.serializer.ParentFolderSerializer;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Entity
 public class Folder extends Identifiable {
     private String name;
-    private Long parentFolder;
-    private Set<Long> folders;
-    private Set<Message> messages;
+    @TypeConverters(FolderTypeConverter.class)
+    private FolderMetadata parentFolder;
+    @Ignore
+    private List<FolderMetadata> folders;
+    @Ignore
+    private List<Message> messages;
 
+    @Ignore
     public Folder() {
-        this(null, null, null, null, null);
+        this(null, null, null, new ArrayList<>(), new ArrayList<>());
     }
 
-    public Folder(Long id, String name, Long parentFolder, Set<Long> folders, Set<Message> messages) {
+    @Ignore
+    public Folder(Long id, String name, FolderMetadata parentFolder, List<FolderMetadata> folders, List<Message> messages) {
         super(id);
         this.name = name;
         this.parentFolder = parentFolder;
         this.folders = folders;
         this.messages = messages;
+    }
+
+    public Folder(Long id, String name, FolderMetadata parentFolder) {
+        this();
+        this.id = id;
+        this.name = name;
+        this.parentFolder = parentFolder;
+
     }
 
     public String getName() {
@@ -32,28 +59,28 @@ public class Folder extends Identifiable {
     }
 
 
-    public Long getParentFolder() {
+    public FolderMetadata getParentFolder() {
         return parentFolder;
     }
 
-    public void setParentFolder(Long parentFolder) {
+    public void setParentFolder(FolderMetadata parentFolder) {
         this.parentFolder = parentFolder;
     }
 
 
-    public Set<Long> getFolders() {
+    public List<FolderMetadata> getFolders() {
         return folders;
     }
 
-    public void setFolders(Set<Long> folders) {
+    public void setFolders(List<FolderMetadata> folders) {
         this.folders = folders;
     }
 
-    public Set<Message> getMessages() {
+    public List<Message> getMessages() {
         return messages;
     }
 
-    public void setMessages(Set<Message> messages) {
+    public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
 }
