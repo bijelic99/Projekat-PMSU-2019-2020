@@ -3,10 +3,8 @@ package com.ftn.mailClient.repository;
 import android.app.Application;
 import android.os.Build;
 import androidx.annotation.RequiresApi;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import com.ftn.mailClient.dao.FolderDao;
 import com.ftn.mailClient.dao.MessageDao;
 import com.ftn.mailClient.database.LocalDatabase;
@@ -16,11 +14,7 @@ import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.repository.asyncTasks.FolderAsyncTasks;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class FolderRepository extends Repository<Folder, FolderDao> {
 
@@ -37,8 +31,26 @@ public class FolderRepository extends Repository<Folder, FolderDao> {
     }
 
     @Override
-    public void insert(Folder value) {
+    public LiveData<FetchStatus> insert(Folder value) {
+        return null;
+    }
 
+    public LiveData<FetchStatus> insertFolderWithParent(Folder value, Long parentFolderId) {
+        MutableLiveData<FetchStatus> fetchStatusMutableLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
+        new FolderAsyncTasks.InsertFolderAsyncTask(database, parentFolderId, aboolean -> {
+            if(aboolean) fetchStatusMutableLiveData.setValue(FetchStatus.DONE);
+            else fetchStatusMutableLiveData.setValue(FetchStatus.ERROR);
+        }).execute(value);
+        return fetchStatusMutableLiveData;
+    }
+
+    public LiveData<FetchStatus> insertAccountFolder(Folder value, Long accountId){
+        MutableLiveData<FetchStatus> fetchStatusMutableLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
+        new FolderAsyncTasks.InsertAccountFolderAsyncTask(database, accountId, aboolean -> {
+            if(aboolean) fetchStatusMutableLiveData.setValue(FetchStatus.DONE);
+            else fetchStatusMutableLiveData.setValue(FetchStatus.ERROR);
+        }).execute(value);
+        return fetchStatusMutableLiveData;
     }
 
     @Override

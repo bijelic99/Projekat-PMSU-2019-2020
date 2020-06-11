@@ -24,12 +24,14 @@
         tools:context=".activities.folderActivity.FolderActivity"
         android:columnCount="1"
         android:rowCount="2"
+
     >
         <LinearLayout
             android:paddingVertical="@dimen/smallPadding"
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:elevation="@dimen/standardElevation"
+            android:clipToPadding="true"
         >
 
             <TextView
@@ -60,7 +62,7 @@
                     android:layout_height="match_parent"
                     tools:listitem="@layout/fragment_email"
                     android:id="@+id/recycler_view"
-                    android:paddingHorizontal="@dimen/folder_rec_view_padding"
+                    android:paddingHorizontal="@dimen/rec_view_padding"
             />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

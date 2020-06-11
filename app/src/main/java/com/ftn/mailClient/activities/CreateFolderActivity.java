@@ -2,6 +2,7 @@ package com.ftn.mailClient.activities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.ProgressBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.lifecycle.ViewModelProvider;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.folderActivity.FolderActivity;
 import com.ftn.mailClient.activities.foldersActivity.FoldersActivity;
@@ -24,6 +26,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import com.ftn.mailClient.utill.enums.FetchStatus;
+import com.ftn.mailClient.viewModel.CreateFolderViewModel;
+import com.ftn.mailClient.viewModel.FolderViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,8 +38,11 @@ public class CreateFolderActivity extends AppCompatActivity {
     private EditText mFolderName;
     private EditText mParentFolder;
     private String folderName;
+    private CreateFolderViewModel createFolderViewModel;
+    private ProgressBar progressBar;
+    private Button insertButton;
+    private Button cancelBtn;
 
-    private Folder folder;
 
 
     @Override
@@ -44,70 +52,69 @@ public class CreateFolderActivity extends AppCompatActivity {
 
         mFolderName = findViewById(R.id.editCreateFolderName);
         mParentFolder = findViewById(R.id.autoCompleteTextViewParentFolder);
+        progressBar = findViewById(R.id.progress_bar);
 
-        Serializable parentFolderSerializable = getIntent().getSerializableExtra("parent");
+        createFolderViewModel = new ViewModelProvider(this).get(CreateFolderViewModel.class);
 
-        folder = parentFolderSerializable != null ? (Folder) parentFolderSerializable : null;
-        mParentFolder.setText(folder != null ? folder.getName() : "");
+        Long parentId = getIntent().getLongExtra("parentId", -55L);
 
-        Button b = findViewById(R.id.buttonForCreateFolder);
-        b.setOnClickListener(v -> clickHandler(v));
-
-        Button cancelBtn = findViewById(R.id.buttonForCancelCreateFolder);
-        cancelBtn.setOnClickListener(v -> activityEndRedirect());
-    }
-    public void clickHandler(View v) {
-
-        folderName = mFolderName.getText().toString();
-        Folder newFolder = new Folder(null, folderName, folder != null ? new FolderMetadata(folder) : null, new ArrayList<>(), new ArrayList<>());
-
-        FolderApi folderApi = RetrofitClient.getApi(FolderApi.class);
-        Context currentContext = this;
-        if(folder != null) {
-            folderApi.saveFolder(newFolder).enqueue(new Callback<Folder>() {
-                @Override
-                public void onResponse(Call<Folder> call, Response<Folder> response) {
-                    if (response.isSuccessful()) {
-                        activityEndRedirect();
-                    } else
-                        Toast.makeText(currentContext, "There was a problem, folder isn't created " + response.code(), Toast.LENGTH_LONG);
-                }
-
-                @Override
-                public void onFailure(Call<Folder> call, Throwable t) {
-                    Toast.makeText(currentContext, "There was a problem, folder isn't created", Toast.LENGTH_LONG);
-                }
+        if(parentId != -55L){
+            createFolderViewModel.setParentFolder(parentId);
+            createFolderViewModel.getParentFolder().observe(this, folderMetadata -> {
+                if(folderMetadata != null)
+                    mParentFolder.setText(folderMetadata.getName());
+                else
+                    mParentFolder.setText(R.string.no_parent_folder);
             });
         }
         else {
-            SharedPreferences sharedPreferences = this.getSharedPreferences(getString(R.string.user_details_file_key),MODE_PRIVATE);
-            if(sharedPreferences != null){
-                Long accountId = sharedPreferences.getLong(getString(R.string.user_account_id), -5L);
-                folderApi.addAccountFolder(accountId, newFolder).enqueue(new Callback<Folder>() {
-                    @Override
-                    public void onResponse(Call<Folder> call, Response<Folder> response) {
-                        if (response.isSuccessful()) {
-                            activityEndRedirect();
-                        } else
-                            Toast.makeText(currentContext, "There was a problem, folder isn't created " + response.code(), Toast.LENGTH_LONG);
-                    }
-
-                    @Override
-                    public void onFailure(Call<Folder> call, Throwable t) {
-                        Toast.makeText(currentContext, "There was a problem, folder isn't created", Toast.LENGTH_LONG);
-                    }
-                });
+            SharedPreferences sharedPreferences = this.getSharedPreferences(getString(R.string.user_details_file_key), MODE_PRIVATE);
+            if(sharedPreferences.contains(getString(R.string.user_account_id))){
+                Long currentAccountId = sharedPreferences.getLong(getString(R.string.user_account_id), -99);
+                createFolderViewModel.setAccountId(currentAccountId);
+                mParentFolder.setText(R.string.no_parent_folder);
             }
-
+            else throw new NullPointerException("User needs to have an account to create account folder");
         }
 
 
+
+        insertButton = findViewById(R.id.buttonForCreateFolder);
+        insertButton.setOnClickListener(v -> clickHandler(v));
+
+        cancelBtn = findViewById(R.id.buttonForCancelCreateFolder);
+        cancelBtn.setOnClickListener(v -> activityEndRedirect());
+    }
+    public void clickHandler(View v) {
+        try {
+            insertButton.setEnabled(false);
+            cancelBtn.setEnabled(false);
+            progressBar.setVisibility(View.VISIBLE);
+            progressBar.setIndeterminate(true);
+            createFolderViewModel.setFolderName(mFolderName.getText().toString());
+
+            createFolderViewModel.addNewFolder().observe(this, fetchStatus -> {
+                if(fetchStatus.equals(FetchStatus.ERROR)) {
+                    Toast.makeText(this, R.string.create_error, Toast.LENGTH_SHORT).show();
+                    insertButton.setEnabled(true);
+                    cancelBtn.setEnabled(true);
+                }
+                if(fetchStatus.equals(FetchStatus.DONE)) {
+                    activityEndRedirect();
+                }
+                progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setIndeterminate(false);
+            });
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void activityEndRedirect(){
-        if(folder != null) {
+        if(!createFolderViewModel.isAccountFolder()) {
             Intent intent = new Intent(getBaseContext(), FolderActivity.class);
-            intent.putExtra("folder", getFolder());
+            intent.putExtra("folderId", createFolderViewModel.getParentFolderId());
             startActivity(intent);
         }
         else {
@@ -116,13 +123,6 @@ public class CreateFolderActivity extends AppCompatActivity {
         }
     }
 
-    public Folder getFolder() {
-        return folder;
-    }
-
-    public void setFolder(Folder folder) {
-        this.folder = folder;
-    }
 
     //Disable back button
     /*

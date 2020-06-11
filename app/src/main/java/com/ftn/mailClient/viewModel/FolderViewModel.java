@@ -58,4 +58,8 @@ public class FolderViewModel extends AndroidViewModel {
     public Long getFolderId() {
         return folderId;
     }
+
+    public LiveData<FolderMetadata> getAnyFolder(Long folderId){
+        return null;
+    }
 }

@@ -19,8 +19,8 @@ public class AccountRepository extends Repository<Account, AccountDao> {
     }
 
     @Override
-    public void insert(Account value) {
-
+    public LiveData<FetchStatus> insert(Account value) {
+        return null;
     }
 
     @Override

@@ -34,7 +34,7 @@
     <string name="add_folder">Create new folder</string>
 
     <string name="create_folder_name">Name</string>
-    <string name="create_folder_text">Select parent folder</string>
+    <string name="create_folder_text">Parent folder</string>
 
     <string name="folder_save_att">Save</string>
     <string name="folder_button_cancel">Cancel</string>
@@ -73,4 +73,6 @@
     <string name="user_account_id">user_account_id</string>
     <string name="user_id">user_id</string>
     <string name="refreshError">There was an error when trying to refresh</string>
+    <string name="create_error">There was an error while trying to create the resource</string>
+    <string name="no_parent_folder">There is no parent folder</string>
 </resources>

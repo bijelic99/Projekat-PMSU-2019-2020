@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import com.ftn.mailClient.dao.MessageDao;
 import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Message;
+import com.ftn.mailClient.utill.enums.FetchStatus;
 
 import java.util.List;
 
@@ -17,8 +18,8 @@ public class MessageRepository extends Repository<Message, MessageDao> {
     }
 
     @Override
-    public void insert(Message value) {
-
+    public LiveData<FetchStatus> insert(Message value) {
+        return null;
     }
 
     @Override

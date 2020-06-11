@@ -64,13 +64,15 @@ public class FolderActivity extends AppCompatActivity {
                 noOfFiles.setText(getString(R.string.folder_no_of_files, folderMetadata.getNumberOfFolders()));
             });
             folderViewModel.getMessages().observe(this, messages -> {
+                if(messages != null)
                 folderContentRecyclerViewAdapter.add( messages.stream()
                         .map(message -> (Identifiable) message)
                         .collect(Collectors.toList()));
             });
 
             folderViewModel.getFolders().observe(this, folderMetadata -> {
-                folderContentRecyclerViewAdapter.add(folderMetadata.stream()
+                if(folderMetadata != null)
+                    folderContentRecyclerViewAdapter.add(folderMetadata.stream()
                         .map(folderMetadata1 -> (Identifiable) folderMetadata1)
                         .collect(Collectors.toList()));
             });
@@ -96,7 +98,7 @@ public class FolderActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-
+        super.onDestroy();
     }
 
 

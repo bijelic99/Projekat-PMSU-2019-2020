@@ -5,12 +5,14 @@ import android.os.Build;
 import android.util.Log;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
+import com.ftn.mailClient.dao.AccountDao;
 import com.ftn.mailClient.dao.FolderDao;
 import com.ftn.mailClient.dao.MessageDao;
 import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
+import com.ftn.mailClient.model.linkingClasses.AccountFolder;
 import com.ftn.mailClient.model.linkingClasses.FolderInnerFolders;
 import com.ftn.mailClient.model.linkingClasses.FolderMessage;
 import com.ftn.mailClient.retrofit.FolderApi;
@@ -22,10 +24,7 @@ import retrofit2.Response;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class FolderAsyncTasks {
@@ -134,6 +133,95 @@ public class FolderAsyncTasks {
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if(onPostExecuteFunctionFunctionalInterface != null) onPostExecuteFunctionFunctionalInterface.postExecuteFunction(aBoolean);
+        }
+    }
+
+    public static class InsertAccountFolderAsyncTask extends AsyncTask<Folder, Void, Boolean>{
+        private LocalDatabase localDatabase;
+        private OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface;
+        private Long accountId;
+
+        public InsertAccountFolderAsyncTask(LocalDatabase localDatabase, Long accountId, OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface){
+            this.localDatabase = localDatabase;
+            this.accountId = accountId;
+            this.onPostExecuteFunctionFunctionalInterface = onPostExecuteFunctionFunctionalInterface;
+        }
+
+        @Override
+        protected Boolean doInBackground(Folder... folders) {
+            FolderDao folderDao = localDatabase.folderDao();
+            FolderApi folderApi = RetrofitClient.getApi(FolderApi.class);
+            Folder folder = folders[0];
+
+            if( accountId != null){
+                try {
+                    folder.setParentFolder(null);
+                    Response<Folder> folderResponse = folderApi.addAccountFolder(accountId, folder).execute();
+                    if(folderResponse.isSuccessful()){
+                        AccountDao accountDao = localDatabase.accountDao();
+                        folder = folderResponse.body();
+                        folderDao.insert(folder);
+                        accountDao.insertAccountFolders(Arrays.asList(new AccountFolder(accountId, folder.getId())));
+
+                        return true;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            onPostExecuteFunctionFunctionalInterface.postExecuteFunction(aBoolean);
+        }
+    }
+
+    public static class InsertFolderAsyncTask extends AsyncTask<Folder, Void, Boolean>{
+        private LocalDatabase localDatabase;
+        private OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface;
+        private Long parentFolderId;
+
+        public InsertFolderAsyncTask(LocalDatabase localDatabase, Long parentFolderId, OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface){
+            this.localDatabase = localDatabase;
+            this.parentFolderId = parentFolderId;
+            this.onPostExecuteFunctionFunctionalInterface = onPostExecuteFunctionFunctionalInterface;
+        }
+
+        @Override
+        protected Boolean doInBackground(Folder... folders) {
+            FolderDao folderDao = localDatabase.folderDao();
+            FolderApi folderApi = RetrofitClient.getApi(FolderApi.class);
+            Folder folder = folders[0];
+            FolderMetadata parentFolder = folderDao.getFolderMetadataByIdNonLive(parentFolderId);
+
+
+            if(parentFolderId != null){
+                try {
+                    folder.setParentFolder(parentFolder);
+                    Response<Folder> folderResponse = folderApi.saveFolder(folder).execute();
+                    if(folderResponse.isSuccessful()){
+                        folder = folderResponse.body();
+                        folderDao.insert(folder);
+                        folderDao.insertFoldersToFolder(Arrays.asList(new FolderInnerFolders(parentFolderId, folder.getId())));
+                        return true;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            onPostExecuteFunctionFunctionalInterface.postExecuteFunction(aBoolean);
         }
     }
 }

@@ -48,10 +48,11 @@ public class AccountAsyncTasks {
                     List<AccountFolder> accountFolders = account.getAccountFolders().stream()
                             .map(folderMetadata -> new AccountFolder(account.getId(), folderMetadata.getId()))
                             .collect(Collectors.toList());
+                    accountDao.insert(account);
                     accountDao.insertAccountFolders(accountFolders);
 
 
-                    accountDao.insert(account);
+
                     return account;
                 }
             } catch (IOException e) {

@@ -22,12 +22,6 @@ public interface AccountDao extends DaoInterface<Account> {
     void insertAccountFolders(List<AccountFolder> list);
 
 
-    @Query("Select f.id as id, f.name as name, count(fm.messageId) as numberOfMessages, count(fif.childFolderId) as numberOfFolders from AccountFolder af join folder f on af.folderId = f.id left join foldermessage fm on f.id = fm.folderId left join folderinnerfolders fif on f.id = fif.parentFolderId where af.accountId = :id group by f.id")
+    @Query("Select f.id as id, f.name as name, ifnull(x.numberOfMessages, 0) as numberOfMessages, ifnull(y.numberOfFolders, 0) as numberOfFolders from Folder f join accountfolder af on af.folderId = f.id left join (Select folderId, count(*) as numberOfMessages from foldermessage group by folderId) x on f.id = x.folderId left join (Select parentFolderId, count(*) as numberOfFolders from folderinnerfolders group by parentFolderId) y on f.id = y.parentFolderId where af.accountId = :id group by f.id")
     LiveData<List<FolderMetadata>> getAccountFolders(Long id);
-
-    @Query("Select f.id, f.name, f.parentFolder from AccountFolder af join folder f on af.folderId = f.id where af.accountId = :id group by f.id")
-    List<Folder> getAccountFoldersNoLive(Long id);
-
-    @Query("delete from accountfolder where accountId = :id")
-    void deleteAccountFolders(Long id);
 }

@@ -27,10 +27,10 @@ public interface FolderDao extends DaoInterface<Folder> {
     @Query("SELECT * FROM FOLDER WHERE ID = :id")
     Folder getFolderById(Long id);
 
-    @Query("Select f.id as id, f.name as name, count(fm.messageId) as numberOfMessages, count(fif1.childFolderId) as numberOfFolders from FolderInnerFolders fif join Folder f on fif.childFolderId = f.id join foldermessage fm on fif.childFolderId = fm.messageId join folderinnerfolders fif1 on fif.childFolderId = fif1.parentFolderId where fif.parentFolderId = :id group by fif.childFolderId")
+    @Query("Select f.id as id, f.name as name, ifnull(x.numberOfMessages, 0) as numberOfMessages, ifnull(y.numberOfFolders, 0) as numberOfFolders from FolderInnerFolders fif join Folder f on fif.childFolderId = f.id left join (Select folderId, count(messageId) as numberOfMessages from foldermessage group by folderId) x on f.id = x.folderId left join (select parentFolderId, count(childFolderId) as numberOfFolders from folderinnerfolders group by parentFolderId) y on f.id = y.parentFolderId where fif.parentFolderId = :id")
     LiveData<List<FolderMetadata>> getFolders(Long id);
 
-    @Query("Select f.id as id, f.name as name, count(fm.messageId) as numberOfMessages, count(fif1.childFolderId) as numberOfFolders from FolderInnerFolders fif join Folder f on fif.childFolderId = f.id join foldermessage fm on fif.childFolderId = fm.messageId join folderinnerfolders fif1 on fif.childFolderId = fif1.parentFolderId where fif.parentFolderId = :id group by fif.childFolderId")
+    @Query("Select f.id as id, f.name as name, ifnull(x.numberOfMessages, 0) as numberOfMessages, ifnull(y.numberOfFolders, 0) as numberOfFolders from FolderInnerFolders fif join Folder f on fif.childFolderId = f.id left join (Select folderId, count(messageId) as numberOfMessages from foldermessage group by folderId) x on f.id = x.folderId left join (select parentFolderId, count(childFolderId) as numberOfFolders from folderinnerfolders group by parentFolderId) y on f.id = y.parentFolderId where fif.parentFolderId = :id")
     List<FolderMetadata> getFoldersNonLive(Long id);
 
     @Query("Select m.id, m.account, m._from, m._to, m.cc, m.bcc, m.dateTime, m.subject, m.content, m.attachments, m.tags, m.unread from FolderMessage fm join message m on fm.messageId = m.id where fm.folderId = :id")
@@ -42,8 +42,11 @@ public interface FolderDao extends DaoInterface<Folder> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMessagesToFolder(List<FolderMessage> folderMessages);
 
-    @Query("Select f.id as id, f.name as name, count(fm.messageId) as numberOfMessages, count(fif.childFolderId) as numberOfFolders from Folder f left join foldermessage fm on f.id = fm.messageId left join folderinnerfolders fif on f.id = fif.parentFolderId where f.id = :id group by f.id")
+    @Query("Select f.id as id, f.name as name, ifnull(x.numberOfMessages, 0) as numberOfMessages, ifnull(y.numberOfFolders, 0) as numberOfFolders from Folder f left join (Select folderId, count(messageId) as numberOfMessages from foldermessage group by folderId) x on f.id = x.folderId left join (Select parentFolderId, count(childFolderId) as numberOfFolders from folderinnerfolders group by parentFolderId) y on f.id = y.parentFolderId where f.id = :id")
     LiveData<FolderMetadata> getFolderMetadataById(Long id);
+
+    @Query("Select f.id as id, f.name as name, ifnull(x.numberOfMessages, 0) as numberOfMessages, ifnull(y.numberOfFolders, 0) as numberOfFolders from Folder f left join (Select folderId, count(messageId) as numberOfMessages from foldermessage group by folderId) x on f.id = x.folderId left join (Select parentFolderId, count(childFolderId) as numberOfFolders from folderinnerfolders group by parentFolderId) y on f.id = y.parentFolderId where f.id = :id")
+    FolderMetadata getFolderMetadataByIdNonLive(Long id);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertFoldersToFolder(List<FolderInnerFolders> innerFolders);
