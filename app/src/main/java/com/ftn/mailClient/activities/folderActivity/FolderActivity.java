@@ -27,12 +27,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.CreateFolderActivity;
-import com.ftn.mailClient.activities.folderActivity.fragments.FolderContentsFragment;
 import com.ftn.mailClient.adapters.FolderContentRecyclerViewAdapter;
-import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.Identifiable;
 import com.ftn.mailClient.utill.enums.FetchStatus;
-import com.ftn.mailClient.viewModel.AccountViewModel;
 import com.ftn.mailClient.viewModel.FolderViewModel;
 
 import java.util.List;

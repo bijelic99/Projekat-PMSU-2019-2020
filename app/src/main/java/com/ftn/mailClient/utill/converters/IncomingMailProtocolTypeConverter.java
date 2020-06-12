@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 public class IncomingMailProtocolTypeConverter {
     @TypeConverter
     public IncomingMailProtocol fromString(String value){
-        return IncomingMailProtocol.valueOf(value);
+        return value != null ? IncomingMailProtocol.valueOf(value) : null;
     }
 
     @TypeConverter
