@@ -88,38 +88,28 @@ public class FolderAsyncTasks {
             Long folderId = longs[0];
 
             Folder folder = folderDao.getFolderById(folderId);
-            List<Message> messageList = folderDao.getMessagesNonLive(folderId);
-            List<FolderMetadata> folderList = folderDao.getFoldersNonLive(folderId);
 
-            Map<String, Object> syncData = new HashMap<>();
-            LocalDateTime localDateTime = messageList.stream()
-                    .map(message -> message.getDateTime())
-                    .max((o1, o2) -> o1.isAfter(o2) ? 1 : o1.isBefore(o2) ? -1 : 0)
-                    .orElse(null);
-
-            syncData.put("latestMessageTimestamp", localDateTime != null ? localDateTime.format(DateTimeFormatter.ISO_DATE_TIME) : null);
-            syncData.put("folder_list", folderList.stream()
-                    .map(folderMetadata -> folderMetadata.getId())
-                    .collect(Collectors.toList()));
 
             FolderApi folderApi = RetrofitClient.getApi(FolderApi.class);
-            Response<FolderSyncWrapper> response = null;
+            Response<Folder> response = null;
             try {
-                response = folderApi.syncFolder(folderId, syncData).execute();
+                response = folderApi.syncFolder(folderId).execute();
                 if(response.isSuccessful()){
-                    List<FolderMetadata> folders = response.body().getFolders().stream()
-                            .map(folder1 -> new FolderMetadata(folder1))
-                            .collect(Collectors.toList());
-                    List<Message> messages = response.body().getMessages();
-                    messageDao.insertAll(messages);
-                    folderDao.insertMessagesToFolder(messages.stream().map(message -> new FolderMessage(folderId, message.getId())).collect(Collectors.toList()));
-                    folderDao.insertAll(folders.stream()
-                            .map(fd -> new Folder(fd.getId(), fd.getName(), new FolderMetadata(folder)))
+                    folder = response.body();
+                    Folder finalFolder = folder;
+                    messageDao.insertAll(folder.getMessages());
+                    folderDao.deleteAllFolderMessages(folder.getId());
+                    folderDao.insertMessagesToFolder(folder.getMessages().stream()
+                            .map(message -> new FolderMessage(finalFolder.getId(), message.getId()))
+                            .collect(Collectors.toList()));
+                    folderDao.insertAll(folder.getFolders().stream()
+                            .map(folderMetadata -> new Folder(folderMetadata.getId(), folderMetadata.getName(), new FolderMetadata(finalFolder)))
+                            .collect(Collectors.toList()));
+                    folderDao.deleteAllFolderChlildrenFolders(folder.getId());
+                    folderDao.insertFoldersToFolder(folder.getFolders().stream()
+                            .map(folderMetadata -> new FolderInnerFolders(finalFolder.getId(), folderMetadata.getId()))
                             .collect(Collectors.toList()));
 
-                    folderDao.insertFoldersToFolder(folders.stream()
-                            .map(folderMetadata -> new FolderInnerFolders(folder.getId(), folderMetadata.getId()))
-                            .collect(Collectors.toList()));
 
                     return true;
                 }

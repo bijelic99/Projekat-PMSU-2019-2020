@@ -15,21 +15,36 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.model.Tag;
+import com.ftn.mailClient.utill.FolderContentsComparatorInterface;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.*;
 
 public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecyclerViewAdapter.EmailViewHolder> {
 
-    ArrayList<Message> messages;
-    Context context;
+    private List<Message> messages;
+    private Context context;
 
     public EmailRecyclerViewAdapter(Context context, ArrayList<Message> messages){
         this.messages = messages;
         this.context = context;
+    }
+
+    public EmailRecyclerViewAdapter(Context context){
+        this.messages = new ArrayList<>();
+        this.context = context;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+        Collections.sort( this.messages, FolderContentsComparatorInterface::folderContentsComparator);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -88,9 +103,10 @@ public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecycler
             if(timeRecived == null) timeRecived = (TextView)itemView.findViewById(R.id.textViewDateTime);
             //Potrebno kako bi ispisivao pravilno od koga je mail...
             String name = "";
-            if(getMessage().getFrom().getDisplayName() != null) name = getMessage().getFrom().getDisplayName();
-            else if(getMessage().getFrom().getFirstName() != null && getMessage().getFrom().getLastName() != null) name = itemView.getResources().getString(R.string.users_fullname, getMessage().getFrom().getFirstName(), getMessage().getFrom().getLastName());
-            else if(getMessage().getFrom().getFirstName() == null || getMessage().getFrom().getLastName() == null) name = getMessage().getFrom().getFirstName() != null ? getMessage().getFrom().getFirstName() : getMessage().getFrom().getLastName() != null ? getMessage().getFrom().getLastName() : getMessage().getFrom().getEmail();
+            if(getMessage().getFrom() != null)
+                if(getMessage().getFrom().getDisplayName() != null) name = getMessage().getFrom().getDisplayName();
+                else if(getMessage().getFrom().getFirstName() != null && getMessage().getFrom().getLastName() != null) name = itemView.getResources().getString(R.string.users_fullname, getMessage().getFrom().getFirstName(), getMessage().getFrom().getLastName());
+                else if(getMessage().getFrom().getFirstName() == null || getMessage().getFrom().getLastName() == null) name = getMessage().getFrom().getFirstName() != null ? getMessage().getFrom().getFirstName() : getMessage().getFrom().getLastName() != null ? getMessage().getFrom().getLastName() : getMessage().getFrom().getEmail();
 
             fullName.setText(name);
             subject.setText(message.getSubject());

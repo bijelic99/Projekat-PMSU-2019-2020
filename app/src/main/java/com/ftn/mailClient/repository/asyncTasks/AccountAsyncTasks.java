@@ -7,10 +7,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.ftn.mailClient.dao.AccountDao;
 import com.ftn.mailClient.dao.FolderDao;
+import com.ftn.mailClient.dao.MessageDao;
 import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Account;
 import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.FolderMetadata;
+import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.model.linkingClasses.AccountFolder;
 import com.ftn.mailClient.retrofit.AccountApi;
 import com.ftn.mailClient.retrofit.RetrofitClient;
@@ -45,6 +47,7 @@ public class AccountAsyncTasks {
                             .map(folderMetadata -> new Folder(folderMetadata.getId(), folderMetadata.getName(), null))
                             .collect(Collectors.toList())
                     );
+                    accountDao.deleteAllAccountFolders(account.getId());
                     List<AccountFolder> accountFolders = account.getAccountFolders().stream()
                             .map(folderMetadata -> new AccountFolder(account.getId(), folderMetadata.getId()))
                             .collect(Collectors.toList());
@@ -86,7 +89,7 @@ public class AccountAsyncTasks {
                     folderDao.insertAll(folders.stream()
                             .map(folderMetadata -> new Folder(folderMetadata.getId(), folderMetadata.getName(), null))
                             .collect(Collectors.toList()));
-
+                    accountDao.deleteAllAccountFolders(accountId);
                     accountDao.insertAccountFolders(folders.stream()
                             .map(folderMetadata -> new AccountFolder(account.getId(), folderMetadata.getId()))
                             .collect(Collectors.toList()));
@@ -105,6 +108,42 @@ public class AccountAsyncTasks {
             postExecuteFunctionalInterface.postExecuteFunction(aBoolean);
         }
 
+    }
+
+    public static class FetchAccountMessagesAsyncTask extends AsyncTask<Long, Void, Boolean>{
+        private LocalDatabase localDatabase;
+        private OnPostExecuteFunctionFunctionalInterface onPostExecuteFunctionFunctionalInterface;
+
+        public FetchAccountMessagesAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface){
+            this.localDatabase = localDatabase;
+            this.onPostExecuteFunctionFunctionalInterface = onPostExecuteFunctionFunctionalInterface;
+        }
+
+        @Override
+        protected Boolean doInBackground(Long... longs) {
+            Long accountId = longs[0];
+            MessageDao messageDao = localDatabase.messageDao();
+            AccountApi accountApi = RetrofitClient.getApi(AccountApi.class);
+
+            try {
+                Response<List<Message>> response = accountApi.getAccountMessages(accountId).execute();
+                if(response.isSuccessful()){
+                    List<Message> messages = response.body();
+                    messageDao.insertAll(messages);
+                    return true;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            onPostExecuteFunctionFunctionalInterface.postExecuteFunction(aBoolean);
+        }
     }
 
 

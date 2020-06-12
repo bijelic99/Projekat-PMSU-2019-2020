@@ -18,14 +18,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.CreateEmailActivity;
+import com.ftn.mailClient.adapters.EmailRecyclerViewAdapter;
 import com.ftn.mailClient.navigationRouter.NavigationRouter;
+import com.ftn.mailClient.utill.enums.FetchStatus;
+import com.ftn.mailClient.viewModel.AccountEmailsViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 public class EmailsActivity extends AppCompatActivity {
 
     private DrawerLayout drawer;
+    private AccountEmailsViewModel accountEmailsViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +61,41 @@ public class EmailsActivity extends AppCompatActivity {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close );
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        EmailRecyclerViewAdapter adapter  = new EmailRecyclerViewAdapter(this);
+        recyclerView.setAdapter(adapter);
+
+        accountEmailsViewModel = new ViewModelProvider(this).get(AccountEmailsViewModel.class);
+
+        Context c = this;
+
+        if(accountEmailsViewModel.getMessages() != null){
+            accountEmailsViewModel.getMessages().observe(this, messages -> {
+                if(messages != null)
+                    adapter.setMessages(messages);
+            });
+
+            swipeRefreshLayout.setOnRefreshListener(() -> {
+                LiveData<FetchStatus> fetchStatusLiveData = accountEmailsViewModel.syncMessages();
+                fetchStatusLiveData.observe((LifecycleOwner) c, new Observer<FetchStatus>() {
+                    @Override
+                    public void onChanged(FetchStatus fetchStatus) {
+                        if(fetchStatus.equals(FetchStatus.ERROR)) Toast.makeText(c, R.string.refreshError, Toast.LENGTH_SHORT).show();
+                        if(fetchStatus.equals(FetchStatus.ERROR) || fetchStatus.equals(FetchStatus.DONE)) {
+                            if (swipeRefreshLayout.isRefreshing()) swipeRefreshLayout.setRefreshing(false);
+                            fetchStatusLiveData.removeObserver(this);
+                        }
+
+                    }
+                });
+            });
+        }
+
+
     }
 
     @Override

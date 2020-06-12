@@ -18,13 +18,9 @@ public class ContactListTypeConverter {
     public List<Contact> toList(String s){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            Long[] ids = objectMapper.readValue(s, Long[].class);
+            Contact[] contacts = objectMapper.readValue(s, Contact[].class);
 
-            return Arrays.stream(ids).map(aLong -> {
-                Contact contact = new Contact();
-                contact.setId(aLong);
-                return contact;
-            }).collect(Collectors.toList());
+            return Arrays.asList(contacts);
         }
         catch (Exception e ){
             Log.e("ConverterError", e.getMessage());
@@ -37,7 +33,7 @@ public class ContactListTypeConverter {
     public String toJson(List<Contact> contacts){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.writeValueAsString(contacts.stream().mapToLong(value -> value.getId()).toArray());
+            return objectMapper.writeValueAsString(contacts);
         }catch (Exception e){
             Log.e("ConverterError", e.getMessage());
             return "[]";
