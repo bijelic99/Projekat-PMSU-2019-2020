@@ -23,13 +23,17 @@
             android:title="@string/app_name"
             android:navigationIcon="@drawable/ic_menu_white_24dp"
             />
-        <fragment
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="com.ftn.mailClient.activities.contactsActivity.fragments.ContactsListFragment"
-            tools:layout="@layout/fragment_contacts_list"
-            android:id="@+id/contacts_list"
-            />
+            android:id="@+id/swipe_refresh_layout">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/recycler_view"
+                android:paddingHorizontal="@dimen/rec_view_padding"
+                tools:listitem="@layout/fragment_contact"/>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 
