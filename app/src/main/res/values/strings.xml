@@ -97,4 +97,5 @@
     <string name="my_last_name">Last name</string>
     <string name="button_logout">Logout</string>
     <string name="need_to_choose_an_account">You need to choose an account to be able to see its emails</string>
+    <string name="need_to_be_logged_in">You need to be logged in</string>
 </resources>
