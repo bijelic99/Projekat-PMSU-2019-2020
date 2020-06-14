@@ -97,4 +97,9 @@
     <string name="my_last_name">Last name</string>
     <string name="button_logout">Logout</string>
     <string name="need_to_choose_an_account">You need to choose an account to be able to see its emails</string>
+    <string name="toolbar_email_del">Delete</string>
+    <string name="toolbar_email_repl_all">Replay All</string>
+    <string name="toolbar_email_repl">Replay</string>
+    <string name="toolbar_email_forw">Forward</string>
+    <string name="button_save">Save</string>
 </resources>
