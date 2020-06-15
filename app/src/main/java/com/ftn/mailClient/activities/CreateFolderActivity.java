@@ -2,7 +2,11 @@ package com.ftn.mailClient.activities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ProgressBar;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -40,8 +44,7 @@ public class CreateFolderActivity extends AppCompatActivity {
     private String folderName;
     private CreateFolderViewModel createFolderViewModel;
     private ProgressBar progressBar;
-    private Button insertButton;
-    private Button cancelBtn;
+    private MenuItem insertMenuItem;
 
 
 
@@ -49,6 +52,9 @@ public class CreateFolderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_folder);
+        getSupportActionBar().setTitle(R.string.add_folder);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         mFolderName = findViewById(R.id.editCreateFolderName);
         mParentFolder = findViewById(R.id.autoCompleteTextViewParentFolder);
@@ -77,18 +83,10 @@ public class CreateFolderActivity extends AppCompatActivity {
             else throw new NullPointerException("User needs to have an account to create account folder");
         }
 
-
-
-        insertButton = findViewById(R.id.buttonForCreateFolder);
-        insertButton.setOnClickListener(v -> clickHandler(v));
-
-        cancelBtn = findViewById(R.id.buttonForCancelCreateFolder);
-        cancelBtn.setOnClickListener(v -> activityEndRedirect());
     }
-    public void clickHandler(View v) {
+    public void clickHandler() {
         try {
-            insertButton.setEnabled(false);
-            cancelBtn.setEnabled(false);
+            insertMenuItem.setEnabled(false);
             progressBar.setVisibility(View.VISIBLE);
             progressBar.setIndeterminate(true);
             createFolderViewModel.setFolderName(mFolderName.getText().toString());
@@ -96,8 +94,7 @@ public class CreateFolderActivity extends AppCompatActivity {
             createFolderViewModel.addNewFolder().observe(this, fetchStatus -> {
                 if(fetchStatus.equals(FetchStatus.ERROR)) {
                     Toast.makeText(this, R.string.create_error, Toast.LENGTH_SHORT).show();
-                    insertButton.setEnabled(true);
-                    cancelBtn.setEnabled(true);
+                    insertMenuItem.setEnabled(true);
                 }
                 if(fetchStatus.equals(FetchStatus.DONE)) {
                     activityEndRedirect();
@@ -115,12 +112,38 @@ public class CreateFolderActivity extends AppCompatActivity {
         if(!createFolderViewModel.isAccountFolder()) {
             Intent intent = new Intent(getBaseContext(), FolderActivity.class);
             intent.putExtra("folderId", createFolderViewModel.getParentFolderId());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
         else {
             Intent intent = new Intent(getBaseContext(), FoldersActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.save_menu, menu);
+        insertMenuItem = menu.findItem(R.id.save_item);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.save_item:{
+                clickHandler();
+                break;
+            }
+            case android.R.id.home:{
+                activityEndRedirect();
+                break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

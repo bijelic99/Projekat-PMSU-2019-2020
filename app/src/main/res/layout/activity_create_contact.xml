@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".activities.CreateContactActivity"
     android:orientation="horizontal"
     android:layout_marginHorizontal="@dimen/smallPadding"
@@ -106,18 +111,6 @@
                     android:ems="10"
                     android:importantForAutofill="no"
                     android:inputType="text" />
-
-                <Button
-                    android:id="@+id/buttonContactSave"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/button_save_contact" />
-
-                <Button
-                    android:id="@+id/buttonContactBack"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/button_back_contact" />
             </LinearLayout>
         </LinearLayout>
 
@@ -131,4 +124,5 @@
             android:visibility="gone"
             />
 
+</LinearLayout>
 </LinearLayout>

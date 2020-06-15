@@ -6,7 +6,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.*;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +22,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.ftn.mailClient.R;
+import com.ftn.mailClient.activities.contactsActivity.ContactsActivity;
 import com.ftn.mailClient.activities.emailsActivity.EmailsActivity;
 import com.ftn.mailClient.model.Contact;
 import com.ftn.mailClient.utill.enums.FetchStatus;
@@ -38,16 +43,11 @@ public class CreateContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_contact);
+        getSupportActionBar().setTitle(R.string.add_contact);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         createContactViewModel = new ViewModelProvider(this).get(CreateContactViewModel.class);
-
-        Button b = findViewById(R.id.buttonContactSave);
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveButtonClicked();
-            }
-        });
 
         imageView = findViewById(R.id.image);
         imageView.setImageDrawable(getDrawable(R.drawable.ic_person_outline_white_24dp));
@@ -84,11 +84,6 @@ public class CreateContactActivity extends AppCompatActivity {
         }
     }
 
-    public void clickHandler(View v) {
-        Intent intent = new Intent(this, EmailsActivity.class);
-        startActivity(intent);
-    }
-
     public void saveButtonClicked(){
         contentLinearLayout.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
@@ -122,7 +117,32 @@ public class CreateContactActivity extends AppCompatActivity {
     }
 
     private void redirectToContacts(){
+        Intent intent = new Intent(this, ContactsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.save_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.save_item:{
+                saveButtonClicked();
+                break;
+            }
+            case android.R.id.home:{
+                redirectToContacts();
+                break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     //Disable back button

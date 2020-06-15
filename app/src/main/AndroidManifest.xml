@@ -33,7 +33,8 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".activities.CreateEmailActivity" />
         <activity android:name=".activities.CreateFolderActivity"/>
-        <activity android:name=".activities.CreateContactActivity"/>
+        <activity android:name=".activities.CreateContactActivity"
+            />
         <activity
             android:name=".activities.foldersActivity.FoldersActivity"
             android:theme="@style/AppTheme.NoActionBar" />
