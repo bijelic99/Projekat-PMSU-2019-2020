@@ -6,20 +6,21 @@ import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.*;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.emailsActivity.EmailsActivity;
 import com.ftn.mailClient.model.Contact;
+import com.ftn.mailClient.utill.enums.FetchStatus;
 import com.ftn.mailClient.viewModel.AccountEmailsViewModel;
 import com.ftn.mailClient.viewModel.CreateContactViewModel;
 
@@ -30,6 +31,8 @@ public class CreateContactActivity extends AppCompatActivity {
     private ImageView imageView;
     private static final int PICK_IMAGE = 2;
     private CreateContactViewModel createContactViewModel;
+    private LinearLayout contentLinearLayout;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,9 @@ public class CreateContactActivity extends AppCompatActivity {
             startActivityForResult(chooserInt, PICK_IMAGE);
 
         });
+
+        contentLinearLayout = findViewById(R.id.content_linear_layout);
+        progressBar = findViewById(R.id.progress_bar);
     }
 
     @Override
@@ -84,6 +90,9 @@ public class CreateContactActivity extends AppCompatActivity {
     }
 
     public void saveButtonClicked(){
+        contentLinearLayout.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+
         EditText first = findViewById(R.id.editFirstContact);
         EditText last = findViewById(R.id.editLastContact);
         EditText display = findViewById(R.id.editDisplayContact);
@@ -97,7 +106,23 @@ public class CreateContactActivity extends AppCompatActivity {
         contact.setEmail(email.getText().toString());
         contact.setFormat(format.getText().toString());
 
-        createContactViewModel.insert();
+        LiveData<FetchStatus> fetchStatusLiveData =  createContactViewModel.insert();
+        fetchStatusLiveData.observe(this, new Observer<FetchStatus>() {
+            @Override
+            public void onChanged(FetchStatus fetchStatus) {
+                if(fetchStatus.equals(FetchStatus.ERROR)) Toast.makeText(getApplicationContext(), R.string.create_error, Toast.LENGTH_SHORT).show();
+                if(!fetchStatus.equals(FetchStatus.FETCHING)){
+                    contentLinearLayout.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                    fetchStatusLiveData.removeObserver(this);
+                }
+                if(fetchStatus.equals(FetchStatus.DONE)) redirectToContacts();
+            }
+        });
+    }
+
+    private void redirectToContacts(){
+
     }
 
     //Disable back button
