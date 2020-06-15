@@ -82,6 +82,7 @@
                     android:importantForAutofill="no"
                     android:inputType="textPersonName" />
 
+
                 <TextView
                     android:id="@+id/textViewEmailContact"
                     android:layout_width="match_parent"
@@ -96,6 +97,13 @@
                     android:ems="10"
                     android:importantForAutofill="no"
                     android:inputType="textEmailAddress" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mail_required"
+                    android:textColor="@color/red"
+                    android:visibility="gone"
+                    android:id="@+id/email_req_t_w"/>
 
                 <TextView
                     android:id="@+id/textViewFormatContact"

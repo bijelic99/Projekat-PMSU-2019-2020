@@ -85,8 +85,7 @@ public class CreateContactActivity extends AppCompatActivity {
     }
 
     public void saveButtonClicked(){
-        contentLinearLayout.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
+
 
         EditText first = findViewById(R.id.editFirstContact);
         EditText last = findViewById(R.id.editLastContact);
@@ -94,26 +93,37 @@ public class CreateContactActivity extends AppCompatActivity {
         EditText email = findViewById(R.id.editEmailContact);
         EditText format = findViewById(R.id.editFormatContact);
 
-        Contact contact = createContactViewModel.getContact();
-        contact.setFirstName(first.getText().toString());
-        contact.setLastName(last.getText().toString());
-        contact.setDisplayName(display.getText().toString());
-        contact.setEmail(email.getText().toString());
-        contact.setFormat(format.getText().toString());
 
-        LiveData<FetchStatus> fetchStatusLiveData =  createContactViewModel.insert();
-        fetchStatusLiveData.observe(this, new Observer<FetchStatus>() {
-            @Override
-            public void onChanged(FetchStatus fetchStatus) {
-                if(fetchStatus.equals(FetchStatus.ERROR)) Toast.makeText(getApplicationContext(), R.string.create_error, Toast.LENGTH_SHORT).show();
-                if(!fetchStatus.equals(FetchStatus.FETCHING)){
-                    contentLinearLayout.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
-                    fetchStatusLiveData.removeObserver(this);
+
+        if(email.getText().toString() != null && email.getText().toString().matches("^.+@.+\\..+$")) {
+            contentLinearLayout.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+
+            Contact contact = createContactViewModel.getContact();
+            contact.setFirstName(first.getText().toString());
+            contact.setLastName(last.getText().toString());
+            contact.setDisplayName(display.getText().toString());
+            contact.setEmail(email.getText().toString());
+            contact.setFormat(format.getText().toString());
+
+            LiveData<FetchStatus> fetchStatusLiveData = createContactViewModel.insert();
+            fetchStatusLiveData.observe(this, new Observer<FetchStatus>() {
+                @Override
+                public void onChanged(FetchStatus fetchStatus) {
+                    if (fetchStatus.equals(FetchStatus.ERROR))
+                        Toast.makeText(getApplicationContext(), R.string.create_error, Toast.LENGTH_SHORT).show();
+                    if (!fetchStatus.equals(FetchStatus.FETCHING)) {
+                        contentLinearLayout.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
+                        fetchStatusLiveData.removeObserver(this);
+                    }
+                    if (fetchStatus.equals(FetchStatus.DONE)) redirectToContacts();
                 }
-                if(fetchStatus.equals(FetchStatus.DONE)) redirectToContacts();
-            }
-        });
+            });
+        }
+        else {
+            findViewById(R.id.email_req_t_w).setVisibility(View.VISIBLE);
+        }
     }
 
     private void redirectToContacts(){
