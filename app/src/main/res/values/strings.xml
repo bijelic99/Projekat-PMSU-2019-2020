@@ -102,4 +102,9 @@
     <string name="toolbar_email_repl">Replay</string>
     <string name="toolbar_email_forw">Forward</string>
     <string name="button_save">Save</string>
+    <string name="need_to_be_logged_in">You need to be logged in</string>
+    <string name="add_contact_profile_picture">Selected profile picture</string>
+    <string name="select_picture">Select image</string>
+    <string name="cancel">Cancel</string>
+    <string name="mail_required">Valid mail address is required</string>
 </resources>

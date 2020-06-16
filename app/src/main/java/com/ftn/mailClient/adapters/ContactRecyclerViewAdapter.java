@@ -17,16 +17,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.model.Contact;
+import com.ftn.mailClient.utill.LoadImageAsyncTask;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecyclerViewAdapter.ContactViewHolder> {
-    private ArrayList<Contact> contacts;
+    private List<Contact> contacts;
     private Context context;
 
-    public ContactRecyclerViewAdapter(Context context, ArrayList<Contact> contacts){
+    public ContactRecyclerViewAdapter(Context context, List<Contact> contacts){
         this.context = context;
         this.contacts = contacts;
+    }
+
+    public ContactRecyclerViewAdapter(Context context){
+        this.context = context;
+        this.contacts = new ArrayList<>();
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -80,16 +92,16 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
             displayName.setText(getContact().getDisplayName());
             email.setText(getContact().getEmail());
-            if(getContact().getPhoto() != null){
-                //TODO potencijalan problem, ne mogu sad da testiram
-                /*
-                byte[] byteImg = Base64.decode(getContact().getPhoto().getBase64Photo(), Base64.DEFAULT);
-                Drawable image = new BitmapDrawable(itemView.getResources(), BitmapFactory.decodeByteArray(byteImg, 0, byteImg.length));
-                profilePicture.setImageDrawable(image);*/
+            if(getContact().getPhoto() != null && getContact().getPhoto().getPath() != null){
+                new LoadImageAsyncTask(value -> {
+                    if(value != null)
+                        profilePicture.setImageBitmap(value);
+                }).execute(getContact().getPhoto().getPath());
 
             }
             else {
-                profilePicture.setImageResource(R.drawable.ic_person_outline_white_24dp);
+                Drawable personIcon = itemView.getContext().getDrawable(R.drawable.ic_person_outline_white_24dp);
+                profilePicture.setImageDrawable(personIcon);
             }
 
         }
