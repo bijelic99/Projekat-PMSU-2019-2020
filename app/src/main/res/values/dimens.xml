@@ -7,4 +7,7 @@
     <dimen name="standardElevation">20dp</dimen>
     <dimen name="rec_view_padding">6dp</dimen>
     <dimen name="toolbar_elevation">4dp</dimen>
+    <dimen name="chip_padding">4dp</dimen>
+    <dimen name="dropdown_list_text_size">24sp</dimen>
+    <dimen name="dropdown_list_bottom_padding">8dp</dimen>
 </resources>

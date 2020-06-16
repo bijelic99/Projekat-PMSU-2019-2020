@@ -102,4 +102,8 @@
     <string name="select_picture">Select image</string>
     <string name="cancel">Cancel</string>
     <string name="mail_required">Valid mail address is required</string>
+    <string name="send_mail">Send email</string>
+    <string name="add_attachment">Add attachment</string>
+    <string name="attachments">Attachments:</string>
+    <string name="john_doe">John Doe</string>
 </resources>
