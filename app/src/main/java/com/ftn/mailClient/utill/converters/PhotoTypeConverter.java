@@ -1,20 +1,32 @@
 package com.ftn.mailClient.utill.converters;
 
 import androidx.room.TypeConverter;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ftn.mailClient.model.Photo;
 import org.jetbrains.annotations.NotNull;
 
 
 public class PhotoTypeConverter {
     @TypeConverter
-    public Photo fromLong(Long id){
-        Photo p = new Photo();
-        p.setId(id);
-        return p;
+    public Photo fromJson(String json){
+        ObjectMapper om = new ObjectMapper();
+        try {
+            return om.readValue(json, Photo.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @TypeConverter
-    public Long toLong(Photo photo){
-        return photo != null ? photo.getId() : null;
+    public String toJson(Photo photo){
+        ObjectMapper om = new ObjectMapper();
+        try {
+            return om.writeValueAsString(photo);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

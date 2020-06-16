@@ -6,4 +6,5 @@
     <dimen name="smallPadding">20dp</dimen>
     <dimen name="standardElevation">20dp</dimen>
     <dimen name="rec_view_padding">6dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
 </resources>

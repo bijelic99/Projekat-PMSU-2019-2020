@@ -100,7 +100,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
             }
             else {
-                Drawable personIcon = itemView.getResources().getDrawable(R.drawable.ic_person_outline_white_24dp);
+                Drawable personIcon = itemView.getContext().getDrawable(R.drawable.ic_person_outline_white_24dp);
                 profilePicture.setImageDrawable(personIcon);
             }
 

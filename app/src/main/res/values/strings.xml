@@ -98,4 +98,8 @@
     <string name="button_logout">Logout</string>
     <string name="need_to_choose_an_account">You need to choose an account to be able to see its emails</string>
     <string name="need_to_be_logged_in">You need to be logged in</string>
+    <string name="add_contact_profile_picture">Selected profile picture</string>
+    <string name="select_picture">Select image</string>
+    <string name="cancel">Cancel</string>
+    <string name="mail_required">Valid mail address is required</string>
 </resources>
