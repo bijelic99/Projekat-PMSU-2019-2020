@@ -3,6 +3,8 @@ package com.ftn.mailClient.viewModel;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -14,6 +16,8 @@ import com.ftn.mailClient.model.Attachment;
 import com.ftn.mailClient.model.Contact;
 import com.ftn.mailClient.model.Identifiable;
 import com.ftn.mailClient.repository.ContactRepository;
+import com.ftn.mailClient.repository.MessageRepository;
+import com.ftn.mailClient.utill.enums.FetchStatus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,11 +28,12 @@ public class CreateEmailViewModel extends AndroidViewModel {
     private Long userId;
 
     private ContactRepository contactRepository;
+    private MessageRepository messageRepository;
 
     private MutableLiveData<List<Contact>> toList;
     private MutableLiveData<List<Contact>> ccList;
     private MutableLiveData<List<Contact>> bccList;
-    private MutableLiveData<List<Attachment>> attachmentList;
+    private MutableLiveData<List<Uri>> attachmentList;
     private String subject;
     private String content;
 
@@ -49,6 +54,7 @@ public class CreateEmailViewModel extends AndroidViewModel {
         }
         else Toast.makeText(application, R.string.need_to_be_logged_in, Toast.LENGTH_LONG).show();
         contactRepository = new ContactRepository(application);
+        messageRepository = new MessageRepository(application);
         this.toList = new MutableLiveData<>(new ArrayList<>());
         this.ccList = new MutableLiveData<>(new ArrayList<>());
         this.bccList = new MutableLiveData<>(new ArrayList<>());
@@ -94,7 +100,7 @@ public class CreateEmailViewModel extends AndroidViewModel {
         return bccList;
     }
 
-    public LiveData<List<Attachment>> getAttachmentList() {
+    public LiveData<List<Uri>> getAttachmentList() {
         return attachmentList;
     }
 
@@ -130,15 +136,15 @@ public class CreateEmailViewModel extends AndroidViewModel {
         return removeFromMutableLiveDataList(bccList, index);
     }
 
-    public Boolean addToAttachmentList(Attachment... attachments){
-        return addToMutableLiveDataList(attachmentList, attachments);
+    public Boolean addToAttachmentList(Uri... attachmentUris){
+        return addToMutableLiveDataList(attachmentList, attachmentUris);
     }
 
     public Boolean removeFromAttachmentList(int index){
         return removeFromMutableLiveDataList(attachmentList, index);
     }
 
-    private static <K extends Identifiable> Boolean removeFromMutableLiveDataList(MutableLiveData<List<K>> mutableLiveDataToRemoveFrom, int index){
+    private static <K extends Object> Boolean removeFromMutableLiveDataList(MutableLiveData<List<K>> mutableLiveDataToRemoveFrom, int index){
         List<K> list = mutableLiveDataToRemoveFrom.getValue();
         if(list != null && index < list.size()){
             list.remove(index);
@@ -148,7 +154,7 @@ public class CreateEmailViewModel extends AndroidViewModel {
         else return false;
     }
 
-    private static <K extends Identifiable> Boolean addToMutableLiveDataList(MutableLiveData<List<K>> mutableLiveDataToRemoveFrom, K... newItems){
+    private static <K extends Object> Boolean addToMutableLiveDataList(MutableLiveData<List<K>> mutableLiveDataToRemoveFrom, K... newItems){
         List<K> list = mutableLiveDataToRemoveFrom.getValue();
         if(list != null){
             list.addAll(Arrays.asList(newItems));
@@ -160,5 +166,13 @@ public class CreateEmailViewModel extends AndroidViewModel {
             mutableLiveDataToRemoveFrom.setValue(list);
             return false;
         }
+    }
+
+    public LiveData<FetchStatus> sendMessage(){
+        return messageRepository.sendMessage(toList.getValue(), ccList.getValue(), bccList.getValue(), subject, content, attachmentList.getValue(), accountId);
+    }
+
+    public LiveData<FetchStatus> saveToDrafts(){
+        return null;
     }
 }

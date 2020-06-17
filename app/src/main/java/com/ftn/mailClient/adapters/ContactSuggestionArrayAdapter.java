@@ -15,13 +15,21 @@ import com.ftn.mailClient.model.Contact;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ContactSuggestionArrayAdapter extends ArrayAdapter<Contact> {
     List<Contact> contactList;
+    List<Contact> selectedContacts;
 
     public ContactSuggestionArrayAdapter(@NonNull Context context) {
         super(context, R.layout.dropdown_list_item_contact);
         contactList = new ArrayList<>();
+        selectedContacts = new ArrayList<>();
+    }
+
+    public void setSelectedContacts(List<Contact> selectedContacts) {
+        this.selectedContacts = selectedContacts;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -50,11 +58,14 @@ public class ContactSuggestionArrayAdapter extends ArrayAdapter<Contact> {
                     R.layout.dropdown_list_item_contact, parent, false
             );
         }
+        Contact contact = getItem(position);
         TextView textView = convertView.findViewById(R.id.list_item_text);
-        textView.setText(getItem(position).toString());
+        textView.setText(contact.toString());
+        TextView emailTextView = convertView.findViewById(R.id.list_item_email);
+        if(!contact.getEmail().equals(contact.toString()) && contact.getEmail() != null) emailTextView.setText(contact.getEmail());
+        else emailTextView.setVisibility(View.GONE);
         return convertView;
     }
-
 
 
     @NonNull
@@ -63,9 +74,13 @@ public class ContactSuggestionArrayAdapter extends ArrayAdapter<Contact> {
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                FilterResults filterResults= new FilterResults();
-                filterResults.values = contactList;
-                filterResults.count = contactList.size();
+                FilterResults filterResults = new FilterResults();
+                List<Contact> filteredList = contactList.stream()
+                        .filter(contact -> !selectedContacts.contains(contact) )
+                        .collect(Collectors.toList());
+
+                filterResults.values = filteredList;
+                filterResults.count = filteredList.size();
                 return filterResults;
 
             }

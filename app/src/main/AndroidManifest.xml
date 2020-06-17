@@ -47,7 +47,6 @@
         <activity
             android:name=".activities.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <service android:name=".services.SyncFolderService"/>
     </application>
 
 </manifest>

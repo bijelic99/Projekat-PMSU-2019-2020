@@ -10,4 +10,8 @@
     <dimen name="chip_padding">4dp</dimen>
     <dimen name="dropdown_list_text_size">24sp</dimen>
     <dimen name="dropdown_list_bottom_padding">8dp</dimen>
+    <dimen name="dropdown_list_email_size">12sp</dimen>
+    <dimen name="create_email_row_height">24dp</dimen>
+    <dimen name="create_email_label_r_padding">4dp</dimen>
+    <dimen name="attachment_chip_icon_padding">8dp</dimen>
 </resources>

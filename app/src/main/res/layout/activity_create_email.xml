@@ -18,7 +18,7 @@
         android:visibility="gone" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="20dp"
@@ -32,25 +32,35 @@
             android:layout_height="0dp"
             android:layout_weight="0.5" />
 
-        <TextView
-            android:id="@+id/textViewForEmailTo"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:labelFor="@id/actw_to"
-            android:text="@string/email_to" />
+            android:layout_height="@dimen/create_email_row_height"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"
-            >
-
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/textViewForEmailTo"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:singleLine="true"
-                android:id="@+id/chip_group_to" />
-        </HorizontalScrollView>
+                android:labelFor="@id/actw_to"
+                android:text="@string/email_to"
+                android:elevation="20dp"
+                android:paddingRight="@dimen/create_email_label_r_padding" />
+
+
+            <HorizontalScrollView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true"
+                    android:id="@+id/chip_group_to" />
+            </HorizontalScrollView>
+        </LinearLayout>
 
         <AutoCompleteTextView
             android:id="@+id/actw_to"
@@ -59,25 +69,34 @@
             android:importantForAutofill="no"
             android:inputType="textEmailAddress" />
 
-        <TextView
-            android:id="@+id/textViewForEmailCc"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:labelFor="@id/actw_cc"
-            android:text="@string/email_cc" />
+            android:layout_height="@dimen/create_email_row_height"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"
-            >
+            <TextView
+                android:id="@+id/textViewForEmailCc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/actw_cc"
+                android:text="@string/email_cc"
+                android:elevation="20dp"
+                android:paddingRight="@dimen/create_email_label_r_padding" />
 
-            <com.google.android.material.chip.ChipGroup
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:singleLine="true"
-                android:id="@+id/chip_group_cc" />
-        </HorizontalScrollView>
+                android:scrollbars="none">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true"
+                    android:id="@+id/chip_group_cc" />
+            </HorizontalScrollView>
+        </LinearLayout>
+
 
         <AutoCompleteTextView
             android:id="@+id/actw_cc"
@@ -86,25 +105,34 @@
             android:importantForAutofill="no"
             android:inputType="textEmailAddress" />
 
-        <TextView
-            android:id="@+id/textViewForEmailBcc"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:labelFor="@id/actw_bcc"
-            android:text="@string/email_bcc" />
+            android:layout_height="@dimen/create_email_row_height"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"
-            >
+            <TextView
+                android:id="@+id/textViewForEmailBcc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/actw_bcc"
+                android:text="@string/email_bcc"
+                android:elevation="20dp"
+                android:paddingRight="@dimen/create_email_label_r_padding" />
 
-            <com.google.android.material.chip.ChipGroup
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:singleLine="true"
-                android:id="@+id/chip_group_bcc" />
-        </HorizontalScrollView>
+                android:scrollbars="none">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true"
+                    android:id="@+id/chip_group_bcc" />
+            </HorizontalScrollView>
+        </LinearLayout>
+
 
         <AutoCompleteTextView
             android:id="@+id/actw_bcc"
@@ -146,29 +174,33 @@
             android:layout_weight="1"
             tools:text="@string/content_placeholder" />
 
-        <HorizontalScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:scrollbars="none"
-            >
+            android:layout_height="@dimen/create_email_row_height"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-            <FrameLayout
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:labelFor="@id/chip_group_attachment"
+                android:text="@string/attachments"
+                android:elevation="20dp"
+                android:paddingRight="@dimen/create_email_label_r_padding" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/attachments" />
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
 
                 <com.google.android.material.chip.ChipGroup
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:singleLine="true"
                     android:id="@+id/chip_group_attachment" />
-            </FrameLayout>
-        </HorizontalScrollView>
+            </HorizontalScrollView>
+
+        </LinearLayout>
 
 
         <Space

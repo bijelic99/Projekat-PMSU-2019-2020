@@ -39,6 +39,9 @@ public interface FolderDao extends DaoInterface<Folder> {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertMessagesToFolder(List<FolderMessage> folderMessages);
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertMessagesToFolder(FolderMessage... folderMessages);
+
     @Query("Select f.id as id, f.name as name, ifnull(x.numberOfMessages, 0) as numberOfMessages, ifnull(y.numberOfFolders, 0) as numberOfFolders from Folder f left join (Select folderId, count(messageId) as numberOfMessages from foldermessage group by folderId) x on f.id = x.folderId left join (Select parentFolderId, count(childFolderId) as numberOfFolders from folderinnerfolders group by parentFolderId) y on f.id = y.parentFolderId where f.id = :id")
     LiveData<FolderMetadata> getFolderMetadataById(Long id);
 
@@ -53,5 +56,8 @@ public interface FolderDao extends DaoInterface<Folder> {
 
     @Query("Delete from FolderMessage where folderId = :id")
     void deleteAllFolderMessages(Long id);
+
+    @Query("Select f.id from AccountFolder af join Folder f on af.folderId = f.id where af.accountId = :accountId and f.name = 'Sent'")
+    Long getSentFolderId(Long accountId);
 
 }

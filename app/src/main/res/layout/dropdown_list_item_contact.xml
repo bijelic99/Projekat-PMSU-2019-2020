@@ -2,15 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingBottom="@dimen/dropdown_list_bottom_padding"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/dropdown_list_text_size"
     >
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
         android:id="@+id/list_item_text"
         tools:text="@string/john_doe"
         android:textSize="@dimen/dropdown_list_text_size"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:id="@+id/list_item_email"
+        tools:text="@string/john_doe"
+        android:textSize="@dimen/dropdown_list_email_size"
+        android:paddingLeft="@dimen/smallPadding"
         />
 
 </LinearLayout>
