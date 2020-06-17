@@ -92,7 +92,11 @@ public class MessageAsyncTasks {
                         }
                         InputStream inputStream = contentResolver.openInputStream(uri);
                         ByteBuffer byteBuffer = ByteBuffer.allocate(inputStream.available());
+                        while (inputStream.available()>0){
+                            byteBuffer.put((byte) inputStream.read());
+                        }
                         base64 = Base64.getEncoder().encodeToString(byteBuffer.array());
+                        Log.e("attachment", base64);
                         Attachment attachment = new Attachment();
                         attachment.setName(filename);
                         String type = contentResolver.getType(uri);
