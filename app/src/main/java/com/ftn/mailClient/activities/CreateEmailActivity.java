@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.emailsActivity.EmailsActivity;
 import com.ftn.mailClient.adapters.ContactSuggestionArrayAdapter;
+import com.ftn.mailClient.model.Attachment;
 import com.ftn.mailClient.model.Contact;
 import com.ftn.mailClient.utill.ContactChipClickEvent;
 import com.ftn.mailClient.utill.enums.FetchStatus;
@@ -32,6 +33,8 @@ import java.util.List;
 
 public class CreateEmailActivity extends AppCompatActivity {
     private CreateEmailViewModel createEmailViewModel;
+
+    private Menu supportMenu;
 
     private ChipGroup toChipGroup;
     private ChipGroup ccChipGroup;
@@ -57,6 +60,9 @@ public class CreateEmailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_email);
 
         createEmailViewModel = new ViewModelProvider(this).get(CreateEmailViewModel.class);
+        if(getIntent().hasExtra("mailId")){
+            createEmailViewModel.draftModeOn(getIntent().getLongExtra("mailId", -55L));
+        }
 
         getSupportActionBar().setTitle(R.string.send_mail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -234,29 +240,44 @@ public class CreateEmailActivity extends AppCompatActivity {
             }
         });
 
-        createEmailViewModel.getAttachmentUriList().observe(this, uris -> {
-            if (uris != null) {
+        if(!createEmailViewModel.getDraftMode())
+            createEmailViewModel.getAttachmentUriList().observe(this, uris -> {
+                if (uris != null) {
+                    attachmentChipGroup.removeAllViews();
+                    int i = 0;
+                    for (Uri uri : uris) {
+                        String filename = "";
+                        Cursor cursor = null;
+                        try {
+                            cursor = getContentResolver().query(uri, new String[]{OpenableColumns.DISPLAY_NAME}, null, null, null);
+                            if (cursor != null && cursor.moveToFirst()) {
+                                filename = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                            }
+                        }finally {
+                            if(cursor != null) cursor.close();
+                        }
+                        View view = LayoutInflater.from(this).inflate(R.layout.chip_attachment, attachmentChipGroup, false);
+                        Chip chip = view.findViewById(R.id.attachment_chip);
+                        chip.setText(filename);
+                        Integer index = i;
+                        chip.setOnCloseIconClickListener(v -> createEmailViewModel.removeFromAttachmentList(index));
+                        attachmentChipGroup.addView(chip, i++);
+                    }
+
+                }
+            });
+        else createEmailViewModel.getAttachmentList().observe(this, attachments -> {
+            if(attachments != null){
                 attachmentChipGroup.removeAllViews();
                 int i = 0;
-                for (Uri uri : uris) {
-                    String filename = "";
-                    Cursor cursor = null;
-                    try {
-                        cursor = getContentResolver().query(uri, new String[]{OpenableColumns.DISPLAY_NAME}, null, null, null);
-                        if (cursor != null && cursor.moveToFirst()) {
-                            filename = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                        }
-                    }finally {
-                        if(cursor != null) cursor.close();
-                    }
+                for (Attachment attachment : attachments) {
                     View view = LayoutInflater.from(this).inflate(R.layout.chip_attachment, attachmentChipGroup, false);
                     Chip chip = view.findViewById(R.id.attachment_chip);
-                    chip.setText(filename);
+                    chip.setText(attachment.getName());
                     Integer index = i;
                     chip.setOnCloseIconClickListener(v -> createEmailViewModel.removeFromAttachmentList(index));
                     attachmentChipGroup.addView(chip, i++);
                 }
-
             }
         });
     }
@@ -294,6 +315,7 @@ public class CreateEmailActivity extends AppCompatActivity {
         super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.create_email_menu, menu);
+        this.supportMenu = menu;
         return true;
     }
 
@@ -303,11 +325,18 @@ public class CreateEmailActivity extends AppCompatActivity {
             case R.id.send_item: {
                 linearLayout.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
+                disableSupportActionBarItems();
                 createEmailViewModel.sendMessage().observe(this, fetchStatus -> {
-                    if(fetchStatus.equals(FetchStatus.ERROR)) Toast.makeText(this, R.string.create_error, Toast.LENGTH_SHORT).show();
+                    if(fetchStatus.equals(FetchStatus.ERROR)) {
+                        Toast.makeText(this, R.string.create_error, Toast.LENGTH_SHORT).show();
+                        enableSupportActionBarItems();
+                    }
                     if(fetchStatus.equals(FetchStatus.DONE) || fetchStatus.equals(FetchStatus.ERROR)){
                         progressBar.setVisibility(View.GONE);
                         linearLayout.setVisibility(View.VISIBLE);
+                    }
+                    if(fetchStatus.equals(FetchStatus.DONE)){
+                        backRedirect();
                     }
                 });
                 break;
@@ -321,9 +350,7 @@ public class CreateEmailActivity extends AppCompatActivity {
                 break;
             }
             case R.id.cancel_item: {
-                Intent intent = new Intent(getBaseContext(), EmailsActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                backRedirect();
                 break;
             }
             case android.R.id.home: {
@@ -354,8 +381,25 @@ public class CreateEmailActivity extends AppCompatActivity {
         }
     }
 
-    //Disable back button
+    public void disableSupportActionBarItems(){
+        supportMenu.findItem(R.id.send_item).setEnabled(false);
+        supportMenu.findItem(R.id.add_attachment_item).setEnabled(false);
+        supportMenu.findItem(R.id.cancel_item).setEnabled(false);
+    }
 
+    public void enableSupportActionBarItems(){
+        supportMenu.findItem(R.id.send_item).setEnabled(true);
+        supportMenu.findItem(R.id.add_attachment_item).setEnabled(true);
+        supportMenu.findItem(R.id.cancel_item).setEnabled(true);
+    }
+
+    public void backRedirect(){
+        Intent intent = new Intent(getBaseContext(), EmailsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+    //Disable back button
     @Override
     public void onBackPressed() {
         saveToDraftsAndRedirect();
