@@ -40,8 +40,10 @@ public class ContactSuggestionArrayAdapter extends ArrayAdapter<Contact> {
 
     @Override
     public void addAll(@NonNull Collection<? extends Contact> collection) {
-        contactList.addAll(collection);
-        super.addAll(collection);
+        if(collection != null) {
+            contactList.addAll(collection);
+            super.addAll(collection);
+        }
     }
 
     @Override
