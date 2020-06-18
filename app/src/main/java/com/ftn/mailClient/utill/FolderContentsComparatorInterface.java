@@ -13,7 +13,11 @@ public interface FolderContentsComparatorInterface {
             if(o2.getClass() == Message.class){
                 Message m1 = (Message) o1;
                 Message m2 = (Message) o2;
-                return m1.getDateTime().isAfter(m2.getDateTime()) ? -1 : m2.getDateTime().isAfter(m1.getDateTime()) ? 1 : 0;
+                if(m1.getDateTime() == null && m2.getDateTime() != null) return -1;
+                else if(m1.getDateTime() != null && m2.getDateTime() == null) return 1;
+                else if(m1.getDateTime() == null && m2.getDateTime() == null) return 0;
+                else
+                    return m1.getDateTime().isAfter(m2.getDateTime()) ? -1 : m2.getDateTime().isAfter(m1.getDateTime()) ? 1 : 0;
             }
             else if(o2.getClass() == FolderMetadata.class){
                 return 1;
