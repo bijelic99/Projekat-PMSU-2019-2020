@@ -2,7 +2,9 @@ package com.ftn.mailClient.repository;
 
 import android.app.Application;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.ftn.mailClient.dao.MessageDao;
@@ -56,10 +58,12 @@ public class MessageRepository extends Repository<Message, MessageDao> {
 
     public LiveData<FetchStatus> sendMessage(List<Contact> toList, List<Contact> ccList, List<Contact> bccList, String subject, String contents, List<Uri> attachments, Long accountId){
         MutableLiveData<FetchStatus> fetchStatusLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
+
         Bundle bundle = new Bundle();
         bundle.putSerializable("toList", new ArrayList<>(toList));
         bundle.putSerializable("ccList", new ArrayList<>(ccList));
         bundle.putSerializable("bccList", new ArrayList<>(bccList));
+        bundle.putLong("accountId", accountId);
         bundle.putString("subject", subject);
         bundle.putString("contents", contents);
         bundle.putSerializable("attachments", new ArrayList<>(attachments));
@@ -69,6 +73,27 @@ public class MessageRepository extends Repository<Message, MessageDao> {
                 value -> fetchStatusLiveData.setValue(value ? FetchStatus.DONE : FetchStatus.ERROR),
                 accountId, application.getContentResolver())
                 .execute(bundle);
+
+        return fetchStatusLiveData;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public LiveData<FetchStatus> addToDrafts(List<Contact> toList, List<Contact> ccList, List<Contact> bccList, String subject, String contents, List<Uri> attachments, Long accountId){
+        MutableLiveData<FetchStatus> fetchStatusLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("toList", new ArrayList<>(toList));
+        bundle.putSerializable("ccList", new ArrayList<>(ccList));
+        bundle.putSerializable("bccList", new ArrayList<>(bccList));
+        bundle.putLong("accountId", accountId);
+        bundle.putString("subject", subject);
+        bundle.putString("contents", contents);
+        bundle.putSerializable("attachments", new ArrayList<>(attachments));
+
+        new MessageAsyncTasks.AddToDraftsAsyncTask(database,
+                value -> fetchStatusLiveData.setValue(value ? FetchStatus.DONE : FetchStatus.ERROR),
+                accountId, application.getContentResolver()
+                ).execute(bundle);
 
         return fetchStatusLiveData;
     }

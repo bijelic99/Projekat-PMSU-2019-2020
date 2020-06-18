@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import androidx.annotation.NonNull;
@@ -20,6 +19,7 @@ import android.os.Bundle;
 
 import androidx.lifecycle.ViewModelProvider;
 import com.ftn.mailClient.R;
+import com.ftn.mailClient.activities.emailsActivity.EmailsActivity;
 import com.ftn.mailClient.adapters.ContactSuggestionArrayAdapter;
 import com.ftn.mailClient.model.Contact;
 import com.ftn.mailClient.utill.ContactChipClickEvent;
@@ -234,7 +234,7 @@ public class CreateEmailActivity extends AppCompatActivity {
             }
         });
 
-        createEmailViewModel.getAttachmentList().observe(this, uris -> {
+        createEmailViewModel.getAttachmentUriList().observe(this, uris -> {
             if (uris != null) {
                 attachmentChipGroup.removeAllViews();
                 int i = 0;
@@ -321,9 +321,13 @@ public class CreateEmailActivity extends AppCompatActivity {
                 break;
             }
             case R.id.cancel_item: {
+                Intent intent = new Intent(getBaseContext(), EmailsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
             }
             case android.R.id.home: {
+                saveToDraftsAndRedirect();
                 break;
             }
         }
@@ -351,8 +355,18 @@ public class CreateEmailActivity extends AppCompatActivity {
     }
 
     //Disable back button
-    /*
+
     @Override
-    public void onBackPressed() { }
-    */
+    public void onBackPressed() {
+        saveToDraftsAndRedirect();
+
+    }
+
+    private void saveToDraftsAndRedirect(){
+        createEmailViewModel.saveToDrafts();
+        Intent intent = new Intent(getBaseContext(), EmailsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
 }

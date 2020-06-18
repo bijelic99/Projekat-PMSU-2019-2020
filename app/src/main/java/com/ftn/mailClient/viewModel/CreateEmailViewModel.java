@@ -3,18 +3,14 @@ package com.ftn.mailClient.viewModel;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.net.Uri;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
+import androidx.lifecycle.*;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.model.Attachment;
 import com.ftn.mailClient.model.Contact;
-import com.ftn.mailClient.model.Identifiable;
+import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.repository.ContactRepository;
 import com.ftn.mailClient.repository.MessageRepository;
 import com.ftn.mailClient.utill.enums.FetchStatus;
@@ -30,10 +26,12 @@ public class CreateEmailViewModel extends AndroidViewModel {
     private ContactRepository contactRepository;
     private MessageRepository messageRepository;
 
+    private Long draftMessageId;
     private MutableLiveData<List<Contact>> toList;
     private MutableLiveData<List<Contact>> ccList;
     private MutableLiveData<List<Contact>> bccList;
-    private MutableLiveData<List<Uri>> attachmentList;
+    private MutableLiveData<List<Uri>> attachmentUriList;
+    private MutableLiveData<List<Attachment>> attachmentList;
     private String subject;
     private String content;
 
@@ -43,6 +41,7 @@ public class CreateEmailViewModel extends AndroidViewModel {
     public LiveData<List<Contact>> toListFiltered;
     public LiveData<List<Contact>> ccListFiltered;
     public LiveData<List<Contact>> bccListFiltered;
+    public Boolean draftMode;
 
 
     public CreateEmailViewModel(@NonNull Application application) {
@@ -58,6 +57,7 @@ public class CreateEmailViewModel extends AndroidViewModel {
         this.toList = new MutableLiveData<>(new ArrayList<>());
         this.ccList = new MutableLiveData<>(new ArrayList<>());
         this.bccList = new MutableLiveData<>(new ArrayList<>());
+        this.attachmentUriList = new MutableLiveData<>(new ArrayList<>());
         this.attachmentList = new MutableLiveData<>(new ArrayList<>());
         this.subject = "";
         this.content = "";
@@ -68,6 +68,33 @@ public class CreateEmailViewModel extends AndroidViewModel {
         this.toListFiltered = Transformations.switchMap(toListFilter, input -> contactRepository.getContacts(input));
         this.ccListFiltered = Transformations.switchMap(ccListFilter, input -> contactRepository.getContacts(input));
         this.bccListFiltered = Transformations.switchMap(bccListFilter, input -> contactRepository.getContacts(input));
+        draftMode = false;
+    }
+
+    public void draftModeOn(Long messageId) {
+        this.draftMode = true;
+            this.draftMessageId = messageId;
+            LiveData<Message> messageLiveData = this.messageRepository.getById(messageId);
+            messageLiveData.observeForever(new Observer<Message>() {
+                @Override
+                public void onChanged(Message message) {
+                    if(message != null){
+                        toList.setValue(message.getTo());
+                        ccList.setValue(message.getCc());
+                        bccList.setValue(message.getBcc());
+                        attachmentList.setValue(message.getAttachments());
+                        subject = message.getSubject();
+                        content = message.getContent();
+                        
+                        messageLiveData.removeObserver(this);
+                    }
+                }
+            });
+
+    }
+
+    public void draftModeOff(){
+        this.draftMode = false;
     }
 
     public void setToSearchTerm(String term){
@@ -100,8 +127,8 @@ public class CreateEmailViewModel extends AndroidViewModel {
         return bccList;
     }
 
-    public LiveData<List<Uri>> getAttachmentList() {
-        return attachmentList;
+    public LiveData<List<Uri>> getAttachmentUriList() {
+        return attachmentUriList;
     }
 
     public String getSubject() {
@@ -137,11 +164,11 @@ public class CreateEmailViewModel extends AndroidViewModel {
     }
 
     public Boolean addToAttachmentList(Uri... attachmentUris){
-        return addToMutableLiveDataList(attachmentList, attachmentUris);
+        return addToMutableLiveDataList(attachmentUriList, attachmentUris);
     }
 
     public Boolean removeFromAttachmentList(int index){
-        return removeFromMutableLiveDataList(attachmentList, index);
+        return removeFromMutableLiveDataList(attachmentUriList, index);
     }
 
     private static <K extends Object> Boolean removeFromMutableLiveDataList(MutableLiveData<List<K>> mutableLiveDataToRemoveFrom, int index){
@@ -169,10 +196,23 @@ public class CreateEmailViewModel extends AndroidViewModel {
     }
 
     public LiveData<FetchStatus> sendMessage(){
-        return messageRepository.sendMessage(toList.getValue(), ccList.getValue(), bccList.getValue(), subject, content, attachmentList.getValue(), accountId);
+        return messageRepository.sendMessage(toList.getValue(), ccList.getValue(), bccList.getValue(), subject, content, attachmentUriList.getValue(), accountId);
     }
 
-    public LiveData<FetchStatus> saveToDrafts(){
-        return null;
+    public void saveToDrafts(){
+        if (toList.getValue().size() > 0 || ccList.getValue().size() > 0 || bccList.getValue().size() > 0 || !subject.isEmpty() || !content.isEmpty() || attachmentUriList.getValue().size() > 0){
+            LiveData<FetchStatus> liveData = messageRepository.addToDrafts(toList.getValue(), ccList.getValue(), bccList.getValue(), subject, content, attachmentUriList.getValue(), accountId);
+            liveData.observeForever(new Observer<FetchStatus>() {
+                @Override
+                public void onChanged(FetchStatus fetchStatus) {
+                    if (fetchStatus.equals(FetchStatus.DONE) || fetchStatus.equals(FetchStatus.ERROR)){
+                        if (fetchStatus.equals(FetchStatus.DONE)) Toast.makeText(getApplication(), R.string.message_saved_to_drafts, Toast.LENGTH_SHORT).show();
+                        else if(fetchStatus.equals(FetchStatus.ERROR)) Toast.makeText(getApplication(), R.string.failed_to_save_to_drafts, Toast.LENGTH_SHORT).show();
+                        liveData.removeObserver(this);
+                    }
+                }
+            });
+        }
+
     }
 }

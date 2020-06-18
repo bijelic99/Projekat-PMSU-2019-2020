@@ -60,4 +60,7 @@ public interface FolderDao extends DaoInterface<Folder> {
     @Query("Select f.id from AccountFolder af join Folder f on af.folderId = f.id where af.accountId = :accountId and f.name = 'Sent'")
     Long getSentFolderId(Long accountId);
 
+    @Query("Select f.id from AccountFolder af join Folder f on af.folderId = f.id where af.accountId = :accountId and f.name = 'Drafts'")
+    Long getDraftsFolderId(Long accountId);
+
 }
