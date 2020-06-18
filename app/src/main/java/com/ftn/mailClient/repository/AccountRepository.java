@@ -7,6 +7,7 @@ import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Account;
 import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
+import com.ftn.mailClient.model.Tag;
 import com.ftn.mailClient.repository.asyncTasks.AccountAsyncTasks;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 
@@ -74,10 +75,21 @@ public class AccountRepository extends Repository<Account, AccountDao> {
         return dao.getAccountMessages();
     }
 
+    public LiveData<List<Tag>> getAccountTags(){
+        return dao.getAccountTags();
+    }
+
     public LiveData<FetchStatus> fetchAccountMessages(Long accountId) {
         MutableLiveData<FetchStatus> fetchStatusMutableLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
         new AccountAsyncTasks.FetchAccountMessagesAsyncTask(database, value -> fetchStatusMutableLiveData.setValue(value ? FetchStatus.DONE : FetchStatus.ERROR))
                 .execute(accountId);
+        return fetchStatusMutableLiveData;
+    }
+
+    public LiveData<FetchStatus> fetchAccountTags(Long accountID){
+        MutableLiveData<FetchStatus> fetchStatusMutableLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
+        new AccountAsyncTasks.FetchAccountTagsAsyncTask(database, x -> fetchStatusMutableLiveData.setValue(x ? FetchStatus.DONE : FetchStatus.ERROR))
+                .execute(accountID);
         return fetchStatusMutableLiveData;
     }
 }

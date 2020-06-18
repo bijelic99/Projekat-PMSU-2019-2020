@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -21,7 +22,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CreateTagActivity extends AppCompatActivity {
-    private EditText tagName;
+    private TextView tagName;
     private String tagNameString;
 
     private Tag tag;
@@ -31,7 +32,7 @@ public class CreateTagActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_tag_activity);
 
-        tagName = findViewById(R.id.textViewForAddTag);
+        tagName = findViewById(R.id.editTag);
 
 
         Button bu = findViewById(R.id.buttonForCreateTag);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.chip.Chip
+        android:id="@+id/chipTagUsers"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -15,4 +16,5 @@
         app:chipBackgroundColor="@color/white"
         android:clickable="false"
         android:checkable="false"
-        />
+    >
+</com.google.android.material.chip.Chip>

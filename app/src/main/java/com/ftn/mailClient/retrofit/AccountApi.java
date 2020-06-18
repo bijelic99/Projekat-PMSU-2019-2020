@@ -4,6 +4,8 @@ import com.ftn.mailClient.model.Account;
 import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
+import com.ftn.mailClient.model.Tag;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -20,5 +22,8 @@ public interface AccountApi extends Api {
 
     @GET("api/accounts/{id}/messages")
     Call<List<Message>> getAccountMessages(@Path("id") Long id);
+
+    @GET("api/accounts/{id}/tags")
+    Call<List<Tag>> getAccountTags(@Path("id") Long id);
 
 }

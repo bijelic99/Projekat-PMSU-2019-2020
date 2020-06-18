@@ -6,6 +6,7 @@ import com.ftn.mailClient.model.Account;
 import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
+import com.ftn.mailClient.model.Tag;
 import com.ftn.mailClient.model.linkingClasses.AccountFolder;
 
 import java.util.List;
@@ -31,5 +32,8 @@ public interface AccountDao extends DaoInterface<Account> {
 
     @Query("Select * from Message m")
     LiveData<List<Message>> getAccountMessages();
+
+    @Query("Select * from Tag t")
+    LiveData<List<Tag>> getAccountTags();
 
 }
