@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 
 import com.ftn.mailClient.R;
+import com.ftn.mailClient.activities.ProfileActivity;
 import com.ftn.mailClient.activities.contactsActivity.ContactsActivity;
 import com.ftn.mailClient.activities.emailsActivity.EmailsActivity;
 import com.ftn.mailClient.activities.foldersActivity.FoldersActivity;
@@ -14,6 +15,11 @@ import com.ftn.mailClient.activities.foldersActivity.FoldersActivity;
 public interface NavigationRouter {
     public static boolean routeFromMenuItem(Context context, @NonNull MenuItem item){
         switch (item.getItemId()){
+            case R.id.profile:{
+                Intent intent = new Intent(context, ProfileActivity.class);
+                context.startActivity(intent);
+                return true;
+            }
             case R.id.emails: {
                 Intent intent = new Intent(context, EmailsActivity.class);
                 context.startActivity(intent);

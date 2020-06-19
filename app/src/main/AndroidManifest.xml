@@ -46,7 +46,15 @@
             android:name=".activities.emailsActivity.EmailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activities.ProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
             android:name=".activities.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.CreateTagActivity" />
+        <activity
+            android:name=".activities.TagsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

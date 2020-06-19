@@ -11,6 +11,7 @@ import com.ftn.mailClient.dao.MessageDao;
 import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Contact;
 import com.ftn.mailClient.model.Message;
+import com.ftn.mailClient.model.Tag;
 import com.ftn.mailClient.repository.asyncTasks.MessageAsyncTasks;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 
@@ -27,7 +28,7 @@ public class MessageRepository extends Repository<Message, MessageDao> {
     }
 
     @Override
-    public LiveData<FetchStatus> insert(Message value) {
+    public LiveData<FetchStatus> insert(Tag value, Long userID) {
         return null;
     }
 

@@ -11,6 +11,7 @@ import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
+import com.ftn.mailClient.model.Tag;
 import com.ftn.mailClient.repository.asyncTasks.FolderAsyncTasks;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 
@@ -31,7 +32,7 @@ public class FolderRepository extends Repository<Folder, FolderDao> {
     }
 
     @Override
-    public LiveData<FetchStatus> insert(Folder value) {
+    public LiveData<FetchStatus> insert(Tag value, Long userID) {
         return null;
     }
 
