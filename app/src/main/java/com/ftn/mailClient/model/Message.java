@@ -10,6 +10,7 @@ import com.ftn.mailClient.utill.converters.*;
 import com.ftn.mailClient.utill.deserializer.LocalDateTimeDeserializer;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 @Entity
 public class Message extends Identifiable {
@@ -37,7 +38,9 @@ public class Message extends Identifiable {
 
     @Ignore
     public Message(){
-        this(null, null, null, null, null, null, null, null, null, true);
+        this(null, null, null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), null, null, null, true);
+        this.attachments = new ArrayList<>();
+        this.tags = new ArrayList<>();
     }
 
     public Message(Long id, Long account, Contact from, List<Contact> to, List<Contact> cc, List<Contact> bcc, LocalDateTime dateTime, String subject, String content, Boolean unread) {

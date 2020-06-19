@@ -53,16 +53,16 @@ public class ContactRepository extends Repository<Contact, ContactDao> {
         return null;
     }
 
-    public LiveData<FetchStatus> fetchContacts(Long accountId){
+    public LiveData<FetchStatus> fetchContacts(Long userId){
         MutableLiveData<FetchStatus> fetchStatusMutableLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
-        new ContactAsyncTasks.FetchContactsAsyncTask(database, value -> fetchStatusMutableLiveData.setValue(value ? FetchStatus.DONE : FetchStatus.ERROR)).execute(accountId);
+        new ContactAsyncTasks.FetchContactsAsyncTask(database, value -> fetchStatusMutableLiveData.setValue(value ? FetchStatus.DONE : FetchStatus.ERROR)).execute(userId);
         return fetchStatusMutableLiveData;
     }
 
     /**
      * First we upload image to server, then by callback we also add new contact
      * @param contact New contact
-     * @param imagePath Uri to the image in the phone
+     * @param imageBitmap Bitmap of the image you wish to add to contact
      * @return Status of fetching
      */
     public LiveData<FetchStatus> insert(Contact contact, Bitmap imageBitmap, Long userId) {
@@ -84,5 +84,9 @@ public class ContactRepository extends Repository<Contact, ContactDao> {
         MutableLiveData<FetchStatus> fetchStatusMutableLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
         new ContactAsyncTasks.InsertContactAsyncTask(database, value1 -> fetchStatusMutableLiveData.setValue(value1 ? FetchStatus.DONE : FetchStatus.ERROR), userId).execute(value);
         return fetchStatusMutableLiveData;
+    }
+
+    public LiveData<List<Contact>> getContacts(String term){
+        return dao.getContacts(term);
     }
 }
