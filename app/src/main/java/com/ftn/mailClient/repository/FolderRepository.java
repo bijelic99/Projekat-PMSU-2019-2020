@@ -108,4 +108,8 @@ public class FolderRepository extends Repository<Folder, FolderDao> {
     public LiveData<List<Message>> getMessages(Long folderId){
         return dao.getMessages(folderId);
     }
+
+    public LiveData<List<FolderMetadata>> getAllFoldersAsMetadata(){
+        return dao.getAllFoldersAsMetadata();
+    }
 }

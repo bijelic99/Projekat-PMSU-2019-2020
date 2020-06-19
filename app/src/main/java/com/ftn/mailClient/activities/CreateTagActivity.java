@@ -64,6 +64,7 @@ public class CreateTagActivity extends AppCompatActivity {
 
     private void activityEndRedirect() {
         Intent intent = new Intent(getBaseContext(), ProfileActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 }

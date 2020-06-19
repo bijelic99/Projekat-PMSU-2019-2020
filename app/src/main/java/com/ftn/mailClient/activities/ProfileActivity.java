@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ftn.mailClient.R;
+import com.ftn.mailClient.dialogs.AddRuleDialog;
 
 public class ProfileActivity extends AppCompatActivity {
     @Override
@@ -23,6 +24,12 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 clickHandler(v);
             }
+        });
+
+        Button addRuleBtn = findViewById(R.id.add_rule_button);
+        addRuleBtn.setOnClickListener(v -> {
+            AddRuleDialog addRuleDialog = new AddRuleDialog();
+            addRuleDialog.show(getSupportFragmentManager(), "Add rule dialog");
         });
     }
 

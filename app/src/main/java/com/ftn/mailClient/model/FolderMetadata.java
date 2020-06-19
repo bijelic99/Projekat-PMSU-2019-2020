@@ -53,4 +53,9 @@ public class FolderMetadata extends Identifiable{
     public void setNumberOfMessages(Integer numberOfMessages) {
         this.numberOfMessages = numberOfMessages;
     }
+
+    @Override
+    public String toString() {
+        return getName() != null ? getName() : "";
+    }
 }

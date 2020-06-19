@@ -109,4 +109,13 @@
     <string name="file_placeholder">file.doc</string>
     <string name="message_saved_to_drafts">Message saved to drafts folder</string>
     <string name="failed_to_save_to_drafts">Failed to save to drafts</string>
+    <string name="edit_folder">Edit folder</string>
+    <string name="execute_rules_on_folder">Execute rules on folder</string>
+    <string name="add_rule">Add rule</string>
+    <string name="add">Add</string>
+    <string name="rule_not_valid">New rule is not valid</string>
+    <string name="condition">Condition:</string>
+    <string name="value">Value:</string>
+    <string name="operation">Operation:</string>
+    <string name="destination">Destination:</string>
 </resources>

@@ -105,6 +105,11 @@
             android:ems="10"
             android:importantForAutofill="no"
             android:inputType="textPersonName" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/add_rule_button"
+            android:text="@string/add_rule"/>
         <Space
             android:layout_width="match_parent"
             android:layout_height="40sp" />

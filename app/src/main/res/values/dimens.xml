@@ -15,4 +15,6 @@
     <dimen name="create_email_label_r_padding">4dp</dimen>
     <dimen name="attachment_chip_icon_padding">8dp</dimen>
     <dimen name="frame_layout_content_padding">4dp</dimen>
+    <dimen name="dialog_padding">8dp</dimen>
+    <dimen name="dialog_input_height">48dp</dimen>
 </resources>

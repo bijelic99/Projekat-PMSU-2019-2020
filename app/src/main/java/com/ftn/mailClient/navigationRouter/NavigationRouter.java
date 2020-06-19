@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 
 import com.ftn.mailClient.R;
+import com.ftn.mailClient.activities.ProfileActivity;
 import com.ftn.mailClient.activities.contactsActivity.ContactsActivity;
 import com.ftn.mailClient.activities.emailsActivity.EmailsActivity;
 import com.ftn.mailClient.activities.foldersActivity.FoldersActivity;
@@ -26,6 +27,11 @@ public interface NavigationRouter {
             }
             case R.id.folders:{
                 Intent intent = new Intent(context, FoldersActivity.class);
+                context.startActivity(intent);
+                return true;
+            }
+            case R.id.profile:{
+                Intent intent = new Intent(context, ProfileActivity.class);
                 context.startActivity(intent);
                 return true;
             }
