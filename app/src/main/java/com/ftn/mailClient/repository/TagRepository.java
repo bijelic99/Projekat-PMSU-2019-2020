@@ -18,8 +18,8 @@ public class TagRepository extends Repository<Tag, TagDao> {
 
     public TagRepository(Application application){
         super(application);
-        LocalDatabase localDatabase = LocalDatabase.getInstance(application);
-        dao = localDatabase.tagDao();
+        database = LocalDatabase.getInstance(application);
+        dao = database.tagDao();
     }
 
     @Override

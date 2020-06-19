@@ -64,7 +64,7 @@ public class TagRecyclerViewAdapter extends RecyclerView.Adapter<TagRecyclerView
     public static class TagViewHolder extends RecyclerView.ViewHolder {
         Tag tag;
 
-        ChipGroup name;
+        Chip name;
 
 
 
@@ -82,8 +82,9 @@ public class TagRecyclerViewAdapter extends RecyclerView.Adapter<TagRecyclerView
 
         public void bindData() {
             if (name == null) {
-                name = (ChipGroup) itemView.findViewById(R.id.chipTagUsers);
+                name = (Chip) itemView.findViewById(R.id.chipTagUsers);
             }
+            name.setText(tag.getName());
         }
     }
 }
