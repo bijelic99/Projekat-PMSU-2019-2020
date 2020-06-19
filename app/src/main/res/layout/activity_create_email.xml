@@ -1,136 +1,292 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.CreateEmailActivity">
-
+    android:layout_width="match_parent"
+    >
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="729dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:theme="@style/AppTheme">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activities.CreateEmailActivity"
+        android:layout_gravity="center"
+        android:orientation="vertical">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"/>
-
-        <TextView
-            android:id="@+id/textViewForEmailTo"
+        <ProgressBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:labelFor="@id/editEmailTo"
-            android:text="@string/email_to" />
+            style="?android:attr/progressBarStyleLarge"
+            android:indeterminate="true"
+            android:layout_gravity="center"
+            android:id="@+id/progress_bar"
+            android:visibility="gone" />
 
-        <EditText
-            android:id="@+id/editEmailTo"
+        <LinearLayout
+            android:id="@+id/linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:importantForAutofill="no"
-            android:inputType="textEmailAddress" />
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:theme="@style/AppTheme">
 
-        <TextView
-            android:id="@+id/textViewForEmailCc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:labelFor="@id/editEmailCc"
-            android:text="@string/email_cc" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2" />
 
-        <EditText
-            android:id="@+id/editEmailCc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:importantForAutofill="no"
-            android:inputType="textEmailAddress" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_color_lt_gray"
+                android:layout_marginBottom="4dp"
+                android:padding="@dimen/frame_layout_content_padding"
+                android:orientation="vertical"
+                >
 
-        <TextView
-            android:id="@+id/textViewForEmailBcc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:labelFor="@id/editEmailBcc"
-            android:text="@string/email_bcc" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/create_email_row_height"
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
-        <EditText
-            android:id="@+id/editEmailBcc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:importantForAutofill="no"
-            android:inputType="textEmailAddress" />
+                    <TextView
+                        android:id="@+id/textViewForEmailTo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@id/actw_to"
+                        android:text="@string/email_to"
+                        android:elevation="20dp"
+                        android:paddingHorizontal="@dimen/create_email_label_r_padding" />
 
-        <TextView
-            android:id="@+id/textViewForEmailSubject"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:labelFor="@id/editEmailSubject"
-            android:text="@string/email_subject" />
 
-        <EditText
-            android:id="@+id/editEmailSubject"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:importantForAutofill="no"
-            android:inputType="textEmailSubject" />
+                    <HorizontalScrollView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
 
-        <TextView
-            android:id="@+id/textViewLabelForTags"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:labelFor="@id/multiAutoCompleteTextViewTags"
-            android:text="@string/email_tags" />
+                        <com.google.android.material.chip.ChipGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:singleLine="true"
+                            android:id="@+id/chip_group_to" />
+                    </HorizontalScrollView>
+                </LinearLayout>
 
-        <MultiAutoCompleteTextView
-            android:id="@+id/multiAutoCompleteTextViewTags"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="@string/email_tags" />
+                <AutoCompleteTextView
+                    android:id="@+id/actw_to"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="no"
+                    android:inputType="textEmailAddress" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/textViewLabelForContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:labelFor="@id/editTextContent"
-            android:text="@string/email_content" />
 
-        <EditText
-            android:id="@+id/editTextContent"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:autofillHints="no"
-            android:ems="10"
-            android:gravity="start|top"
-            android:inputType="textMultiLine"
-            android:layout_weight="1"
-            tools:text="@string/content_placeholder" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_color_lt_gray"
+                android:layout_marginBottom="4dp"
+                android:padding="@dimen/frame_layout_content_padding"
+                android:orientation="vertical"
+                >
 
-        <Button
-            android:id="@+id/buttonCreateEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/email_button" />
-        <Button
-            android:id="@+id/buttonCreateEmailCancel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/email_button_cancel" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/create_email_row_height"
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"/>
+                    <TextView
+                        android:id="@+id/textViewForEmailCc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@id/actw_cc"
+                        android:text="@string/email_cc"
+                        android:elevation="20dp"
+                        android:paddingHorizontal="@dimen/create_email_label_r_padding" />
 
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:singleLine="true"
+                            android:id="@+id/chip_group_cc" />
+                    </HorizontalScrollView>
+                </LinearLayout>
+
+
+                <AutoCompleteTextView
+                    android:id="@+id/actw_cc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="no"
+                    android:inputType="textEmailAddress" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_color_lt_gray"
+                android:layout_marginBottom="4dp"
+                android:padding="@dimen/frame_layout_content_padding"
+                android:orientation="vertical"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/create_email_row_height"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/textViewForEmailBcc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@id/actw_bcc"
+                        android:text="@string/email_bcc"
+                        android:elevation="20dp"
+                        android:paddingHorizontal="@dimen/create_email_label_r_padding" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:singleLine="true"
+                            android:id="@+id/chip_group_bcc" />
+                    </HorizontalScrollView>
+                </LinearLayout>
+
+
+                <AutoCompleteTextView
+                    android:id="@+id/actw_bcc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAutofill="no"
+                    android:inputType="textEmailAddress" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_color_lt_gray"
+                android:layout_marginBottom="4dp"
+                android:paddingHorizontal="@dimen/frame_layout_content_padding"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/textViewForEmailSubject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@id/editText_subject"
+                    android:text="@string/email_subject"
+                    android:paddingHorizontal="@dimen/create_email_label_r_padding"
+                    />
+
+                <EditText
+                    android:id="@+id/editText_subject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:importantForAutofill="no"
+                    android:inputType="textEmailSubject" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@color/background_color_lt_gray"
+                android:layout_marginBottom="4dp"
+                android:layout_weight="1"
+                android:padding="@dimen/frame_layout_content_padding"
+                android:orientation="vertical"
+                android:minHeight="60dp"
+                >
+
+                <TextView
+                    android:id="@+id/textViewLabelForContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:labelFor="@id/editText_content"
+                    android:text="@string/email_content" />
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    >
+
+                    <EditText
+                        android:id="@+id/editText_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:autofillHints="no"
+                        android:gravity="start|top"
+                        android:inputType="textMultiLine"
+                        android:minLines="12"
+                        tools:text="@string/content_placeholder" />
+                </ScrollView>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/background_color_lt_gray"
+                android:layout_marginBottom="4dp"
+                android:padding="@dimen/frame_layout_content_padding"
+                android:orientation="vertical"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/create_email_row_height"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    tools:ignore="UselessParent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:labelFor="@id/chip_group_attachment"
+                        android:text="@string/attachments"
+                        android:elevation="20dp"
+                        android:paddingHorizontal="@dimen/create_email_label_r_padding" />
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:singleLine="true"
+                            android:id="@+id/chip_group_attachment" />
+                    </HorizontalScrollView>
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2" />
+
+        </LinearLayout>
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

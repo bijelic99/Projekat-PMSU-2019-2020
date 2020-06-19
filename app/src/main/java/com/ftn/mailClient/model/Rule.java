@@ -16,21 +16,18 @@ public class Rule extends Identifiable {
     private Operation operation;
     @TypeConverters(FolderTypeConverter.class)
     private FolderMetadata destinationFolder;
-    @TypeConverters(FolderTypeConverter.class)
-    private FolderMetadata targetFolder;
     private String value;
 
     @Ignore
     public Rule(){
 
     }
-    public Rule(Long id, Condition condition, Operation operation, FolderMetadata destinationFolder, FolderMetadata targetFolder, String value) {
+    public Rule(Long id, Condition condition, Operation operation, FolderMetadata destinationFolder, String value) {
         super(id);
         this.condition = condition;
         this.operation = operation;
         this.destinationFolder = destinationFolder;
         this.value = value;
-        this.targetFolder = targetFolder;
     }
 
     public Condition getCondition() {
@@ -63,13 +60,5 @@ public class Rule extends Identifiable {
 
     public void setValue(String value) {
         this.value = value;
-    }
-
-    public FolderMetadata getTargetFolder() {
-        return targetFolder;
-    }
-
-    public void setTargetFolder(FolderMetadata targetFolder) {
-        this.targetFolder = targetFolder;
     }
 }

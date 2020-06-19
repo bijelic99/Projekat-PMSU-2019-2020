@@ -109,4 +109,11 @@
     <string name="mail_required">Valid mail address is required</string>
     <string name="add_tag">Add tag</string>
     <string name="svi_tag">Tags</string>
+    <string name="send_mail">Send email</string>
+    <string name="add_attachment">Add attachment</string>
+    <string name="attachments">Attachments:</string>
+    <string name="john_doe">John Doe</string>
+    <string name="file_placeholder">file.doc</string>
+    <string name="message_saved_to_drafts">Message saved to drafts folder</string>
+    <string name="failed_to_save_to_drafts">Failed to save to drafts</string>
 </resources>
