@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import com.ftn.mailClient.dao.DaoInterface;
 import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Identifiable;
+import com.ftn.mailClient.model.Tag;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public abstract class Repository<T extends Identifiable, D extends DaoInterface>
         this.application = application;
     }
 
-    public abstract LiveData<FetchStatus> insert(T value);
+    public abstract LiveData<FetchStatus> insert(Tag value, Long userID);
     public abstract void update(T value);
     public abstract void delete(T value);
     public abstract LiveData<List<T>> getAll();

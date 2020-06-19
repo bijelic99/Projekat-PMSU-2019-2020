@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 public class RetrofitClient <T extends Api>{
 
-    public static final String BASE_URL = "http://projekat-osa.herokuapp.com/";
+    public static final String BASE_URL = "http://192.168.0.11:8080/";
 
     private Class<T> tClass;
 

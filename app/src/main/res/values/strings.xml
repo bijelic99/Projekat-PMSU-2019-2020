@@ -107,4 +107,6 @@
     <string name="select_picture">Select image</string>
     <string name="cancel">Cancel</string>
     <string name="mail_required">Valid mail address is required</string>
+    <string name="add_tag">Add tag</string>
+    <string name="svi_tag">Tags</string>
 </resources>

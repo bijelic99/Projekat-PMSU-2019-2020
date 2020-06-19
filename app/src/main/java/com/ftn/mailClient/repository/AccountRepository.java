@@ -21,7 +21,7 @@ public class AccountRepository extends Repository<Account, AccountDao> {
     }
 
     @Override
-    public LiveData<FetchStatus> insert(Account value) {
+    public LiveData<FetchStatus> insert(Tag value, Long userID) {
         return null;
     }
 

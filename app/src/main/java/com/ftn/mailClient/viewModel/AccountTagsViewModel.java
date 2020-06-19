@@ -12,40 +12,40 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.ftn.mailClient.R;
+import com.ftn.mailClient.model.Contact;
 import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.model.Tag;
 import com.ftn.mailClient.repository.AccountRepository;
+import com.ftn.mailClient.repository.ContactRepository;
+import com.ftn.mailClient.repository.TagRepository;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AccountTagsViewModel extends AndroidViewModel {
-    private AccountRepository accountRepository;
+    private Long userId;
     private LiveData<List<Tag>> tags;
-    private Long accountId;
+    private TagRepository tagRepository;
+
 
     public AccountTagsViewModel(@NonNull Application application) {
         super(application);
-        accountRepository = new AccountRepository(application);
+        tagRepository = new TagRepository(application);
         SharedPreferences sharedPreferences = application.getSharedPreferences(application.getString(R.string.user_details_file_key), Context.MODE_PRIVATE);
-        if(sharedPreferences.contains(application.getString(R.string.user_account_id))){
-            accountId = sharedPreferences.getLong(application.getString(R.string.user_account_id), -55L);
+        if(sharedPreferences.contains(application.getString(R.string.user_id))){
+            userId = sharedPreferences.getLong(application.getString(R.string.user_id), -55L);
         }
-        else Toast.makeText(application, R.string.need_to_choose_an_account, Toast.LENGTH_LONG).show();
+        else Toast.makeText(application, R.string.need_to_be_logged_in, Toast.LENGTH_LONG).show();
     }
 
     public LiveData<List<Tag>> getTags() {
-
-        if(accountId != null && tags == null) tags = accountRepository.getAccountTags();
-        else if(accountId == null) tags = new MutableLiveData<>(new ArrayList<>());
+        if (tags == null) tags = tagRepository.getAll();
         return tags;
     }
 
-    public LiveData<FetchStatus> syncTags(){
-        if(accountId != null){
-            return accountRepository.fetchAccountTags(accountId);
-        }
-        else return new MutableLiveData<>(FetchStatus.DONE);
+    public LiveData<FetchStatus> fetchTags(){
+        if(userId != null) return tagRepository.fetchTags(userId);
+        return new MutableLiveData<>(FetchStatus.DONE);
     }
 }

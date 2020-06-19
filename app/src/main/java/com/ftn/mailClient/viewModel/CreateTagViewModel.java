@@ -7,10 +7,12 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.model.Tag;
 import com.ftn.mailClient.repository.TagRepository;
+import com.ftn.mailClient.utill.enums.FetchStatus;
 
 public class CreateTagViewModel extends AndroidViewModel {
     private Long userID;
@@ -31,5 +33,9 @@ public class CreateTagViewModel extends AndroidViewModel {
         return tag;
     }
 
+    public LiveData<FetchStatus> insert(){
+        if(userID != null) return tagRepository.insert(tag, userID);
+        else return null;
+    }
 
 }

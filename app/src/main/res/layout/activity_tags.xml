@@ -22,16 +22,16 @@
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:popupTheme="@style/Theme.AppCompat.Light"
-            android:title="@string/app_name"
+            android:title="@string/svi_tag"
             android:navigationIcon="@drawable/ic_menu_white_24dp" />
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/swipe_refresh_layout">
+            android:id="@+id/swipe_refresh_layout_tag">
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/recycler_view"
+                android:id="@+id/recycler_view_tag"
                 tools:listitem="@layout/fragment_email_tag"
                 android:paddingHorizontal="@dimen/rec_view_padding"
                 />

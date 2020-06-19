@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
 
+import com.ftn.mailClient.model.Contact;
 import com.ftn.mailClient.model.Tag;
 
 import java.util.List;
@@ -22,4 +23,10 @@ public interface TagDao extends DaoInterface<Tag> {
 
     @Query("Delete from Tag where id = :id")
     void deleteTag(Long id);
+
+    @Query("Select * from tag")
+    LiveData<List<Tag>> getAllTags();
+
+    @Query("Select * from tag")
+    List<Tag> getAllTagsNonLive();
 }
