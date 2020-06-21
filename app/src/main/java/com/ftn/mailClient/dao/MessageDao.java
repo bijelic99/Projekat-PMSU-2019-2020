@@ -5,7 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Query;
 
 import com.ftn.mailClient.model.Message;
-import com.ftn.mailClient.model.linkingClasses.MessageMetadata;
+import com.ftn.mailClient.model.MessageMetadata;
 
 import java.util.List;
 
@@ -26,6 +26,6 @@ public interface MessageDao extends DaoInterface<Message> {
     @Query("SELECT * FROM MESSAGE WHERE ID = :id")
     Message getMessageById(Long id);
 
-    @Query("Select m.id as id, m.subject as subject, m.content as content, m.dateTime as dateTime from message m")
-    LiveData<MessageMetadata> getMessageMetadataById(Long id);
+//    @Query("Select m.id as id, m.subject as subject, m.content as content, m.dateTime as dateTime from message m")
+//    LiveData<MessageMetadata> getMessageMetadataById(Long id);
 }

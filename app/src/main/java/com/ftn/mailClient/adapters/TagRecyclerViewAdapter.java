@@ -1,6 +1,7 @@
 package com.ftn.mailClient.adapters;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +66,7 @@ public class TagRecyclerViewAdapter extends RecyclerView.Adapter<TagRecyclerView
         Tag tag;
 
         Chip name;
-
+        //String color;
 
 
         public Tag getTag() {
@@ -76,6 +77,14 @@ public class TagRecyclerViewAdapter extends RecyclerView.Adapter<TagRecyclerView
             this.tag = tag;
         }
 
+//        public String getColor() {
+//            return color;
+//        }
+//
+//        public void setColor(String color) {
+//            this.color = color;
+//        }
+
         public TagViewHolder(View itemView) {
             super(itemView);
         }
@@ -83,6 +92,9 @@ public class TagRecyclerViewAdapter extends RecyclerView.Adapter<TagRecyclerView
         public void bindData() {
             if (name == null) {
                 name = (Chip) itemView.findViewById(R.id.chipTagUsers);
+                int color = ((int) (Math.random() * 16777215)) | (0xFF << 24);
+                name.setChipBackgroundColor(ColorStateList.valueOf(color));
+                //color = itemView.setBackgroundColor();
             }
             name.setText(tag.getName());
         }

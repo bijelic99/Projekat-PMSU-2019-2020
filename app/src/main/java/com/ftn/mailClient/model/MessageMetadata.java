@@ -1,4 +1,4 @@
-package com.ftn.mailClient.model.linkingClasses;
+package com.ftn.mailClient.model;
 
 import androidx.room.Ignore;
 
@@ -11,19 +11,19 @@ public class MessageMetadata extends Identifiable {
     private String subject;
     private Integer numberOfTags;
     private String content;
-    private LocalDateTime dateTime;
+  //  private LocalDateTime dateTime;
 
     @Ignore
     public MessageMetadata(){
 
     }
 
-    public MessageMetadata(Long id, String subject, Integer numberOfTags, String content, LocalDateTime dateTime){
+    public MessageMetadata(Long id, String subject, Integer numberOfTags, String content){// LocalDateTime dateTime){
         this.id = id;
         this.subject = subject;
         this.numberOfTags = numberOfTags;
         this.content = content;
-        this.dateTime = dateTime;
+       // this.dateTime = dateTime;
     }
 
     @Ignore
@@ -31,7 +31,7 @@ public class MessageMetadata extends Identifiable {
         subject = message.getSubject();
         numberOfTags = message.getTags().size();
         content = message.getContent();
-        dateTime = message.getDateTime();
+        //dateTime = message.getDateTime();
     }
 
     public String getSubject() {
@@ -58,11 +58,11 @@ public class MessageMetadata extends Identifiable {
         this.content = content;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
+//    public LocalDateTime getDateTime() {
+//        return dateTime;
+//    }
+//
+//    public void setDateTime(LocalDateTime dateTime) {
+//        this.dateTime = dateTime;
+//    }
 }

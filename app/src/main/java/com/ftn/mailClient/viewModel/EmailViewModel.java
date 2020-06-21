@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.ftn.mailClient.model.linkingClasses.MessageMetadata;
+import com.ftn.mailClient.model.MessageMetadata;
 import com.ftn.mailClient.repository.MessageRepository;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 
@@ -27,7 +27,7 @@ public class EmailViewModel extends AndroidViewModel {
     public void setMessage(Long id){
         messageID = id;
         messageRepository.fetchMessage(id);
-        message = messageRepository.getMetadataMessageById(id);
+        //message = messageRepository.getMetadataMessageById(id);
     }
 
     public LiveData<MessageMetadata> getFolder(){

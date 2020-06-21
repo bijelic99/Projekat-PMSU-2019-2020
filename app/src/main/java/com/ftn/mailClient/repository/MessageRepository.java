@@ -13,8 +13,7 @@ import com.ftn.mailClient.model.Contact;
 import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.model.Tag;
-import com.ftn.mailClient.model.linkingClasses.MessageMetadata;
-import com.ftn.mailClient.repository.asyncTasks.FolderAsyncTasks;
+import com.ftn.mailClient.model.MessageMetadata;
 import com.ftn.mailClient.repository.asyncTasks.MessageAsyncTasks;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 
@@ -53,9 +52,9 @@ public class MessageRepository extends Repository<Message, MessageDao> {
 
     }
 
-    public LiveData<MessageMetadata> getMetadataMessageById(Long id){
-        return dao.getMessageMetadataById(id);
-    }
+//    public LiveData<MessageMetadata> getMetadataMessageById(Long id){
+//        return dao.getMessageMetadataById(id);
+//    }
 
     @Override
     public LiveData<List<Message>> getAll() {

@@ -7,7 +7,6 @@ import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.model.linkingClasses.FolderInnerFolders;
 import com.ftn.mailClient.model.linkingClasses.FolderMessage;
-import com.ftn.mailClient.model.linkingClasses.MessageMetadata;
 
 import java.util.List;
 
