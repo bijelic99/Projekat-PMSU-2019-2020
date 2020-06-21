@@ -10,8 +10,11 @@ import androidx.lifecycle.MutableLiveData;
 import com.ftn.mailClient.dao.MessageDao;
 import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Contact;
+import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.model.Tag;
+import com.ftn.mailClient.model.linkingClasses.MessageMetadata;
+import com.ftn.mailClient.repository.asyncTasks.FolderAsyncTasks;
 import com.ftn.mailClient.repository.asyncTasks.MessageAsyncTasks;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 
@@ -19,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessageRepository extends Repository<Message, MessageDao> {
-
 
     public MessageRepository(Application application) {
         super(application);
@@ -32,6 +34,15 @@ public class MessageRepository extends Repository<Message, MessageDao> {
         return null;
     }
 
+    public LiveData<FetchStatus> syncMail(Long messageId){
+        MutableLiveData<FetchStatus> fetchStatus = new MutableLiveData<>(FetchStatus.FETCHING);
+        new MessageAsyncTasks.MessageSyncAsyncTask(database, value -> {
+            if(value) fetchStatus.setValue(FetchStatus.DONE);
+            else fetchStatus.setValue(FetchStatus.ERROR);
+        }).execute(messageId);
+        return fetchStatus;
+    }
+
     @Override
     public void update(Message value) {
 
@@ -42,14 +53,26 @@ public class MessageRepository extends Repository<Message, MessageDao> {
 
     }
 
+    public LiveData<MessageMetadata> getMetadataMessageById(Long id){
+        return dao.getMessageMetadataById(id);
+    }
+
     @Override
     public LiveData<List<Message>> getAll() {
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public LiveData<Message> getById(Long id) {
-        return null;
+        LiveData<Message> messageLiveData = dao.getLiveDataMessageById(id);
+        if(messageLiveData.getValue() == null) fetchMessage(id);
+
+        return messageLiveData;
+    }
+
+    public void fetchMessage(Long messageId){
+        new MessageAsyncTasks.MessageFetchAsyncTask(database).execute(messageId);
     }
 
     @Override

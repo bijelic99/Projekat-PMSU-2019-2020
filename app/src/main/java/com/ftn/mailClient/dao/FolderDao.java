@@ -7,6 +7,7 @@ import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.model.linkingClasses.FolderInnerFolders;
 import com.ftn.mailClient.model.linkingClasses.FolderMessage;
+import com.ftn.mailClient.model.linkingClasses.MessageMetadata;
 
 import java.util.List;
 
@@ -35,6 +36,8 @@ public interface FolderDao extends DaoInterface<Folder> {
 
     @Query("Select m.id, m.account, m._from, m._to, m.cc, m.bcc, m.dateTime, m.subject, m.content, m.attachments, m.tags, m.unread from FolderMessage fm join message m on fm.messageId = m.id where fm.folderId = :id")
     List<Message> getMessagesNonLive(Long id);
+
+
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertMessagesToFolder(List<FolderMessage> folderMessages);

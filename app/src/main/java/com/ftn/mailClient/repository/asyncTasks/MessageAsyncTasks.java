@@ -3,6 +3,7 @@ package com.ftn.mailClient.repository.asyncTasks;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
@@ -16,8 +17,12 @@ import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Account;
 import com.ftn.mailClient.model.Attachment;
 import com.ftn.mailClient.model.Contact;
+import com.ftn.mailClient.model.Folder;
+import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
+import com.ftn.mailClient.model.linkingClasses.FolderInnerFolders;
 import com.ftn.mailClient.model.linkingClasses.FolderMessage;
+import com.ftn.mailClient.retrofit.FolderApi;
 import com.ftn.mailClient.retrofit.MessageApi;
 import com.ftn.mailClient.retrofit.RetrofitClient;
 import com.ftn.mailClient.utill.OnPostExecuteFunctionFunctionalInterface;
@@ -31,17 +36,21 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MessageAsyncTasks {
     public static class SendMessageAsyncTask extends LocalDatabaseCallbackAsyncTask<Bundle, Void, Boolean>{
         private Long accountId;
         private ContentResolver contentResolver;
 
+
+
         public SendMessageAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface, Long accountId, ContentResolver contentResolver) {
             super(localDatabase, onPostExecuteFunctionFunctionalInterface);
             this.accountId = accountId;
             this.contentResolver = contentResolver;
         }
+
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
@@ -134,6 +143,37 @@ public class MessageAsyncTasks {
         }
     }
 
+    public static class MessageFetchAsyncTask extends AsyncTask<Long, Void, Message> {
+        private LocalDatabase localDatabase;
+
+        public MessageFetchAsyncTask(LocalDatabase localDatabase){
+            this.localDatabase = localDatabase;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected Message doInBackground(Long... longs) {
+            MessageDao messageDao = localDatabase.messageDao();
+            Message message = messageDao.getMessageById(longs[0]);
+            if(message == null) {
+                MessageApi messageApi = RetrofitClient.getApi(MessageApi.class);
+                try {
+                    Response<Message> response = messageApi.getMessage(longs[0]).execute();
+                    if (response.isSuccessful()) {
+                        message = response.body();
+
+                        return message;
+                    } else return null;
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                    return null;
+                }
+
+            }
+            else return null;
+        }
+    }
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static class AddToDraftsAsyncTask extends LocalDatabaseCallbackAsyncTask<Bundle, Void, Boolean>{
         Long accountId;
@@ -232,6 +272,52 @@ public class MessageAsyncTasks {
             }
 
             return false;
+        }
+    }
+    public static class MessageSyncAsyncTask extends AsyncTask<Long, Void, Boolean>{
+        private LocalDatabase localDatabase;
+        private OnPostExecuteFunctionFunctionalInterface onPostExecuteFunctionFunctionalInterface;
+
+        public MessageSyncAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface){
+            this.localDatabase = localDatabase;
+            this.onPostExecuteFunctionFunctionalInterface = onPostExecuteFunctionFunctionalInterface;
+        }
+
+        public MessageSyncAsyncTask(LocalDatabase localDatabase){
+            this.localDatabase = localDatabase;
+            this.onPostExecuteFunctionFunctionalInterface = null;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        protected Boolean doInBackground(Long... longs) {
+            MessageDao messageDao = localDatabase.messageDao();
+
+            Long messageId = longs[0];
+
+            Message message = messageDao.getMessageById(messageId);
+
+
+            MessageApi messageApi = RetrofitClient.getApi(MessageApi.class);
+            Response<Message> response = null;
+            try {
+                response = messageApi.syncMessage(messageId).execute();
+                if(response.isSuccessful()){
+                    message = response.body();
+
+
+                    return true;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if(onPostExecuteFunctionFunctionalInterface != null) onPostExecuteFunctionFunctionalInterface.postExecuteFunction(aBoolean);
         }
     }
 }
