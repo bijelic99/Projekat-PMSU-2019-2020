@@ -49,7 +49,7 @@ public class MessageRepository extends Repository<Message, MessageDao> {
 
     @Override
     public LiveData<Message> getById(Long id) {
-        return null;
+        return dao.getMessageById(id);
     }
 
     @Override

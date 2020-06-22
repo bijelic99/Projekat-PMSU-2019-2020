@@ -12,6 +12,9 @@ public interface MessageDao extends DaoInterface<Message> {
     @Query("SELECT * FROM MESSAGE WHERE ID IN(:ids)")
     public LiveData<List<Message>> getMessages(List<Long> ids);
 
+    @Query("SELECT * FROM MESSAGE WHERE ID = :id")
+    public LiveData<Message> getMessageById(Long id);
+
     @Query("SELECT * FROM MESSAGE WHERE ID IN(:ids)")
     public List<Message> getCurrentMessages(List<Long> ids);
 

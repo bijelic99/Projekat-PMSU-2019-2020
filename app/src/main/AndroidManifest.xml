@@ -33,6 +33,7 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".activities.CreateEmailActivity"
             android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".activities.EmailActivity"/>
         <activity android:name=".activities.CreateFolderActivity"/>
         <activity android:name=".activities.CreateContactActivity"
             />
