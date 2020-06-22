@@ -43,6 +43,9 @@
             android:name=".activities.contactsActivity.ContactsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activities.contactActivity.ContactActivity"
+            android:theme="@style/AppTheme"/>
+        <activity
             android:name=".activities.emailsActivity.EmailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

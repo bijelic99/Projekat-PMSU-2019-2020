@@ -14,6 +14,9 @@ public interface UserApi extends Api {
     @GET("api/users/{id}/contacts")
     Call<List<Contact>> getUserContacts(@Path("id") Long id);
 
+    @GET("api/users/{id}/contacts{id2}")
+    Call<Contact> getUserContact(@Path("id") Long id, @Path("id2") Long id2);
+
     @POST("api/users/{id}/contacts")
     Call<Contact> addUserContact(@Path("id") Long id, @Body Contact contact);
 

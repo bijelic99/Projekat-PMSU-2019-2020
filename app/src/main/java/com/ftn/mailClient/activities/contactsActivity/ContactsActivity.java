@@ -26,7 +26,6 @@ import com.ftn.mailClient.activities.CreateContactActivity;
 import com.ftn.mailClient.adapters.ContactRecyclerViewAdapter;
 import com.ftn.mailClient.navigationRouter.NavigationRouter;
 import com.ftn.mailClient.utill.enums.FetchStatus;
-import com.ftn.mailClient.viewModel.AccountEmailsViewModel;
 import com.ftn.mailClient.viewModel.ContactsViewModel;
 import com.google.android.material.navigation.NavigationView;
 

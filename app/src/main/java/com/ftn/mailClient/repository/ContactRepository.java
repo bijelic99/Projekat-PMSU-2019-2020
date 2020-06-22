@@ -8,8 +8,11 @@ import androidx.lifecycle.MutableLiveData;
 import com.ftn.mailClient.dao.ContactDao;
 import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Contact;
+import com.ftn.mailClient.model.ContactMetadata;
+import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Tag;
 import com.ftn.mailClient.repository.asyncTasks.ContactAsyncTasks;
+import com.ftn.mailClient.repository.asyncTasks.FolderAsyncTasks;
 import com.ftn.mailClient.repository.asyncTasks.PhotoAsyncTasks;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 
@@ -53,12 +56,28 @@ public class ContactRepository extends Repository<Contact, ContactDao> {
         return null;
     }
 
+    public LiveData<Contact> getMetadataContactById(Long id){
+        return dao.getContact1ById(id);
+    }
+
     public LiveData<FetchStatus> fetchContacts(Long userId){
         MutableLiveData<FetchStatus> fetchStatusMutableLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
         new ContactAsyncTasks.FetchContactsAsyncTask(database, value -> fetchStatusMutableLiveData.setValue(value ? FetchStatus.DONE : FetchStatus.ERROR)).execute(userId);
         return fetchStatusMutableLiveData;
     }
 
+    public void fetchContact(Long contactId){
+        new ContactAsyncTasks.ContactFetchAsyncTask(database).execute(contactId);
+    }
+
+    public LiveData<FetchStatus> syncContact(Long contactId){
+        MutableLiveData<FetchStatus> fetchStatus = new MutableLiveData<>(FetchStatus.FETCHING);
+        new ContactAsyncTasks.ContactSyncAsyncTask(database, value -> {
+            if(value) fetchStatus.setValue(FetchStatus.DONE);
+            else fetchStatus.setValue(FetchStatus.ERROR);
+        }).execute(contactId);
+        return fetchStatus;
+    }
     /**
      * First we upload image to server, then by callback we also add new contact
      * @param contact New contact

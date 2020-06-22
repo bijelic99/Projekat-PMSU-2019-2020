@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,18 +14,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.model.Contact;
+import com.ftn.mailClient.model.Identifiable;
+import com.ftn.mailClient.utill.FolderContentsComparatorInterface;
 import com.ftn.mailClient.utill.LoadImageAsyncTask;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecyclerViewAdapter.ContactViewHolder> {
     private List<Contact> contacts;
     private Context context;
+    private List<Identifiable> contents;
 
     public ContactRecyclerViewAdapter(Context context, List<Contact> contacts){
         this.context = context;
@@ -38,6 +45,15 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
     public void setContacts(List<Contact> contacts) {
         this.contacts = contacts;
+        notifyDataSetChanged();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void add(List<Identifiable> identifiables){
+        contents.addAll(identifiables);
+        contents = Stream.concat(contents.stream(), identifiables.stream())
+                .distinct().sorted(FolderContentsComparatorInterface::folderContentsComparator)
+                .collect(Collectors.toList());
         notifyDataSetChanged();
     }
 
