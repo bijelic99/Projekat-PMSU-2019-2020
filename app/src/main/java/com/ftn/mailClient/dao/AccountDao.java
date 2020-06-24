@@ -6,6 +6,7 @@ import com.ftn.mailClient.model.Account;
 import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
+import com.ftn.mailClient.model.Tag;
 import com.ftn.mailClient.model.linkingClasses.AccountFolder;
 
 import java.util.List;
@@ -29,7 +30,10 @@ public interface AccountDao extends DaoInterface<Account> {
     @Query("Delete from accountfolder where accountId = :id")
     void deleteAllAccountFolders(Long id);
 
-    @Query("Select * from Message m")
+    @Query("Select * from Message")
     LiveData<List<Message>> getAccountMessages();
+
+    @Query("Select * from Tag")
+    LiveData<List<Tag>> getAccountTags();
 
 }

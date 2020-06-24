@@ -1,10 +1,13 @@
 package com.ftn.mailClient.repository.asyncTasks;
 
 import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.OpenableColumns;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
@@ -23,14 +26,13 @@ import com.ftn.mailClient.retrofit.RetrofitClient;
 import com.ftn.mailClient.utill.OnPostExecuteFunctionFunctionalInterface;
 import retrofit2.Response;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+
+import static androidx.core.app.ActivityCompat.startActivityForResult;
 
 public class MessageAsyncTasks {
     public static class SendMessageAsyncTask extends LocalDatabaseCallbackAsyncTask<Bundle, Void, Boolean>{
@@ -74,7 +76,7 @@ public class MessageAsyncTasks {
             if(messageBundle.containsKey("contents")){
                 message.setContent(messageBundle.getString("contents"));
             }
-            if(messageBundle.containsKey("attachments")){
+            if(messageBundle.containsKey("attachments_uri")){
                 List<Uri> uriList = (List<Uri>) messageBundle.getSerializable("attachments");
                 Message finalMessage = message;
                 uriList.forEach(uri -> {
@@ -108,6 +110,10 @@ public class MessageAsyncTasks {
                     }
 
                 });
+            }
+            if(messageBundle.containsKey("attachments_raw")){
+                List<Attachment> attachments = (ArrayList<Attachment>) messageBundle.getSerializable("attachments_raw");
+                message.setAttachments(attachments);
             }
 
             try {
@@ -232,6 +238,49 @@ public class MessageAsyncTasks {
             }
 
             return false;
+        }
+    }
+
+    public static class SaveMessageAttachmentsAsyncTask extends LocalDatabaseCallbackAsyncTask<Long, Void, Integer>{
+        Context context;
+        public SaveMessageAttachmentsAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Integer> onPostExecuteFunctionFunctionalInterface, Context context) {
+            super(localDatabase, onPostExecuteFunctionFunctionalInterface);
+            this.context = context;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        protected Integer doInBackground(Long... longs) {
+            MessageDao messageDao = localDatabase.messageDao();
+            Long messageId = longs[0];
+            Message message = messageDao.getMessageByIdNonLive(messageId);
+
+            Integer numberOfSuccessfulSaves = 0;
+            for(Attachment attachment : message.getAttachments()){
+                File file = new File(context.getExternalFilesDir(null), attachment.getName());
+                FileOutputStream fileOutputStream = null;
+                try {
+                    if(attachment != null && attachment.getBase64Data() != null){
+                        file.createNewFile();
+                        fileOutputStream = new FileOutputStream(file, true);
+
+                        byte[] decStr = Base64.getDecoder().decode(attachment.getBase64Data());
+
+                        fileOutputStream.write(decStr);
+                        fileOutputStream.flush();
+                        fileOutputStream.close();
+
+
+
+                        numberOfSuccessfulSaves++;
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                } finally {
+                    if(fileOutputStream != null) fileOutputStream = null;
+                }
+            }
+            return numberOfSuccessfulSaves;
         }
     }
 }

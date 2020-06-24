@@ -2,12 +2,13 @@ package com.ftn.mailClient.repository;
 
 import android.app.Application;
 import android.graphics.Bitmap;
-import android.net.Uri;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.ftn.mailClient.dao.ContactDao;
 import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Contact;
+import com.ftn.mailClient.model.Tag;
 import com.ftn.mailClient.repository.asyncTasks.ContactAsyncTasks;
 import com.ftn.mailClient.repository.asyncTasks.PhotoAsyncTasks;
 import com.ftn.mailClient.utill.enums.FetchStatus;
@@ -23,7 +24,7 @@ public class ContactRepository extends Repository<Contact, ContactDao> {
     }
 
     @Override
-    public LiveData<FetchStatus> insert(Contact value) {
+    public LiveData<FetchStatus> insert(Tag value, Long userID) {
         return null;
     }
 

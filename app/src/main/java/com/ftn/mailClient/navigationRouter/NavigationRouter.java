@@ -15,6 +15,11 @@ import com.ftn.mailClient.activities.foldersActivity.FoldersActivity;
 public interface NavigationRouter {
     public static boolean routeFromMenuItem(Context context, @NonNull MenuItem item){
         switch (item.getItemId()){
+            case R.id.profile:{
+                Intent intent = new Intent(context, ProfileActivity.class);
+                context.startActivity(intent);
+                return true;
+            }
             case R.id.emails: {
                 Intent intent = new Intent(context, EmailsActivity.class);
                 context.startActivity(intent);

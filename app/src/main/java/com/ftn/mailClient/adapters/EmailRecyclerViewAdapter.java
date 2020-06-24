@@ -1,6 +1,7 @@
 package com.ftn.mailClient.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import com.ftn.mailClient.R;
+import com.ftn.mailClient.activities.EmailActivity;
 import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.model.Tag;
 import com.ftn.mailClient.utill.FolderContentsComparatorInterface;
@@ -121,6 +123,12 @@ public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecycler
             }).forEach(c -> tags.addView(c));
             content.setText(message.getContent());
             timeRecived.setText(message.getDateTime() != null ? message.getDateTime().format(DateTimeFormatter.ISO_DATE_TIME) : itemView.getResources().getText(R.string.no_receive_time));
+            itemView.setClickable(true);
+            itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(itemView.getContext(), EmailActivity.class);
+                intent.putExtra("mailId", getMessage().getId());
+                itemView.getContext().startActivity(intent);
+            });
         }
     }
 }

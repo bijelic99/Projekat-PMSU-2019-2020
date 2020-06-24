@@ -8,8 +8,12 @@
     <uses-feature
         android:name="android.hardware.camera2.CameraCaptureSession"
         android:required="true" />
+<<<<<<< HEAD
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+=======
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:required="true"/>
+>>>>>>> test
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -35,11 +39,12 @@
         <activity
             android:name=".activities.folderActivity.FolderActivity"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".activities.CreateEmailActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activities.CreateFolderActivity" />
-        <activity android:name=".activities.CreateContactActivity" />
+        <activity android:name=".activities.CreateEmailActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".activities.EmailActivity"/>
+        <activity android:name=".activities.CreateFolderActivity"/>
+        <activity android:name=".activities.CreateContactActivity"
+            />
         <activity
             android:name=".activities.foldersActivity.FoldersActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -50,7 +55,15 @@
             android:name=".activities.emailsActivity.EmailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activities.ProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
             android:name=".activities.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.CreateTagActivity" />
+        <activity
+            android:name=".activities.TagsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

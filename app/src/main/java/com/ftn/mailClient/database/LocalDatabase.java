@@ -11,7 +11,7 @@ import com.ftn.mailClient.model.linkingClasses.AccountFolder;
 import com.ftn.mailClient.model.linkingClasses.FolderInnerFolders;
 import com.ftn.mailClient.model.linkingClasses.FolderMessage;
 
-@Database(entities = {Account.class, Attachment.class, Contact.class, Folder.class, Message.class, Photo.class, Rule.class, Tag.class, User.class, FolderMessage.class, FolderInnerFolders.class, AccountFolder.class}, version = 10, exportSchema = false)
+@Database(entities = {Account.class, Attachment.class, Contact.class, Folder.class, Message.class, Photo.class, Rule.class, Tag.class, User.class, FolderMessage.class, FolderInnerFolders.class, AccountFolder.class}, version = 11, exportSchema = false)
 public abstract class LocalDatabase extends RoomDatabase {
     private static LocalDatabase instance;
 

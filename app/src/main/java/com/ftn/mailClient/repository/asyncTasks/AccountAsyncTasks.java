@@ -8,11 +8,13 @@ import androidx.lifecycle.MutableLiveData;
 import com.ftn.mailClient.dao.AccountDao;
 import com.ftn.mailClient.dao.FolderDao;
 import com.ftn.mailClient.dao.MessageDao;
+import com.ftn.mailClient.dao.TagDao;
 import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Account;
 import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
+import com.ftn.mailClient.model.Tag;
 import com.ftn.mailClient.model.linkingClasses.AccountFolder;
 import com.ftn.mailClient.retrofit.AccountApi;
 import com.ftn.mailClient.retrofit.RetrofitClient;
@@ -146,5 +148,39 @@ public class AccountAsyncTasks {
         }
     }
 
+    public static class FetchAccountTagsAsyncTask extends AsyncTask<Long, Void, Boolean> {
+        private LocalDatabase localDatabase;
+        private OnPostExecuteFunctionFunctionalInterface onPostExecuteFunctionFunctionalInterface;
 
+        public FetchAccountTagsAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface){
+            this.localDatabase = localDatabase;
+            this.onPostExecuteFunctionFunctionalInterface = onPostExecuteFunctionFunctionalInterface;
+        }
+
+        @Override
+        protected Boolean doInBackground(Long... longs) {
+            Long accountId = longs[0];
+            TagDao tagDao = localDatabase.tagDao();
+            AccountApi accountApi = RetrofitClient.getApi(AccountApi.class);
+
+            try {
+                Response<List<Tag>> response = accountApi.getAccountTags(accountId).execute();
+                if(response.isSuccessful()){
+                    List<Tag> tags = response.body();
+                    tagDao.insertAll(tags);
+                    return true;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            onPostExecuteFunctionFunctionalInterface.postExecuteFunction(aBoolean);
+        }
+    }
 }
