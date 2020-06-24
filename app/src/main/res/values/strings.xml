@@ -126,4 +126,10 @@
     <string name="delete">Delete</string>
     <string name="edit_as_draft">Edit as draft</string>
     <string name="save_attachments">Save attachments</string>
+    <string name="contact">Contact</string>
+    <string name="firstName">First name</string>
+    <string name="lastName">Last name</string>
+    <string name="displayName">Display name</string>
+    <string name="emailContact">Email</string>
+    <string name="emailJohnDoe">johndoe@gmail.com</string>
 </resources>
