@@ -126,4 +126,5 @@
     <string name="delete">Delete</string>
     <string name="edit_as_draft">Edit as draft</string>
     <string name="save_attachments">Save attachments</string>
+    <string name="succesfully_saved_attachments">Sucessfully saved %1$s attachments</string>
 </resources>

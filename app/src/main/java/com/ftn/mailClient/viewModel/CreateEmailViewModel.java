@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.provider.Telephony;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.*;
@@ -14,9 +15,10 @@ import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.repository.ContactRepository;
 import com.ftn.mailClient.repository.MessageRepository;
 import com.ftn.mailClient.utill.LoadAttachmentsAsyncTask;
+import com.ftn.mailClient.utill.SetSubjectAndContentFuncInterface;
 import com.ftn.mailClient.utill.enums.FetchStatus;
+import com.ftn.mailClient.utill.enums.MessageResponseType;
 
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +30,7 @@ public class CreateEmailViewModel extends AndroidViewModel {
     private ContactRepository contactRepository;
     private MessageRepository messageRepository;
 
-    private Long draftMessageId;
+    private Long messageId;
     private MutableLiveData<List<Contact>> toList;
     private MutableLiveData<List<Contact>> ccList;
     private MutableLiveData<List<Contact>> bccList;
@@ -43,7 +45,7 @@ public class CreateEmailViewModel extends AndroidViewModel {
     public LiveData<List<Contact>> toListFiltered;
     public LiveData<List<Contact>> ccListFiltered;
     public LiveData<List<Contact>> bccListFiltered;
-    private Boolean draftMode;
+    private MessageResponseType messageResponseType;
 
 
     public CreateEmailViewModel(@NonNull Application application) {
@@ -69,42 +71,107 @@ public class CreateEmailViewModel extends AndroidViewModel {
         this.toListFiltered = Transformations.switchMap(toListFilter, input -> contactRepository.getContacts(input));
         this.ccListFiltered = Transformations.switchMap(ccListFilter, input -> contactRepository.getContacts(input));
         this.bccListFiltered = Transformations.switchMap(bccListFilter, input -> contactRepository.getContacts(input));
-        draftMode = false;
+        messageResponseType = MessageResponseType.NONE;
     }
 
-    public Boolean getDraftMode() {
-        return draftMode;
+    public MessageResponseType getMessageResponseType() {
+        return this.messageResponseType;
     }
 
     public MutableLiveData<List<Attachment>> getAttachmentList() {
         return attachmentList;
     }
 
-    public void draftModeOn(Long messageId) {
-        this.draftMode = true;
-        this.draftMessageId = messageId;
-        LiveData<Message> messageLiveData = this.messageRepository.getById(messageId);
-        messageLiveData.observeForever(new Observer<Message>() {
-            @Override
-            public void onChanged(Message message) {
-                if (message != null) {
-                    toList.setValue(message.getTo());
-                    ccList.setValue(message.getCc());
-                    bccList.setValue(message.getBcc());
-                    attachmentList.setValue(message.getAttachments());
-                    subject = message.getSubject();
-                    content = message.getContent();
+    public void setMessageId(Long messageId, @NonNull MessageResponseType messageResponseType, SetSubjectAndContentFuncInterface ifc) {
+        this.messageId = messageId;
+        this.messageResponseType = messageResponseType;
+        if (!messageResponseType.equals(MessageResponseType.NONE)) {
+            LiveData<Message> messageLiveData = this.messageRepository.getById(messageId);
+            switch (this.messageResponseType) {
+                case DRAFT: {
+                    messageLiveData.observeForever(new Observer<Message>() {
+                        @Override
+                        public void onChanged(Message message) {
+                            if (message != null) {
+                                toList.setValue(message.getTo());
+                                ccList.setValue(message.getCc());
+                                bccList.setValue(message.getBcc());
+                                attachmentList.setValue(message.getAttachments());
+                                ifc.setSubjectAndContent(message.getSubject(), message.getContent());
+                                //subject = message.getSubject();
+                                //content = message.getContent();
 
-                    messageLiveData.removeObserver(this);
+                                messageLiveData.removeObserver(this);
+                            }
+                        }
+                    });
+                    break;
+                }
+                case FORWARD: {
+                    messageLiveData.observeForever(new Observer<Message>() {
+                        @Override
+                        public void onChanged(Message message) {
+                            if (message != null) {
+
+                                attachmentList.setValue(message.getAttachments());
+                                ifc.setSubjectAndContent(message.getSubject(), "FWD: \n\n" + message.getContent());
+                                //subject = message.getSubject();
+                                //content = "FWD: \n\n"+ message.getContent();
+
+
+                                messageLiveData.removeObserver(this);
+                            }
+                        }
+                    });
+                    break;
+                }
+                case REPLY: {
+                    messageLiveData.observeForever(new Observer<Message>() {
+                        @Override
+                        public void onChanged(Message message) {
+                            if (message != null) {
+
+                                List<Contact> a = toList.getValue();
+                                a.add(message.getFrom());
+                                toList.setValue(a);
+                                ccList.setValue(message.getCc());
+                                attachmentList.setValue(message.getAttachments());
+                                ifc.setSubjectAndContent(message.getSubject(), "\n\nRE: \n\n" + message.getContent());
+                                //subject = message.getSubject();
+                                //content = "RE: \n\n"+ message.getContent();
+
+                                messageLiveData.removeObserver(this);
+                            }
+                        }
+                    });
+                    break;
+                }
+                case REPLY_ALL: {
+                    messageLiveData.observeForever(new Observer<Message>() {
+                        @Override
+                        public void onChanged(Message message) {
+                            if (message != null) {
+
+                                List<Contact> a = toList.getValue();
+                                a.add(message.getFrom());
+                                a.addAll(message.getCc());
+                                toList.setValue(a);
+                                attachmentList.setValue(message.getAttachments());
+                                ifc.setSubjectAndContent(message.getSubject(), "RE_ALL: \n\n" + message.getContent());
+                                subject = message.getSubject();
+                                content = "\n\nRE_ALL: \n\n" + message.getContent();
+
+                                messageLiveData.removeObserver(this);
+                            }
+                        }
+                    });
                 }
             }
-        });
+        }
+
 
     }
 
-    public void draftModeOff() {
-        this.draftMode = false;
-    }
 
     public void setToSearchTerm(String term) {
         this.toListFilter.setValue(term);
@@ -176,7 +243,8 @@ public class CreateEmailViewModel extends AndroidViewModel {
 
     public Boolean addToAttachmentList(Uri... attachmentUris) {
 
-        if (!this.draftMode) return addToMutableLiveDataList(attachmentUriList, attachmentUris);
+        if (this.messageResponseType.equals(MessageResponseType.NONE))
+            return addToMutableLiveDataList(attachmentUriList, attachmentUris);
         else {
             List<Attachment> attachments = attachmentList.getValue();
             if (attachments == null) attachments = new ArrayList<>();
@@ -192,8 +260,9 @@ public class CreateEmailViewModel extends AndroidViewModel {
     }
 
     public Boolean removeFromAttachmentList(int index) {
-       if(!this.draftMode) return removeFromMutableLiveDataList(attachmentUriList, index);
-       else return removeFromMutableLiveDataList(attachmentList, index);
+        if (this.messageResponseType.equals(MessageResponseType.NONE))
+            return removeFromMutableLiveDataList(attachmentUriList, index);
+        else return removeFromMutableLiveDataList(attachmentList, index);
     }
 
     private static <K extends Object> Boolean removeFromMutableLiveDataList(MutableLiveData<List<K>> mutableLiveDataToRemoveFrom, int index) {
@@ -219,25 +288,31 @@ public class CreateEmailViewModel extends AndroidViewModel {
     }
 
     public LiveData<FetchStatus> sendMessage() {
-        return messageRepository.sendMessage(toList.getValue(), ccList.getValue(), bccList.getValue(), subject, content, attachmentUriList.getValue(), accountId);
+        if (this.messageResponseType.equals(MessageResponseType.DRAFT)) messageRepository.deleteById(messageId);
+        if (this.messageResponseType.equals(MessageResponseType.NONE))
+            return messageRepository.sendMessage(toList.getValue(), ccList.getValue(), bccList.getValue(), subject, content, attachmentUriList.getValue(), accountId);
+        else {
+            return messageRepository.sendMessage2(toList.getValue(), ccList.getValue(), bccList.getValue(), subject, content, attachmentList.getValue(), accountId);
+        }
     }
 
     public void saveToDrafts() {
-        if (toList.getValue().size() > 0 || ccList.getValue().size() > 0 || bccList.getValue().size() > 0 || !subject.isEmpty() || !content.isEmpty() || attachmentUriList.getValue().size() > 0) {
-            LiveData<FetchStatus> liveData = messageRepository.addToDrafts(toList.getValue(), ccList.getValue(), bccList.getValue(), subject, content, attachmentUriList.getValue(), accountId);
-            liveData.observeForever(new Observer<FetchStatus>() {
-                @Override
-                public void onChanged(FetchStatus fetchStatus) {
-                    if (fetchStatus.equals(FetchStatus.DONE) || fetchStatus.equals(FetchStatus.ERROR)) {
-                        if (fetchStatus.equals(FetchStatus.DONE))
-                            Toast.makeText(getApplication(), R.string.message_saved_to_drafts, Toast.LENGTH_SHORT).show();
-                        else if (fetchStatus.equals(FetchStatus.ERROR))
-                            Toast.makeText(getApplication(), R.string.failed_to_save_to_drafts, Toast.LENGTH_SHORT).show();
-                        liveData.removeObserver(this);
+        if (this.messageResponseType.equals(MessageResponseType.NONE))
+            if (toList.getValue().size() > 0 || ccList.getValue().size() > 0 || bccList.getValue().size() > 0 || !subject.isEmpty() || !content.isEmpty() || attachmentUriList.getValue().size() > 0) {
+                LiveData<FetchStatus> liveData = messageRepository.addToDrafts(toList.getValue(), ccList.getValue(), bccList.getValue(), subject, content, attachmentUriList.getValue(), accountId);
+                liveData.observeForever(new Observer<FetchStatus>() {
+                    @Override
+                    public void onChanged(FetchStatus fetchStatus) {
+                        if (fetchStatus.equals(FetchStatus.DONE) || fetchStatus.equals(FetchStatus.ERROR)) {
+                            if (fetchStatus.equals(FetchStatus.DONE))
+                                Toast.makeText(getApplication(), R.string.message_saved_to_drafts, Toast.LENGTH_SHORT).show();
+                            else if (fetchStatus.equals(FetchStatus.ERROR))
+                                Toast.makeText(getApplication(), R.string.failed_to_save_to_drafts, Toast.LENGTH_SHORT).show();
+                            liveData.removeObserver(this);
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
 
     }
 }
