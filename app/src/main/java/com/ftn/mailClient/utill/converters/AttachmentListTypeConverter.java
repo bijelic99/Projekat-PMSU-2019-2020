@@ -17,13 +17,9 @@ public class AttachmentListTypeConverter {
     public List<Attachment> fromJsonString(String s){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            Long[] ids = objectMapper.readValue(s, Long[].class);
+            Attachment[] attachments = objectMapper.readValue(s, Attachment[].class);
 
-            return Arrays.stream(ids).map(aLong -> {
-                Attachment attachment = new Attachment();
-                attachment.setId(aLong);
-                return attachment;
-            }).collect(Collectors.toList());
+            return Arrays.stream(attachments).collect(Collectors.toList());
         }
         catch (Exception e ){
             Log.e("ConverterError", e.getMessage());
@@ -36,7 +32,7 @@ public class AttachmentListTypeConverter {
     public String toJsonString(List<Attachment> attachments){
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.writeValueAsString(attachments.stream().mapToLong(value -> value.getId()).toArray());
+            return objectMapper.writeValueAsString(attachments.toArray());
         }catch (Exception e){
             Log.e("ConverterError", e.getMessage());
             return "[]";

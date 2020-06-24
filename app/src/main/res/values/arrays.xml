@@ -27,4 +27,10 @@
         <item>true</item>
         <item>false</item>
     </string-array>
+
+    <array name="tagColorArray">
+        <item>@color/red</item>
+        <item>@color/green</item>
+        <item>@color/blue</item>
+    </array>
 </resources>

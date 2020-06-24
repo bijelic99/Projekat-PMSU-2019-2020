@@ -25,6 +25,7 @@ import com.ftn.mailClient.model.Attachment;
 import com.ftn.mailClient.model.Contact;
 import com.ftn.mailClient.utill.ContactChipClickEvent;
 import com.ftn.mailClient.utill.enums.FetchStatus;
+import com.ftn.mailClient.utill.enums.MessageResponseType;
 import com.ftn.mailClient.viewModel.CreateEmailViewModel;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -59,9 +60,16 @@ public class CreateEmailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_email);
 
+        subjectEditText = findViewById(R.id.editText_subject);
+        contentEditText = findViewById(R.id.editText_content);
+
         createEmailViewModel = new ViewModelProvider(this).get(CreateEmailViewModel.class);
-        if(getIntent().hasExtra("mailId")){
-            createEmailViewModel.draftModeOn(getIntent().getLongExtra("mailId", -55L));
+        if(getIntent().hasExtra("mailId") && getIntent().hasExtra("mailMode")){
+            MessageResponseType messageResponseType = MessageResponseType.valueOf(getIntent().getStringExtra("mailMode"));
+            createEmailViewModel.setMessageId(getIntent().getLongExtra("mailId", -55L), messageResponseType, (subject, content) -> {
+                subjectEditText.setText(subject);
+                contentEditText.setText(content);
+            });
         }
 
         getSupportActionBar().setTitle(R.string.send_mail);
@@ -80,8 +88,6 @@ public class CreateEmailActivity extends AppCompatActivity {
         linearLayout = findViewById(R.id.linear_layout);
         progressBar = findViewById(R.id.progress_bar);
 
-        subjectEditText = findViewById(R.id.editText_subject);
-        contentEditText = findViewById(R.id.editText_content);
 
         ContactSuggestionArrayAdapter toAdapter = new ContactSuggestionArrayAdapter(this);
 
@@ -240,7 +246,7 @@ public class CreateEmailActivity extends AppCompatActivity {
             }
         });
 
-        if(!createEmailViewModel.getDraftMode())
+        if(createEmailViewModel.getMessageResponseType().equals(MessageResponseType.NONE))
             createEmailViewModel.getAttachmentUriList().observe(this, uris -> {
                 if (uris != null) {
                     attachmentChipGroup.removeAllViews();

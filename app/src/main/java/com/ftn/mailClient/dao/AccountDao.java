@@ -30,10 +30,10 @@ public interface AccountDao extends DaoInterface<Account> {
     @Query("Delete from accountfolder where accountId = :id")
     void deleteAllAccountFolders(Long id);
 
-    @Query("Select * from Message m")
+    @Query("Select * from Message")
     LiveData<List<Message>> getAccountMessages();
 
-    @Query("Select * from Tag t")
+    @Query("Select * from Tag")
     LiveData<List<Tag>> getAccountTags();
 
 }

@@ -116,4 +116,15 @@
     <string name="file_placeholder">file.doc</string>
     <string name="message_saved_to_drafts">Message saved to drafts folder</string>
     <string name="failed_to_save_to_drafts">Failed to save to drafts</string>
+    <string name="from">From:</string>
+    <string name="to">"To:"</string>
+    <string name="email_attachments">Attachments:</string>
+    <string name="email">Email</string>
+    <string name="reply">Reply</string>
+    <string name="reply_all">Reply all</string>
+    <string name="forward">Forward</string>
+    <string name="delete">Delete</string>
+    <string name="edit_as_draft">Edit as draft</string>
+    <string name="save_attachments">Save attachments</string>
+    <string name="succesfully_saved_attachments">Sucessfully saved %1$s attachments</string>
 </resources>

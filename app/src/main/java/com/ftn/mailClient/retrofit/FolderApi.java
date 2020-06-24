@@ -23,7 +23,7 @@ public interface FolderApi extends Api{
     @POST("api/folders")
     Call<Folder> saveFolder(@Body Folder folder);
 
-    @PUT("api/folders/{id}/sync")
+    @GET("api/folders/{id}/sync")
     Call<Folder> syncFolder(@Path("id") Long id);
 
     @POST("api/accounts/{id}/folders")
