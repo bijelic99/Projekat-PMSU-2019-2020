@@ -35,11 +35,6 @@ public interface NavigationRouter {
                 context.startActivity(intent);
                 return true;
             }
-            case R.id.profile:{
-                Intent intent = new Intent(context, ProfileActivity.class);
-                context.startActivity(intent);
-                return true;
-            }
             default: return false;
         }
     }

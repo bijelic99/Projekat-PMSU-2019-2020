@@ -1,11 +1,15 @@
 package com.ftn.mailClient.viewModel;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import com.ftn.mailClient.R;
 import com.ftn.mailClient.model.Folder;
 import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.model.Message;
@@ -20,11 +24,16 @@ public class FolderViewModel extends AndroidViewModel {
     private Long folderId;
     private LiveData<List<Message>> messages;
     private LiveData<List<FolderMetadata>> folders;
+    private Long accountId;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public FolderViewModel(@NonNull Application application) {
         super(application);
         folderRepository = new FolderRepository(application);
+        SharedPreferences sharedPreferences = application.getSharedPreferences(application.getString(R.string.user_details_file_key), Context.MODE_PRIVATE);
+        if (sharedPreferences.contains(application.getString(R.string.user_account_id))) {
+            accountId = sharedPreferences.getLong(application.getString(R.string.user_account_id), -55L);
+        } else Toast.makeText(application, R.string.need_to_be_logged_in, Toast.LENGTH_LONG).show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -61,5 +70,10 @@ public class FolderViewModel extends AndroidViewModel {
 
     public LiveData<FolderMetadata> getAnyFolder(Long folderId){
         return null;
+    }
+
+    public void executeRuleSet(){
+        Toast.makeText(getApplication(), R.string.executing_rules, Toast.LENGTH_SHORT).show();
+        folderRepository.executeRulesetOnFolder(folderId, accountId);
     }
 }

@@ -120,6 +120,7 @@ public class FolderActivity extends AppCompatActivity {
             }
             case R.id.execute_rules_menu_item:{
                 //TODO implementirati funkcionalnost izvrsavanja pravila
+                folderViewModel.executeRuleSet();
             }
         }
         return super.onOptionsItemSelected(item);

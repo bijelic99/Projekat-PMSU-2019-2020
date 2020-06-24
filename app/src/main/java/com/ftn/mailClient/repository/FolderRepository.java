@@ -32,7 +32,7 @@ public class FolderRepository extends Repository<Folder, FolderDao> {
     }
 
     @Override
-    public LiveData<FetchStatus> insert(Tag value, Long userID) {
+    public LiveData<FetchStatus> insert(Folder value) {
         return null;
     }
 
@@ -112,5 +112,9 @@ public class FolderRepository extends Repository<Folder, FolderDao> {
 
     public LiveData<List<FolderMetadata>> getAllFoldersAsMetadata(){
         return dao.getAllFoldersAsMetadata();
+    }
+
+    public void executeRulesetOnFolder(Long folderId, Long accountId) {
+        new FolderAsyncTasks.ExecuteRuleSetOnFolderAsyncTask(database, value -> {}, folderId, accountId).execute();
     }
 }
