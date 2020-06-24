@@ -20,7 +20,7 @@ public abstract class Repository<T extends Identifiable, D extends DaoInterface>
         this.application = application;
     }
 
-    public abstract LiveData<FetchStatus> insert(Tag value, Long userID);
+    public abstract LiveData<FetchStatus> insert(T value);
     public abstract void update(T value);
     public abstract void delete(T value);
     public abstract LiveData<List<T>> getAll();

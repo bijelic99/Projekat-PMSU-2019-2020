@@ -15,6 +15,10 @@ public interface FolderDao extends DaoInterface<Folder> {
     @Query("SELECT * FROM FOLDER ORDER BY ID DESC")
     LiveData<List<Folder>> getAllFolders();
 
+
+    @Query("Select f.id as id, f.name as name, ifnull(x.numberOfMessages, 0) as numberOfMessages, ifnull(y.numberOfFolders, 0) as numberOfFolders from  Folder f left join (Select folderId, count(messageId) as numberOfMessages from foldermessage group by folderId) x on f.id = x.folderId left join (select parentFolderId, count(childFolderId) as numberOfFolders from folderinnerfolders group by parentFolderId) y on f.id = y.parentFolderId")
+    LiveData<List<FolderMetadata>> getAllFoldersAsMetadata();
+
     @Query("Select * from folder")
     List<Folder> getAllFolderNonLive();
 

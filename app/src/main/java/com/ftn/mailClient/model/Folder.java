@@ -1,5 +1,6 @@
 package com.ftn.mailClient.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.TypeConverters;
@@ -82,5 +83,11 @@ public class Folder extends Identifiable {
 
     public void setMessages(List<Message> messages) {
         this.messages = messages;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return this.getName() != null ? this.getName() : "";
     }
 }

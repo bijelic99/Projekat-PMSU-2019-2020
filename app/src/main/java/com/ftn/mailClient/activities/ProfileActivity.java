@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.ftn.mailClient.R;
+import com.ftn.mailClient.dialogs.AddRuleDialog;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -34,13 +35,18 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        ImageButton butt = findViewById(R.id.addTagButton);
+        Button addRuleBtn = findViewById(R.id.add_rule_button);
+        addRuleBtn.setOnClickListener(v -> {
+            AddRuleDialog addRuleDialog = new AddRuleDialog();
+            addRuleDialog.show(getSupportFragmentManager(), "Add rule dialog");});
+            
+        /*ImageButton butt = findViewById(R.id.addTagButton);
         butt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clickHandler1(v);
             }
-        });
+        });*/
     }
 
     private void clickHandler(View v) {

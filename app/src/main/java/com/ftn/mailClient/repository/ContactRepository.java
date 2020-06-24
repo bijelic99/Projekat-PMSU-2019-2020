@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.ftn.mailClient.dao.ContactDao;
 import com.ftn.mailClient.database.LocalDatabase;
+import com.ftn.mailClient.model.Condition;
 import com.ftn.mailClient.model.Contact;
 import com.ftn.mailClient.model.Tag;
 import com.ftn.mailClient.repository.asyncTasks.ContactAsyncTasks;
@@ -24,7 +25,7 @@ public class ContactRepository extends Repository<Contact, ContactDao> {
     }
 
     @Override
-    public LiveData<FetchStatus> insert(Tag value, Long userID) {
+    public LiveData<FetchStatus> insert(Contact value) {
         return null;
     }
 
