@@ -183,4 +183,31 @@ public class AccountAsyncTasks {
             onPostExecuteFunctionFunctionalInterface.postExecuteFunction(aBoolean);
         }
     }
+
+    public static class FetchUserAccountsAsyncTask extends LocalDatabaseCallbackAsyncTask<Long, Void, Boolean> {
+        private Long userId;
+
+        public FetchUserAccountsAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface, Long userId) {
+            super(localDatabase, onPostExecuteFunctionFunctionalInterface);
+            this.userId = userId;
+        }
+
+        @Override
+        protected Boolean doInBackground(Long... longs) {
+            AccountApi accountApi = RetrofitClient.getApi(AccountApi.class);
+            AccountDao accountDao = localDatabase.accountDao();
+
+            try {
+                Response<List<Account>> response = accountApi.getUserAccounts(userId).execute();
+                if(response.isSuccessful()){
+                    accountDao.insertAll(response.body());
+                    return true;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return false;
+        }
+    }
 }

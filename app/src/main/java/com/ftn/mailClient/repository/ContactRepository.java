@@ -24,7 +24,7 @@ public class ContactRepository extends Repository<Contact, ContactDao> {
     }
 
     @Override
-    public LiveData<FetchStatus> insert(Tag value, Long userID) {
+    public LiveData<FetchStatus> insert(Contact value) {
         return null;
     }
 

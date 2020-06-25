@@ -26,4 +26,7 @@ public interface AccountApi extends Api {
     @GET("api/accounts/{id}/tags")
     Call<List<Tag>> getAccountTags(@Path("id") Long id);
 
+    @GET("api/users/{id}/accounts")
+    Call<List<Account>> getUserAccounts(@Path("id") Long userId);
+
 }

@@ -2,7 +2,9 @@ package com.ftn.mailClient.utill;
 
 import com.ftn.mailClient.model.User;
 
-public class UserTokenWrapper {
+import java.io.Serializable;
+
+public class UserTokenWrapper implements Serializable {
     private User user;
     private String token;
 

@@ -32,7 +32,7 @@ public class FolderRepository extends Repository<Folder, FolderDao> {
     }
 
     @Override
-    public LiveData<FetchStatus> insert(Tag value, Long userID) {
+    public LiveData<FetchStatus> insert(Folder value) {
         return null;
     }
 
