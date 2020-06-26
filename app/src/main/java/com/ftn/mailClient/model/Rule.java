@@ -3,6 +3,9 @@ package com.ftn.mailClient.model;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.TypeConverters;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.ftn.mailClient.model.linkingClasses.FolderMessage;
 import com.ftn.mailClient.utill.converters.ConditionTypeConverter;
 import com.ftn.mailClient.utill.converters.FolderTypeConverter;
@@ -15,6 +18,7 @@ public class Rule extends Identifiable {
     @TypeConverters(OperationTypeConverter.class)
     private Operation operation;
     @TypeConverters(FolderTypeConverter.class)
+
     private FolderMetadata destinationFolder;
     private String value;
 
@@ -46,10 +50,12 @@ public class Rule extends Identifiable {
         this.operation = operation;
     }
 
+    @JsonGetter("destination")
     public FolderMetadata getDestinationFolder() {
         return destinationFolder;
     }
 
+    @JsonSetter("destination")
     public void setDestinationFolder(FolderMetadata destinationFolder) {
         this.destinationFolder = destinationFolder;
     }

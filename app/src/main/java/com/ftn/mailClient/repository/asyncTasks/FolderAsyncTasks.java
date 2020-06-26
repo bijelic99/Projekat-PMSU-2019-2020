@@ -15,6 +15,7 @@ import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.model.linkingClasses.AccountFolder;
 import com.ftn.mailClient.model.linkingClasses.FolderInnerFolders;
 import com.ftn.mailClient.model.linkingClasses.FolderMessage;
+import com.ftn.mailClient.repository.FolderRepository;
 import com.ftn.mailClient.retrofit.FolderApi;
 import com.ftn.mailClient.retrofit.RetrofitClient;
 import com.ftn.mailClient.utill.FolderSyncWrapper;
@@ -212,6 +213,44 @@ public class FolderAsyncTasks {
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             onPostExecuteFunctionFunctionalInterface.postExecuteFunction(aBoolean);
+        }
+    }
+
+    public static class ExecuteRuleSetOnFolderAsyncTask extends LocalDatabaseCallbackAsyncTask<Void, Void, Boolean>{
+        private Long accountId;
+        private Long folderId;
+
+        public ExecuteRuleSetOnFolderAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface, Long folderId, Long accountId) {
+            super(localDatabase, onPostExecuteFunctionFunctionalInterface);
+            this.accountId = accountId;
+            this.folderId = folderId;
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            FolderDao folderDao = localDatabase.folderDao();
+            MessageDao messageDao = localDatabase.messageDao();
+            FolderApi folderApi = RetrofitClient.getApi(FolderApi.class);
+
+            try {
+                Response<Folder> response = folderApi.executeRulesOnFolder(accountId, folderId).execute();
+                if(response.isSuccessful()){
+                    Folder folder = response.body();
+                    messageDao.insertAll(folder.getMessages());
+                    folderDao.deleteAllFolderMessages(folderId);
+                    folderDao.insertMessagesToFolder(folder.getMessages().stream()
+                            .map(message -> new FolderMessage(folderId, message.getId()))
+                            .collect(Collectors.toList()));
+                    return true;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return false;
         }
     }
 }

@@ -6,6 +6,8 @@ import java.util.Map;
 import com.ftn.mailClient.model.Contact;
 import com.ftn.mailClient.model.Tag;
 import com.ftn.mailClient.utill.UserTokenWrapper;
+import com.ftn.mailClient.model.User;
+
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -27,4 +29,6 @@ public interface UserApi extends Api {
 
     @POST("/login")
     Call<UserTokenWrapper> login(@Body Map<String, String> credentials);
+    @POST("api/users/{id}")
+    Call<User> addUser(@Path("id") Long accountId, @Body User user);
 }

@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -103,17 +104,26 @@ public class FolderActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.folders_activity_menu, menu);
-        MenuItem addFolder = menu.findItem(R.id.add_folder_menu_item);
-        addFolder.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                addFolderClicked();
-                return true;
-            }
-        });
+        inflater.inflate(R.menu.folder_menu, menu);
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.add_folder_menu_item:{
+                addFolderClicked();
+            }
+            case R.id.edit_folder_menu_item:{
+                //TODO implementirati funkcionalnost izmene foldera
+            }
+            case R.id.execute_rules_menu_item:{
+                //TODO implementirati funkcionalnost izvrsavanja pravila
+                folderViewModel.executeRuleSet();
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void addFolderClicked() {
