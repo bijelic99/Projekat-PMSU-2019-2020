@@ -136,6 +136,8 @@
     <string name="edit_as_draft">Edit as draft</string>
     <string name="save_attachments">Save attachments</string>
     <string name="succesfully_saved_attachments">Sucessfully saved %1$s attachments</string>
+    <string name="user_token">token</string>
+    <string name="loggin_failed">Login failed</string>
     <string name="executing_rules">Executing rules</string>
     <string name="change_profile">Change account</string>
     <string name="add_profile">Add profile</string>
