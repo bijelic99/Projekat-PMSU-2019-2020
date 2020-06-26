@@ -9,15 +9,7 @@ import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.User;
 import com.ftn.mailClient.repository.asyncTasks.UserAsyncTasks;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-
-
-import com.ftn.mailClient.model.Rule;
-
-import com.ftn.mailClient.repository.asyncTasks.RuleAsyncTasks;
-import com.ftn.mailClient.repository.asyncTasks.UserAsyncTask;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 
 import java.util.List;
@@ -31,14 +23,12 @@ public class UserRepository extends Repository<User, UserDao> {
 
     @Override
     public LiveData<FetchStatus> insert(User value) {
-        return null;
-    }
-
-    public LiveData<FetchStatus> insert(Long accountId, User user){
         MutableLiveData<FetchStatus> mutableLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
-        new UserAsyncTask.AddNewUserAsyncTask(database, value -> mutableLiveData.setValue(value ? FetchStatus.DONE : FetchStatus.ERROR), accountId).execute(user);
+        new UserAsyncTasks.RegisterNewUserAsyncTask(database, value1 -> mutableLiveData.setValue(value1 ? FetchStatus.DONE : FetchStatus.ERROR)).execute(value);
         return mutableLiveData;
     }
+
+
 
     @Override
     public void update(User value) {
@@ -88,5 +78,11 @@ public class UserRepository extends Repository<User, UserDao> {
             fetchStatusMutableLiveData.setValue(bundle1);
         }).execute(bundle);
         return fetchStatusMutableLiveData;
+    }
+
+    public LiveData<Boolean> logout(){
+        MutableLiveData<Boolean> mutableLiveData = new MutableLiveData<>(false);
+        new UserAsyncTasks.LogoutUserAsyncTask(database, value -> mutableLiveData.setValue(value)).execute();
+        return mutableLiveData;
     }
 }

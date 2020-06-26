@@ -7,10 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,17 +15,11 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.ftn.mailClient.R;
-import com.ftn.mailClient.model.Condition;
-import com.ftn.mailClient.model.FolderMetadata;
-import com.ftn.mailClient.model.Operation;
-import com.ftn.mailClient.viewModel.AddProfileViewModel;
-import com.ftn.mailClient.viewModel.CreateRuleViewModel;
+import com.ftn.mailClient.viewModel.RegisterNewUserViewModel;
 
-import java.util.ArrayList;
+public class NewUserDialog extends DialogFragment {
 
-public class ChangeAccountDialog extends DialogFragment {
-
-    private AddProfileViewModel addProfileViewModel;
+    private RegisterNewUserViewModel addProfileViewModel;
 
     private EditText userNameEditText;
     private EditText passwordEditText;
@@ -42,7 +33,7 @@ public class ChangeAccountDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_change_account, null);
 
-        addProfileViewModel = new ViewModelProvider(this).get(AddProfileViewModel.class);
+        addProfileViewModel = new ViewModelProvider(this).get(RegisterNewUserViewModel.class);
 
         builder.setView(view).setTitle(getString(R.string.add_profile)).setNegativeButton(R.string.cancel, (dialog, which) -> {
             addProfileViewModel.resetUser();

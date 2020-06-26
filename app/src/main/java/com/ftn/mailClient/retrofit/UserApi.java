@@ -31,4 +31,7 @@ public interface UserApi extends Api {
     Call<UserTokenWrapper> login(@Body Map<String, String> credentials);
     @POST("api/users/{id}")
     Call<User> addUser(@Path("id") Long accountId, @Body User user);
+
+    @POST("/register")
+    Call<User> register(@Body User user);
 }

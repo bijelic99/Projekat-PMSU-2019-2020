@@ -4,6 +4,7 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import com.ftn.mailClient.model.Account;
 import com.ftn.mailClient.model.FolderMetadata;
 import com.ftn.mailClient.repository.AccountRepository;
@@ -37,7 +38,10 @@ public class AccountViewModel extends AndroidViewModel {
     }
 
     public LiveData<FetchStatus> syncAccountFolders(){
-        return accountRepository.syncAccountFolders(accountId);
+        if(accountId != null){
+            return accountRepository.syncAccountFolders(accountId);
+        }
+        else return new MutableLiveData<>(FetchStatus.DONE);
     }
 
 }
