@@ -19,7 +19,7 @@
             android:labelFor="@+id/choose_edit_text"
             android:layout_marginHorizontal="@dimen/dialog_padding" />
 
-        <EditText
+        <Spinner
             android:layout_width="match_parent"
             android:layout_height="@dimen/dialog_input_height"
             android:id="@+id/choose_edit_text" />
