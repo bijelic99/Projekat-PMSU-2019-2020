@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.ftn.mailClient.dao.UserDao;
+import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.User;
 import com.ftn.mailClient.repository.asyncTasks.UserAsyncTasks;
 import com.ftn.mailClient.utill.enums.FetchStatus;
@@ -15,6 +16,7 @@ public class UserRepository extends Repository<User, UserDao> {
 
     public UserRepository(Application application) {
         super(application);
+        database = LocalDatabase.getInstance(application);
     }
 
     @Override
@@ -58,15 +60,16 @@ public class UserRepository extends Repository<User, UserDao> {
         new UserAsyncTasks.LoginUserAsyncTask(database, value -> {
             Bundle bundle1 = fetchStatusMutableLiveData.getValue();
             if(value != null){
-                bundle.putSerializable("status", FetchStatus.DONE);
-                bundle.putSerializable("user", value.getUser());
-                bundle.putString("token", value.getToken());
+                bundle1.putSerializable("status", FetchStatus.DONE);
+                bundle1.putSerializable("user", value.getUser());
+                bundle1.putString("token", value.getToken());
             }
             else {
-                bundle.putSerializable("status", FetchStatus.ERROR);
-                bundle.putSerializable("user", null);
-                bundle.putString("user", null);
+                bundle1.putSerializable("status", FetchStatus.ERROR);
+                bundle1.putSerializable("user", null);
+                bundle1.putString("user", null);
             }
+            fetchStatusMutableLiveData.setValue(bundle1);
         }).execute(bundle);
         return fetchStatusMutableLiveData;
     }

@@ -10,6 +10,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.ftn.mailClient.R;
+import com.ftn.mailClient.activities.emailsActivity.EmailsActivity;
+import com.ftn.mailClient.authorization.AuthorizationInterceptor;
+import com.ftn.mailClient.authorization.UserAccountInfo;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -31,7 +34,15 @@ public class SplashScreen extends AppCompatActivity {
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         if(networkInfo != null && networkInfo.isConnected()){
-            Intent intent = new Intent(this, LoginActivity.class);
+            /*Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);*/
+            Intent intent = null;
+            if(UserAccountInfo.getUserAccountInfo().loginIfAvailable(this)) {
+                intent = new Intent(this, EmailsActivity.class);
+            }
+            else {
+                intent = new Intent(this, LoginActivity.class);
+            }
             startActivity(intent);
         } else {
             Toast toast=Toast.makeText(getApplicationContext(),"You are not connected to internet",Toast.LENGTH_LONG);

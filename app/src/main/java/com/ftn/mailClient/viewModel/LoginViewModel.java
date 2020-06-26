@@ -50,7 +50,9 @@ public class LoginViewModel extends AndroidViewModel {
 
                         UserAccountInfo.getUserAccountInfo().login(token, u.getId(), getApplication());
                     }
+                    mutableLiveData.setValue(fetchStatus);
                     if(fetchStatus.equals(FetchStatus.DONE) || fetchStatus.equals(FetchStatus.ERROR)) data.removeObserver(this);
+
                 }
             }
         });
