@@ -29,4 +29,7 @@ public interface TagDao extends DaoInterface<Tag> {
 
     @Query("Select * from tag")
     List<Tag> getAllTagsNonLive();
+
+    @Query("DELETE FROM Tag")
+    public void deleteTable();
 }

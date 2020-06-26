@@ -66,5 +66,16 @@
             android:layout_height="wrap_content"
             android:text="@string/button" />
 
+        <TextView
+            android:id="@+id/buttonRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register"
+            android:textSize="16sp"
+            android:layout_gravity="start"
+            android:textColor="@color/blue"
+            android:clickable="true"
+        />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

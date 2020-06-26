@@ -67,4 +67,16 @@ public interface FolderDao extends DaoInterface<Folder> {
     @Query("Select f.id from AccountFolder af join Folder f on af.folderId = f.id where af.accountId = :accountId and f.name = 'Drafts'")
     Long getDraftsFolderId(Long accountId);
 
+
+    @Query("DELETE FROM Folder")
+    public void deleteTable();
+
+    @Query("DELETE FROM FolderMessage")
+    public void deleteTableFolderMessage();
+
+    @Query("DELETE FROM FolderInnerFolders")
+    public void deleteTableFolderInnerFolders();
+
+    @Query("DELETE FROM AccountFolder")
+    public void deleteTableAccountFolder();
 }

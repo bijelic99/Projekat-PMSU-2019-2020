@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.emailsActivity.EmailsActivity;
+import com.ftn.mailClient.dialogs.NewUserDialog;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 import com.ftn.mailClient.viewModel.EmailViewModel;
 import com.ftn.mailClient.viewModel.LoginViewModel;
@@ -78,8 +80,10 @@ public class LoginActivity extends AppCompatActivity {
             liveData.observeForever(new Observer<FetchStatus>() {
                 @Override
                 public void onChanged(FetchStatus fetchStatus) {
+
                     if(fetchStatus.equals(FetchStatus.DONE)) {
                         Intent intent = new Intent(context, EmailsActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
                     }
                     if(fetchStatus.equals(FetchStatus.ERROR)){
@@ -91,7 +95,11 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-
+        TextView registerTw = findViewById(R.id.buttonRegister);
+        registerTw.setOnClickListener(v -> {
+            NewUserDialog newUserDialog = new NewUserDialog();
+            newUserDialog.show(getSupportFragmentManager(), "Register");
+        });
     }
 
 

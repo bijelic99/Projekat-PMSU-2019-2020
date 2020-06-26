@@ -26,4 +26,7 @@ public interface MessageDao extends DaoInterface<Message> {
 
     @Query("Delete from Message where id = :id")
     public void deleteMessageById(Long id);
+
+    @Query("DELETE FROM Message")
+    public void deleteTable();
 }
