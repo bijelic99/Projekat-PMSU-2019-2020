@@ -69,7 +69,6 @@ dependencies {
     implementation "androidx.work:work-runtime:$work_version"
 
 
-
     testImplementation "androidx.room:room-testing:$room_version"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 }

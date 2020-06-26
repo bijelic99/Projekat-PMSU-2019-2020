@@ -30,7 +30,7 @@ public class MessageRepository extends Repository<Message, MessageDao> {
     }
 
     @Override
-    public LiveData<FetchStatus> insert(Tag value, Long userID) {
+    public LiveData<FetchStatus> insert(Message value) {
         return null;
     }
 

@@ -23,6 +23,10 @@ public class TagRepository extends Repository<Tag, TagDao> {
     }
 
     @Override
+    public LiveData<FetchStatus> insert(Tag value) {
+        return null;
+    }
+
     public LiveData<FetchStatus> insert(Tag value, Long userID) {
         MutableLiveData<FetchStatus> fetchStatusMutableLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
         new TagAsyncTask.InsertTagAsyncTask(database, value1 -> fetchStatusMutableLiveData.setValue(value1 ? FetchStatus.DONE : FetchStatus.ERROR), userID).execute(value);

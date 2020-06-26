@@ -28,4 +28,7 @@ public interface FolderApi extends Api{
 
     @POST("api/accounts/{id}/folders")
     Call<Folder> addAccountFolder(@Path("id") Long accountId, @Body Folder folder);
+
+    @GET("api/{accountId}/{folderId}")
+    Call<Folder> executeRulesOnFolder(@Path("accountId") Long accountId, @Path("folderId") Long folderId);
 }
