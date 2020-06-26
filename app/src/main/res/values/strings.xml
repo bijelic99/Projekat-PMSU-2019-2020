@@ -137,4 +137,6 @@
     <string name="save_attachments">Save attachments</string>
     <string name="succesfully_saved_attachments">Sucessfully saved %1$s attachments</string>
     <string name="executing_rules">Executing rules</string>
+    <string name="change_profile">Change account</string>
+    <string name="add_profile">Add profile</string>
 </resources>

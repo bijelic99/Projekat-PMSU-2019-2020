@@ -16,6 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.dialogs.AddRuleDialog;
+import com.ftn.mailClient.dialogs.ChangeAccountDialog;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -49,6 +50,10 @@ public class ProfileActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.buttonLogout:{
                 goToLogin();
+            }
+            case R.id.buttonChange:{
+                ChangeAccountDialog changeAccountDialog = new ChangeAccountDialog();
+                changeAccountDialog.show(getSupportFragmentManager(), "Add profile dialog");
             }
         }
         return super.onOptionsItemSelected(item);
