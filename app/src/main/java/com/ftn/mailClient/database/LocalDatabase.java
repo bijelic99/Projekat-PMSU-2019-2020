@@ -16,11 +16,9 @@ public abstract class LocalDatabase extends RoomDatabase {
     private static LocalDatabase instance;
 
     public abstract AccountDao accountDao();
-    public abstract AttachmentDao attachmentDao();
     public abstract ContactDao contactDao();
     public abstract FolderDao folderDao();
     public abstract MessageDao messageDao();
-    public abstract PhotoDao photoDao();
     public abstract RuleDao ruleDao();
     public abstract TagDao tagDao();
     public abstract UserDao userDao();

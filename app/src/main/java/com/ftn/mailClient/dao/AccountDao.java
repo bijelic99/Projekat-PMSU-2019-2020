@@ -36,4 +36,7 @@ public interface AccountDao extends DaoInterface<Account> {
     @Query("Select * from Tag")
     LiveData<List<Tag>> getAccountTags();
 
+    @Query("DELETE FROM Account")
+    public void deleteTable();
+
 }
