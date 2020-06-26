@@ -145,4 +145,5 @@
     <string name="smtp_address">Smtp address</string>
     <string name="incoming_mail_address">Incoming mail adress</string>
     <string name="choose">Choose</string>
+    <string name="account_value">Account value</string>
 </resources>

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.ProfileActivity;
+import com.ftn.mailClient.activities.SettingsActivity;
 import com.ftn.mailClient.activities.contactsActivity.ContactsActivity;
 import com.ftn.mailClient.activities.emailsActivity.EmailsActivity;
 import com.ftn.mailClient.activities.foldersActivity.FoldersActivity;
@@ -32,6 +33,11 @@ public interface NavigationRouter {
             }
             case R.id.folders:{
                 Intent intent = new Intent(context, FoldersActivity.class);
+                context.startActivity(intent);
+                return true;
+            }
+            case R.id.settings:{
+                Intent intent = new Intent(context, SettingsActivity.class);
                 context.startActivity(intent);
                 return true;
             }
