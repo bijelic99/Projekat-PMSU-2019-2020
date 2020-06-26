@@ -141,4 +141,8 @@
     <string name="executing_rules">Executing rules</string>
     <string name="change_profile">Change account</string>
     <string name="add_profile">Add profile</string>
+    <string name="incoming_mail_protocol">Incoming Mail Protocol</string>
+    <string name="smtp_address">Smtp address</string>
+    <string name="incoming_mail_address">Incoming mail adress</string>
+    <string name="choose">Choose</string>
 </resources>
