@@ -79,6 +79,7 @@ public class MessageAsyncTasks {
             if(messageBundle.containsKey("attachments_uri")){
                 List<Uri> uriList = (List<Uri>) messageBundle.getSerializable("attachments");
                 Message finalMessage = message;
+                if(uriList != null)
                 uriList.forEach(uri -> {
                     String base64 = "";
                     try {
