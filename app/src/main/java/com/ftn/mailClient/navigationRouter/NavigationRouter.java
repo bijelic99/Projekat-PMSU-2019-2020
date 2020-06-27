@@ -43,6 +43,7 @@ public interface NavigationRouter {
                 ChangeAccountDialog changeAccountDialog = new ChangeAccountDialog();
                 FragmentActivity activity = (FragmentActivity) context;
                 changeAccountDialog.show(activity.getSupportFragmentManager(), "Change account dialog");
+                return true;
             }
             case R.id.settings:{
                 Intent set = new Intent(context, SettingsActivity.class);

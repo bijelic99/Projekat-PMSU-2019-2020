@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import com.ftn.mailClient.R;
+import com.ftn.mailClient.authorization.UserAccountInfo;
 import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.repository.AccountRepository;
 import com.ftn.mailClient.utill.FilterEmail;
@@ -21,6 +22,7 @@ public class AccountEmailsViewModel extends AndroidViewModel {
     private AccountRepository accountRepository;
     private LiveData<List<Message>> messages;
     private Long accountId;
+    private UserAccountInfo userAccountInfo;
     private MutableLiveData<FilterEmail> filterEmailMutableLiveData;
 
     public AccountEmailsViewModel(@NonNull Application application) {
@@ -32,18 +34,19 @@ public class AccountEmailsViewModel extends AndroidViewModel {
         }
         else Toast.makeText(application, R.string.need_to_choose_an_account, Toast.LENGTH_LONG).show();
         filterEmailMutableLiveData = new MutableLiveData<>(null);
+        userAccountInfo = UserAccountInfo.getUserAccountInfo();
     }
 
     public LiveData<List<Message>> getMessages() {
 
-        if(accountId != null && messages == null) messages = accountRepository.getAccountMessages();
-        else if(accountId == null) messages = new MutableLiveData<>(new ArrayList<>());
+        if(userAccountInfo.getSelectedAccountId() != null && messages == null) messages = accountRepository.getAccountMessages();
+        else if(userAccountInfo.getSelectedAccountId() == null) messages = new MutableLiveData<>(new ArrayList<>());
         return messages;
     }
 
     public LiveData<FetchStatus> syncMessages(){
         if(accountId != null){
-            return accountRepository.fetchAccountMessages(accountId);
+            return accountRepository.fetchAccountMessages(userAccountInfo.getSelectedAccountId());
         }
         else return new MutableLiveData<>(FetchStatus.DONE);
     }

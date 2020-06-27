@@ -52,6 +52,7 @@ public class FolderActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(folderContentRecyclerViewAdapter);
 
+
         Intent intent = getIntent();
         Long id = intent.getLongExtra("folderId", -55l);
         if(id != -55l){
@@ -91,7 +92,7 @@ public class FolderActivity extends AppCompatActivity {
             });
 
         }
-        
+        recyclerView.setHasFixedSize(false);
     }
 
     @Override
