@@ -18,7 +18,7 @@ import com.ftn.mailClient.services.FetchMailsService;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private Context context = getBaseContext();
+    //private Context context = getBaseContext();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class SplashScreen extends AppCompatActivity {
             if(UserAccountInfo.getUserAccountInfo().loginIfAvailable(this)) {
                 intent = new Intent(this, EmailsActivity.class);
                 if (!isMyServiceRunning(FetchMailsService.class)) {
-                    context.startService(new Intent(context, FetchMailsService.class));
+                    this.startService(new Intent(this, FetchMailsService.class));
                 }
             }
             else {

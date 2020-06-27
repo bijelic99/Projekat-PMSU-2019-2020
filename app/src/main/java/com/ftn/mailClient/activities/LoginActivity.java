@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.emailsActivity.EmailsActivity;
 import com.ftn.mailClient.dialogs.NewUserDialog;
+import com.ftn.mailClient.services.FetchMailsService;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 import com.ftn.mailClient.viewModel.EmailViewModel;
 import com.ftn.mailClient.viewModel.LoginViewModel;
@@ -85,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(context, EmailsActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
+                        context.startService(new Intent(context, FetchMailsService.class));
                     }
                     if(fetchStatus.equals(FetchStatus.ERROR)){
                         Toast.makeText(context, R.string.loggin_failed, Toast.LENGTH_SHORT).show();
