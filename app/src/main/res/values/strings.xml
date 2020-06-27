@@ -141,7 +141,18 @@
     <string name="executing_rules">Executing rules</string>
     <string name="change_profile">Change account</string>
     <string name="add_profile">Add profile</string>
+    <string name="incoming_mail_protocol">Incoming Mail Protocol</string>
+    <string name="smtp_address">Smtp address</string>
+    <string name="incoming_mail_address">Incoming mail adress</string>
+    <string name="choose">Choose</string>
     <string name="register">Not a member, register?</string>
     <string name="registered">User registered</string>
     <string name="failed_to_register">Failed to register</string>
+    <string name="account_not_valid">Acount not valid, check your values</string>
+    <string name="accaount_add_successful">Account added sucessfully</string>
+    <string name="account_add_error">Failed to add new account</string>
+    <string name="add_new_account">Add new account</string>
+    <string name="select_account">Choose an account</string>
+    <string name="change_account_error">Error while changing an account</string>
+    <string name="account_change_success">Account changed successfully</string>
 </resources>
