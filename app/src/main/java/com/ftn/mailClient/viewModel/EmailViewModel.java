@@ -8,11 +8,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.CreateEmailActivity;
 import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.repository.MessageRepository;
+import com.ftn.mailClient.utill.enums.FetchStatus;
 import com.ftn.mailClient.utill.enums.MessageResponseType;
 
 public class EmailViewModel extends AndroidViewModel {
@@ -79,9 +81,6 @@ public class EmailViewModel extends AndroidViewModel {
         });
     }
 
-    public void deleteMessage() {
-    }
-
     public void editAsDraft() {
         Intent intent = new Intent(getApplication(), CreateEmailActivity.class);
         intent.putExtra("mailId", mailId);
@@ -92,5 +91,11 @@ public class EmailViewModel extends AndroidViewModel {
     }
 
     public void addTag() {
+    }
+
+    public LiveData<FetchStatus> deleteMessage(){
+        MutableLiveData<FetchStatus> mutableLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
+        messageRepository.deleteById(mailId);
+        return mutableLiveData;
     }
 }
