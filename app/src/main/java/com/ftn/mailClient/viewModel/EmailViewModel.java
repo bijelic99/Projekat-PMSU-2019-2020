@@ -14,6 +14,7 @@ import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.CreateEmailActivity;
 import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.repository.MessageRepository;
+import com.ftn.mailClient.repository.asyncTasks.MessageAsyncTasks;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 import com.ftn.mailClient.utill.enums.MessageResponseType;
 
@@ -94,8 +95,6 @@ public class EmailViewModel extends AndroidViewModel {
     }
 
     public LiveData<FetchStatus> deleteMessage(){
-        MutableLiveData<FetchStatus> mutableLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
-        messageRepository.deleteById(mailId);
-        return mutableLiveData;
+        return messageRepository.deleteById(mailId);
     }
 }
