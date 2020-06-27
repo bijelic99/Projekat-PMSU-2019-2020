@@ -9,13 +9,13 @@
         <item>10h</item>
     </string-array>
 
-    <string-array name="pref_syncConnectionTypes_values">
+    <integer-array name="pref_syncConnectionTypes_values">
         <item>1</item>
         <item>5</item>
         <item>10</item>
         <item>60</item>
         <item>600</item>
-    </string-array>
+    </integer-array>
 
 
     <string-array name="pref_sort_by_date_entries">
