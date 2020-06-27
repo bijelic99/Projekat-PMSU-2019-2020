@@ -2,11 +2,11 @@
 <resources>
 
     <string-array name="pref_syncConnectionTypes_entries">
-        <item>1min</item>
-        <item>5min</item>
-        <item>10min</item>
-        <item>1h</item>
-        <item>10h</item>
+        <item>1 min</item>
+        <item>5 min</item>
+        <item>10 min</item>
+        <item>1 h</item>
+        <item>10 h</item>
     </string-array>
 
     <integer-array name="pref_syncConnectionTypes_values">
