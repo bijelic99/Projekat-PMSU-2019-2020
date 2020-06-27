@@ -2,15 +2,12 @@ package com.ftn.mailClient.repository.asyncTasks;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.OpenableColumns;
 import android.util.Log;
-import android.webkit.MimeTypeMap;
 import androidx.annotation.RequiresApi;
 import com.ftn.mailClient.dao.AccountDao;
 import com.ftn.mailClient.dao.FolderDao;
@@ -31,8 +28,6 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-
-import static androidx.core.app.ActivityCompat.startActivityForResult;
 
 public class MessageAsyncTasks {
     public static class SendMessageAsyncTask extends LocalDatabaseCallbackAsyncTask<Bundle, Void, Boolean>{
@@ -123,11 +118,7 @@ public class MessageAsyncTasks {
                     message = messageResponse.body();
 
                     messageDao.insert(message);
-                    Long sentFolderId = folderDao.getSentFolderId(accountId);
-                    if(message != null && sentFolderId != null) {
-                        folderDao.insertMessagesToFolder(new FolderMessage(sentFolderId, message.getId()));
-                        return true;
-                    }
+                    return true;
 
 
                 }
@@ -282,6 +273,36 @@ public class MessageAsyncTasks {
                 }
             }
             return numberOfSuccessfulSaves;
+        }
+    }
+
+    public static class DeleteMessageAsyncTask extends LocalDatabaseCallbackAsyncTask<Void, Void, Boolean>{
+        private Long messageId;
+
+        public DeleteMessageAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface, Long messageId) {
+            super(localDatabase, onPostExecuteFunctionFunctionalInterface);
+            this.messageId = messageId;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            MessageApi messageApi = RetrofitClient.getApi(MessageApi.class);
+            MessageDao messageDao = localDatabase.messageDao();
+            FolderDao folderDao = localDatabase.folderDao();
+
+            folderDao.deleteFromFolderMessageByMessageId(messageId);
+            messageDao.deleteMessageById(messageId);
+
+            try {
+                Response<Void> response = messageApi.deleteMessage(messageId).execute();
+                if(response.isSuccessful()){
+                    return true;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return false;
         }
     }
 }

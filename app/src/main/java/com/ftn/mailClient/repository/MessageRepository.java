@@ -128,7 +128,9 @@ public class MessageRepository extends Repository<Message, MessageDao> {
         return mutableLiveData;
     }
 
-    public void deleteById(Long messageId) {
-        dao.deleteMessageById(messageId);
+    public LiveData<FetchStatus> deleteById(Long messageId) {
+        MutableLiveData<FetchStatus> mutableLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
+        new MessageAsyncTasks.DeleteMessageAsyncTask(database, value -> mutableLiveData.setValue(value ? FetchStatus.DONE : FetchStatus.ERROR), messageId).execute();
+        return mutableLiveData;
     }
 }
