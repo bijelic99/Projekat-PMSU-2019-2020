@@ -55,4 +55,9 @@ public class Tag extends Identifiable {
     public void setColor(String color) {
         this.color = color;
     }
+
+    @Override
+    public String toString() {
+        return name != null ? name : "";
+    }
 }

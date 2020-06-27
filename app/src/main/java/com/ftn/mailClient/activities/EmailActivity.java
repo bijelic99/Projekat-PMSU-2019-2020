@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.emailsActivity.EmailsActivity;
+import com.ftn.mailClient.dialogs.AddMessageTagsDialog;
 import com.ftn.mailClient.model.Attachment;
 import com.ftn.mailClient.model.Contact;
 import com.ftn.mailClient.model.Tag;
@@ -153,7 +154,11 @@ public class EmailActivity extends AppCompatActivity {
                 break;
             }
             case R.id.add_tag_menu_item:{
-                emailViewModel.addTag();
+
+                Long x = getIntent().getLongExtra("mailId", -55);
+                AddMessageTagsDialog addMessageTagsDialog = new AddMessageTagsDialog();
+                addMessageTagsDialog.setMessageId(x);
+                addMessageTagsDialog.show(getSupportFragmentManager(), "ADD tags");
                 break;
             }
             case android.R.id.home: {

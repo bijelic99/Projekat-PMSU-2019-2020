@@ -24,6 +24,10 @@ public class EmailViewModel extends AndroidViewModel {
     private MessageRepository messageRepository;
     private Long accountId;
 
+    public Long getMailId() {
+        return mailId;
+    }
+
     public EmailViewModel(@NonNull Application application) {
         super(application);
         SharedPreferences sharedPreferences = application.getSharedPreferences(application.getString(R.string.user_details_file_key), Context.MODE_PRIVATE);
