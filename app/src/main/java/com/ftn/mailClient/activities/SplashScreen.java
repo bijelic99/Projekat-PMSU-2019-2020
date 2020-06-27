@@ -1,5 +1,6 @@
 package com.ftn.mailClient.activities;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -13,8 +14,11 @@ import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.emailsActivity.EmailsActivity;
 import com.ftn.mailClient.authorization.AuthorizationInterceptor;
 import com.ftn.mailClient.authorization.UserAccountInfo;
+import com.ftn.mailClient.services.FetchMailsService;
 
 public class SplashScreen extends AppCompatActivity {
+
+    private Context context = getBaseContext();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,9 @@ public class SplashScreen extends AppCompatActivity {
             Intent intent = null;
             if(UserAccountInfo.getUserAccountInfo().loginIfAvailable(this)) {
                 intent = new Intent(this, EmailsActivity.class);
+                if (!isMyServiceRunning(FetchMailsService.class)) {
+                    context.startService(new Intent(context, FetchMailsService.class));
+                }
             }
             else {
                 intent = new Intent(this, LoginActivity.class);
@@ -48,5 +55,15 @@ public class SplashScreen extends AppCompatActivity {
             Toast toast=Toast.makeText(getApplicationContext(),"You are not connected to internet",Toast.LENGTH_LONG);
             toast.show();
         }
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
