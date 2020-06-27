@@ -1,21 +1,26 @@
 package com.ftn.mailClient.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.*;
 import android.widget.Button;
 
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.emailsActivity.EmailsActivity;
 import com.ftn.mailClient.model.Attachment;
 import com.ftn.mailClient.model.Contact;
 import com.ftn.mailClient.model.Tag;
+import com.ftn.mailClient.utill.enums.FetchStatus;
 import com.ftn.mailClient.viewModel.CreateContactViewModel;
 import com.ftn.mailClient.viewModel.EmailViewModel;
 import com.google.android.material.chip.Chip;
@@ -125,7 +130,22 @@ public class EmailActivity extends AppCompatActivity {
                 break;
             }
             case R.id.delete:{
-                emailViewModel.deleteMessage();
+                LiveData<FetchStatus> liveData = emailViewModel.deleteMessage();
+                Context context = this;
+                liveData.observe(this, new Observer<FetchStatus>() {
+                    @Override
+                    public void onChanged(FetchStatus fetchStatus) {
+                        if(fetchStatus.equals(FetchStatus.ERROR) || fetchStatus.equals(FetchStatus.DONE)){
+                            if(fetchStatus.equals(FetchStatus.ERROR)) Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show();
+                            if(fetchStatus.equals(FetchStatus.DONE)) {
+                                Toast.makeText(context, R.string.mesage_deleted, Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(context, EmailsActivity.class);
+                                context.startActivity(intent);
+                            }
+                            liveData.removeObserver(this);
+                        }
+                    }
+                });
                 break;
             }
             case R.id.draft:{
