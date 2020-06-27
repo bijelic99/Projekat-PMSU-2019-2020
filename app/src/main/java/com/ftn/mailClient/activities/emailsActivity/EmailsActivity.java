@@ -1,7 +1,9 @@
 package com.ftn.mailClient.activities.emailsActivity;
 
+import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -28,6 +30,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.CreateEmailActivity;
 import com.ftn.mailClient.adapters.EmailRecyclerViewAdapter;
+import com.ftn.mailClient.dialogs.EmailFilterDialog;
 import com.ftn.mailClient.navigationRouter.NavigationRouter;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 import com.ftn.mailClient.viewModel.AccountEmailsViewModel;
@@ -95,12 +98,16 @@ public class EmailsActivity extends AppCompatActivity {
             });
         }
 
-
+        accountEmailsViewModel.getFilterEmailMutableLiveData().observe(this, filterEmail -> {
+            if(filterEmail != null) {
+                adapter.setFilterEmail(filterEmail);
+            }
+        });
     }
 
     @Override
     public void onBackPressed() {
-        if(drawer.isDrawerOpen(GravityCompat.START)){
+        if(drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
         else super.onBackPressed();
@@ -131,7 +138,9 @@ public class EmailsActivity extends AppCompatActivity {
     }
 
     private void filterButtonClicked(){
-        Toast.makeText(this, "Filter", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Filter", Toast.LENGTH_SHORT).show();
+        EmailFilterDialog dialog = new EmailFilterDialog(accountEmailsViewModel);
+
     }
     private void newEmailButtonClocked(){
         Intent intent = new Intent(this, CreateEmailActivity.class);

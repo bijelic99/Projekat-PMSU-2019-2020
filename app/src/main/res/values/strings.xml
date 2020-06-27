@@ -144,4 +144,6 @@
     <string name="register">Not a member, register?</string>
     <string name="registered">User registered</string>
     <string name="failed_to_register">Failed to register</string>
+    <string name="filter_dialog_title">Filter emails</string>
+    <string name="filter_dialog_hint">Enter search term</string>
 </resources>
