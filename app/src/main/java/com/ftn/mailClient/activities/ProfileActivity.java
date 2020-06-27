@@ -17,6 +17,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.authorization.UserAccountInfo;
+import com.ftn.mailClient.dialogs.AddAccountDialog;
 import com.ftn.mailClient.dialogs.AddRuleDialog;
 import com.ftn.mailClient.dialogs.NewUserDialog;
 
@@ -55,8 +56,8 @@ public class ProfileActivity extends AppCompatActivity {
                 break;
             }
             case R.id.buttonChange:{
-                NewUserDialog newUserDialog = new NewUserDialog();
-                newUserDialog.show(getSupportFragmentManager(), "Add profile dialog");
+                AddAccountDialog addAccountDialog = new AddAccountDialog();
+                addAccountDialog.show(getSupportFragmentManager(), "Add account dialog");
                 break;
             }
         }

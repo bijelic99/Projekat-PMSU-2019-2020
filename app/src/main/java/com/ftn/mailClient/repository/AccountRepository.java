@@ -92,4 +92,10 @@ public class AccountRepository extends Repository<Account, AccountDao> {
                 .execute(accountID);
         return fetchStatusMutableLiveData;
     }
+
+    public LiveData<FetchStatus> insertNewAccount(Account account, Long userId) {
+        MutableLiveData<FetchStatus> mutableLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
+        new AccountAsyncTasks.AddNewUserAccountAsyncTask(database, value -> mutableLiveData.setValue(value ? FetchStatus.DONE : FetchStatus.ERROR), userId).execute(account);
+        return mutableLiveData;
+    }
 }

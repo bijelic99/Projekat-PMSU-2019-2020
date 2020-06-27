@@ -148,4 +148,8 @@
     <string name="register">Not a member, register?</string>
     <string name="registered">User registered</string>
     <string name="failed_to_register">Failed to register</string>
+    <string name="account_not_valid">Acount not valid, check your values</string>
+    <string name="accaount_add_successful">Account added sucessfully</string>
+    <string name="account_add_error">Failed to add new account</string>
+    <string name="add_new_account">Add new account</string>
 </resources>

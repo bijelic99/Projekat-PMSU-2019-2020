@@ -210,4 +210,33 @@ public class AccountAsyncTasks {
             return false;
         }
     }
+
+    public static class AddNewUserAccountAsyncTask extends LocalDatabaseCallbackAsyncTask<Account, Void, Boolean>{
+        private Long userId;
+
+        public AddNewUserAccountAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface, Long userId) {
+            super(localDatabase, onPostExecuteFunctionFunctionalInterface);
+            this.userId = userId;
+        }
+
+        @Override
+        protected Boolean doInBackground(Account... accounts) {
+            Account account = accounts[0];
+            AccountApi accountApi = RetrofitClient.getApi(AccountApi.class);
+            AccountDao accountDao = localDatabase.accountDao();
+
+            try {
+                Response<Account> response = accountApi.addUserAccount(userId, account).execute();
+                if (response.isSuccessful()){
+                    account = response.body();
+                    accountDao.insert(account);
+                    return true;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return false;
+        }
+    }
 }
