@@ -63,7 +63,10 @@
                     tools:listitem="@layout/fragment_email"
                     android:id="@+id/recycler_view"
                     android:paddingHorizontal="@dimen/rec_view_padding"
-            />
+                    android:nestedScrollingEnabled="false"
+                    android:paddingBottom="20dp"
+                />
+
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 

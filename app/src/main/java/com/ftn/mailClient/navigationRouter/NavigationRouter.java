@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.ProfileActivity;
+import com.ftn.mailClient.activities.SettingsActivity;
 import com.ftn.mailClient.activities.contactsActivity.ContactsActivity;
 import com.ftn.mailClient.activities.emailsActivity.EmailsActivity;
 import com.ftn.mailClient.activities.foldersActivity.FoldersActivity;
@@ -42,6 +43,12 @@ public interface NavigationRouter {
                 ChangeAccountDialog changeAccountDialog = new ChangeAccountDialog();
                 FragmentActivity activity = (FragmentActivity) context;
                 changeAccountDialog.show(activity.getSupportFragmentManager(), "Change account dialog");
+                return true;
+            }
+            case R.id.settings:{
+                Intent set = new Intent(context, SettingsActivity.class);
+                context.startActivity(set);
+                return true;
             }
             default: return false;
         }

@@ -57,6 +57,8 @@
         <activity
             android:name=".activities.TagsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.SettingsActivity"/>
+        <service android:name=".services.FetchMailsService" android:enabled="true" android:exported="true"/>
     </application>
 
 </manifest>
