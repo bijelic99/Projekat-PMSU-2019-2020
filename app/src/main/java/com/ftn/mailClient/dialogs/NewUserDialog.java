@@ -31,7 +31,7 @@ public class NewUserDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_change_account, null);
+        View view = inflater.inflate(R.layout.dialog_register_user, null);
 
         addProfileViewModel = new ViewModelProvider(this).get(RegisterNewUserViewModel.class);
 

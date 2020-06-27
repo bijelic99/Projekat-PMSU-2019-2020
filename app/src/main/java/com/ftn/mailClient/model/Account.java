@@ -1,6 +1,7 @@
 package com.ftn.mailClient.model;
 
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.TypeConverters;
@@ -103,5 +104,11 @@ public class Account extends Identifiable {
 
     public void setAccountFolders(List<FolderMetadata> accountFolders) {
         this.accountFolders = accountFolders;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return username != null ? username : "";
     }
 }

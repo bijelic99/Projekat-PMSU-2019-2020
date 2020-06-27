@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
@@ -17,21 +19,21 @@ import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.EmailActivity;
 import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.model.Tag;
+import com.ftn.mailClient.utill.FilterEmail;
 import com.ftn.mailClient.utill.FolderContentsComparatorInterface;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.*;
 
 public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecyclerViewAdapter.EmailViewHolder> {
 
+    private List<Message> unfilteredMessages;
     private List<Message> messages;
     private Context context;
+    private FilterEmail filterEmail;
 
     public EmailRecyclerViewAdapter(Context context, ArrayList<Message> messages){
         this.messages = messages;
@@ -39,14 +41,38 @@ public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecycler
     }
 
     public EmailRecyclerViewAdapter(Context context){
+        this.unfilteredMessages = new ArrayList<>();
         this.messages = new ArrayList<>();
         this.context = context;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void setMessages(List<Message> messages) {
-        this.messages = messages;
+        this.unfilteredMessages = messages;
+        if(filterEmail != null)
+            this.messages = unfilteredMessages.stream().filter(message -> getMessageMetadata(message).toLowerCase().contains(filterEmail.getSearchCriteria())).collect(Collectors.toList());
+        else this.messages = unfilteredMessages;
         Collections.sort( this.messages, FolderContentsComparatorInterface::folderContentsComparator);
         notifyDataSetChanged();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private String getMessageMetadata(Message message) {
+        StringJoiner sj = new StringJoiner(" ");
+        if(message.getSubject() != null)
+            sj.add(message.getSubject());
+        if(message.getContent() != null)
+            sj.add(message.getContent());
+        if(message.getFrom() != null)
+            sj.add(message.getFrom().getEmail());
+        if (!message.getBcc().isEmpty())
+            message.getBcc().stream().forEach(contact -> sj.add(contact.getEmail()));
+        if(!message.getCc().isEmpty())
+            message.getCc().stream().forEach(contact -> sj.add(contact.getEmail()));
+        message.getTo().stream().forEach(contact -> sj.add(contact.getEmail()));
+        message.getTags().stream().forEach(tag -> sj.add(tag.getName()));
+
+        return sj.toString();
     }
 
     @NonNull
@@ -63,9 +89,19 @@ public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecycler
         holder.bindData();
     }
 
+
+
     @Override
     public int getItemCount() {
         return messages.size();
+    }
+
+    public void setFilterEmail(FilterEmail filterEmail) {
+        this.filterEmail = filterEmail;
+        if(filterEmail != null)
+            messages = unfilteredMessages.stream().filter(message -> getMessageMetadata(message).contains(filterEmail.getSearchCriteria())).collect(Collectors.toList());
+        else messages = unfilteredMessages;
+        notifyDataSetChanged();
     }
 
     public static class EmailViewHolder extends ViewHolder{

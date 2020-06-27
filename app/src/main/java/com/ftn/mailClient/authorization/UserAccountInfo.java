@@ -62,7 +62,7 @@ public class UserAccountInfo {
         editor.commit();
     }
 
-    public void login(String token, Long userId, Context context){
+    public void login(String token, Long userId, Context context) {
 
         SharedPreferences.Editor editor = context.getSharedPreferences(context.getString(R.string.user_details_file_key), Context.MODE_PRIVATE).edit();
         editor.putLong(context.getString(R.string.user_id), userId);
@@ -75,13 +75,13 @@ public class UserAccountInfo {
     }
 
 
-    public Boolean loginIfAvailable(Context context){
+    public Boolean loginIfAvailable(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.user_details_file_key), Context.MODE_PRIVATE);
-        if(sharedPreferences.contains(context.getString(R.string.user_id)) && sharedPreferences.contains(context.getString(R.string.user_token))){
+        if (sharedPreferences.contains(context.getString(R.string.user_id)) && sharedPreferences.contains(context.getString(R.string.user_token))) {
             this.token = sharedPreferences.getString(context.getString(R.string.user_token), null);
             this.userId = sharedPreferences.getLong(context.getString(R.string.user_id), -55L);
             this.isLoggedIn = true;
-            if(sharedPreferences.contains(context.getString(R.string.user_account_id))){
+            if (sharedPreferences.contains(context.getString(R.string.user_account_id))) {
                 this.selectedAccountId = sharedPreferences.getLong(context.getString(R.string.user_account_id), -55L);
             }
             return true;
@@ -89,7 +89,7 @@ public class UserAccountInfo {
         return false;
     }
 
-    public LiveData<Boolean> logOut(Application application){
+    public LiveData<Boolean> logOut(Application application) {
         SharedPreferences.Editor editor = application.getSharedPreferences(application.getString(R.string.user_details_file_key), Context.MODE_PRIVATE).edit();
 
         UserRepository userRepository = new UserRepository(application);
@@ -105,8 +105,8 @@ public class UserAccountInfo {
 
     }
 
-    public static UserAccountInfo getUserAccountInfo(){
-        if(userAccountInfo == null) userAccountInfo = new UserAccountInfo();
+    public static UserAccountInfo getUserAccountInfo() {
+        if (userAccountInfo == null) userAccountInfo = new UserAccountInfo();
         return userAccountInfo;
     }
 }

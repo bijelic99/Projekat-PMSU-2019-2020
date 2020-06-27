@@ -74,6 +74,9 @@ public interface FolderDao extends DaoInterface<Folder> {
     @Query("DELETE FROM FolderMessage")
     public void deleteTableFolderMessage();
 
+    @Query("DELETE FROM FolderMessage where messageId = :messageId")
+    public void deleteFromFolderMessageByMessageId(Long messageId);
+
     @Query("DELETE FROM FolderInnerFolders")
     public void deleteTableFolderInnerFolders();
 
