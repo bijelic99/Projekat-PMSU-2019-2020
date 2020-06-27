@@ -159,4 +159,6 @@
     <string name="account_change_success">Account changed successfully</string>
     <string name="error">Error</string>
     <string name="mesage_deleted">Message deleted</string>
+    <string name="add_tag_dialog">Add tag</string>
+    <string name="add_tag_dialog_chip">Add chip</string>
 </resources>

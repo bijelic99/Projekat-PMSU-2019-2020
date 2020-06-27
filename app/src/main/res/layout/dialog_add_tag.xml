@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/dialog_padding">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_color_lt_gray"
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_tag_dialog_chip"
+            android:labelFor="@+id/add_tag_dialog_chip_edit_text"
+            android:layout_marginHorizontal="@dimen/dialog_padding" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dialog_input_height"
+            android:id="@+id/add_tag_dialog_chip_edit_text" />
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_color_lt_gray"
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_tag_dialog"
+            android:labelFor="@+id/add_tag_dialog_edit_text"
+            android:layout_marginHorizontal="@dimen/dialog_padding" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dialog_input_height"
+            android:id="@+id/add_tag_dialog_edit_text" />
+    </LinearLayout>
+</LinearLayout>
