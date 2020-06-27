@@ -15,14 +15,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/select_account"
-            android:labelFor="@+id/change_account_spinner"
+            android:text="@string/choose"
+            android:labelFor="@+id/choose_edit_text"
             android:layout_marginHorizontal="@dimen/dialog_padding" />
+
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="@dimen/dialog_input_height"
-            android:id="@+id/change_account_spinner" />
+            android:id="@+id/choose_edit_text" />
     </LinearLayout>
-
-
 </LinearLayout>

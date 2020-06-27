@@ -39,4 +39,6 @@ public interface AccountDao extends DaoInterface<Account> {
     @Query("DELETE FROM Account")
     public void deleteTable();
 
+    @Query("Select * from Account")
+    LiveData<List<Account>> getAccounts();
 }

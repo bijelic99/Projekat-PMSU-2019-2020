@@ -30,6 +30,7 @@ import java.util.stream.*;
 
 public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecyclerViewAdapter.EmailViewHolder> {
 
+    private List<Message> unfilteredMessages;
     private List<Message> messages;
     private Context context;
     private FilterEmail filterEmail;
@@ -40,15 +41,17 @@ public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecycler
     }
 
     public EmailRecyclerViewAdapter(Context context){
+        this.unfilteredMessages = new ArrayList<>();
         this.messages = new ArrayList<>();
         this.context = context;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setMessages(List<Message> messages) {
-        this.messages = messages;
+        this.unfilteredMessages = messages;
         if(filterEmail != null)
-            messages = messages.stream().filter(message -> getMessageMetadata(message).contains(filterEmail.getSearchCriteria())).collect(Collectors.toList());
+            this.messages = unfilteredMessages.stream().filter(message -> getMessageMetadata(message).toLowerCase().contains(filterEmail.getSearchCriteria())).collect(Collectors.toList());
+        else this.messages = unfilteredMessages;
         Collections.sort( this.messages, FolderContentsComparatorInterface::folderContentsComparator);
         notifyDataSetChanged();
     }
@@ -86,6 +89,8 @@ public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecycler
         holder.bindData();
     }
 
+
+
     @Override
     public int getItemCount() {
         return messages.size();
@@ -93,6 +98,10 @@ public class EmailRecyclerViewAdapter extends RecyclerView.Adapter<EmailRecycler
 
     public void setFilterEmail(FilterEmail filterEmail) {
         this.filterEmail = filterEmail;
+        if(filterEmail != null)
+            messages = unfilteredMessages.stream().filter(message -> getMessageMetadata(message).contains(filterEmail.getSearchCriteria())).collect(Collectors.toList());
+        else messages = unfilteredMessages;
+        notifyDataSetChanged();
     }
 
     public static class EmailViewHolder extends ViewHolder{

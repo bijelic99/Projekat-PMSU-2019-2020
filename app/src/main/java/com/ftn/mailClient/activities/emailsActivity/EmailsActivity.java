@@ -140,6 +140,7 @@ public class EmailsActivity extends AppCompatActivity {
     private void filterButtonClicked(){
 //        Toast.makeText(this, "Filter", Toast.LENGTH_SHORT).show();
         EmailFilterDialog dialog = new EmailFilterDialog(accountEmailsViewModel);
+        dialog.show(getSupportFragmentManager(), "Email filter");
 
     }
     private void newEmailButtonClocked(){

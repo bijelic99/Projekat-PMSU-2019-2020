@@ -6,7 +6,7 @@
         android:title="@string/button_logout"
         app:showAsAction="never"/>
 <item android:id="@+id/buttonChange"
-        android:title="@string/change_profile"
+        android:title="@string/add_new_account"
         android:icon="@drawable/ic_swap_vertical_circle_white_24dp"
         app:showAsAction="never"/>
 </menu>
