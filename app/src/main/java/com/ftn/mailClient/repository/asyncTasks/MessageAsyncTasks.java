@@ -118,11 +118,7 @@ public class MessageAsyncTasks {
                     message = messageResponse.body();
 
                     messageDao.insert(message);
-                    Long sentFolderId = folderDao.getSentFolderId(accountId);
-                    if(message != null && sentFolderId != null) {
-                        folderDao.insertMessagesToFolder(new FolderMessage(sentFolderId, message.getId()));
-                        return true;
-                    }
+                    return true;
 
 
                 }
