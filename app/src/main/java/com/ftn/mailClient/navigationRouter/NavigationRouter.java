@@ -1,16 +1,19 @@
 package com.ftn.mailClient.navigationRouter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 
+import androidx.fragment.app.FragmentActivity;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.activities.ProfileActivity;
 import com.ftn.mailClient.activities.contactsActivity.ContactsActivity;
 import com.ftn.mailClient.activities.emailsActivity.EmailsActivity;
 import com.ftn.mailClient.activities.foldersActivity.FoldersActivity;
+import com.ftn.mailClient.dialogs.ChangeAccountDialog;
 
 public interface NavigationRouter {
     public static boolean routeFromMenuItem(Context context, @NonNull MenuItem item){
@@ -34,6 +37,11 @@ public interface NavigationRouter {
                 Intent intent = new Intent(context, FoldersActivity.class);
                 context.startActivity(intent);
                 return true;
+            }
+            case R.id.change_account:{
+                ChangeAccountDialog changeAccountDialog = new ChangeAccountDialog();
+                FragmentActivity activity = (FragmentActivity) context;
+                changeAccountDialog.show(activity.getSupportFragmentManager(), "Change account dialog");
             }
             default: return false;
         }

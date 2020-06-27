@@ -5,10 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import com.ftn.mailClient.dao.AccountDao;
-import com.ftn.mailClient.dao.FolderDao;
-import com.ftn.mailClient.dao.MessageDao;
-import com.ftn.mailClient.dao.TagDao;
+import com.ftn.mailClient.dao.*;
 import com.ftn.mailClient.database.LocalDatabase;
 import com.ftn.mailClient.model.Account;
 import com.ftn.mailClient.model.Folder;
@@ -28,7 +25,7 @@ import java.util.stream.Collectors;
 
 public class AccountAsyncTasks {
 
-    public static class FetchAccountAsyncTask extends AsyncTask<Long, Void, Account>{
+    public static class FetchAccountAsyncTask extends AsyncTask<Long, Void, Account> {
         private LocalDatabase localDatabase;
 
         public FetchAccountAsyncTask(LocalDatabase localDatabase) {
@@ -42,8 +39,8 @@ public class AccountAsyncTasks {
             FolderDao folderDao = localDatabase.folderDao();
             AccountApi accountApi = RetrofitClient.getApi(AccountApi.class);
             try {
-                Response<Account>  accountResponse = accountApi.getAccount(longs[0]).execute();
-                if(accountResponse.isSuccessful()){
+                Response<Account> accountResponse = accountApi.getAccount(longs[0]).execute();
+                if (accountResponse.isSuccessful()) {
                     Account account = accountResponse.body();
                     folderDao.insertAll(account.getAccountFolders().stream()
                             .map(folderMetadata -> new Folder(folderMetadata.getId(), folderMetadata.getName(), null))
@@ -57,7 +54,6 @@ public class AccountAsyncTasks {
                     accountDao.insertAccountFolders(accountFolders);
 
 
-
                     return account;
                 }
             } catch (IOException e) {
@@ -67,11 +63,11 @@ public class AccountAsyncTasks {
         }
     }
 
-    public static class FetchAccountFoldersAsyncTask extends AsyncTask<Long, Void, Boolean>{
+    public static class FetchAccountFoldersAsyncTask extends AsyncTask<Long, Void, Boolean> {
         private LocalDatabase localDatabase;
         OnPostExecuteFunctionFunctionalInterface<Boolean> postExecuteFunctionalInterface;
 
-        public FetchAccountFoldersAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Boolean> postExecuteFunctionalInterface){
+        public FetchAccountFoldersAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Boolean> postExecuteFunctionalInterface) {
             this.localDatabase = localDatabase;
             this.postExecuteFunctionalInterface = postExecuteFunctionalInterface;
         }
@@ -86,7 +82,7 @@ public class AccountAsyncTasks {
             Account account = accountDao.getAccountById(accountId);
             try {
                 Response<List<FolderMetadata>> foldersResponse = accountApi.getAccountFolders(accountId).execute();
-                if(foldersResponse.isSuccessful()){
+                if (foldersResponse.isSuccessful()) {
                     List<FolderMetadata> folders = foldersResponse.body();
                     folderDao.insertAll(folders.stream()
                             .map(folderMetadata -> new Folder(folderMetadata.getId(), folderMetadata.getName(), null))
@@ -112,11 +108,11 @@ public class AccountAsyncTasks {
 
     }
 
-    public static class FetchAccountMessagesAsyncTask extends AsyncTask<Long, Void, Boolean>{
+    public static class FetchAccountMessagesAsyncTask extends AsyncTask<Long, Void, Boolean> {
         private LocalDatabase localDatabase;
         private OnPostExecuteFunctionFunctionalInterface onPostExecuteFunctionFunctionalInterface;
 
-        public FetchAccountMessagesAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface){
+        public FetchAccountMessagesAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface) {
             this.localDatabase = localDatabase;
             this.onPostExecuteFunctionFunctionalInterface = onPostExecuteFunctionFunctionalInterface;
         }
@@ -129,7 +125,7 @@ public class AccountAsyncTasks {
 
             try {
                 Response<List<Message>> response = accountApi.getAccountMessages(accountId).execute();
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     List<Message> messages = response.body();
                     messageDao.insertAll(messages);
                     return true;
@@ -152,7 +148,7 @@ public class AccountAsyncTasks {
         private LocalDatabase localDatabase;
         private OnPostExecuteFunctionFunctionalInterface onPostExecuteFunctionFunctionalInterface;
 
-        public FetchAccountTagsAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface){
+        public FetchAccountTagsAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface) {
             this.localDatabase = localDatabase;
             this.onPostExecuteFunctionFunctionalInterface = onPostExecuteFunctionFunctionalInterface;
         }
@@ -165,7 +161,7 @@ public class AccountAsyncTasks {
 
             try {
                 Response<List<Tag>> response = accountApi.getAccountTags(accountId).execute();
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     List<Tag> tags = response.body();
                     tagDao.insertAll(tags);
                     return true;
@@ -199,7 +195,7 @@ public class AccountAsyncTasks {
 
             try {
                 Response<List<Account>> response = accountApi.getUserAccounts(userId).execute();
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     accountDao.insertAll(response.body());
                     return true;
                 }
@@ -211,7 +207,7 @@ public class AccountAsyncTasks {
         }
     }
 
-    public static class AddNewUserAccountAsyncTask extends LocalDatabaseCallbackAsyncTask<Account, Void, Boolean>{
+    public static class AddNewUserAccountAsyncTask extends LocalDatabaseCallbackAsyncTask<Account, Void, Boolean> {
         private Long userId;
 
         public AddNewUserAccountAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface, Long userId) {
@@ -227,9 +223,53 @@ public class AccountAsyncTasks {
 
             try {
                 Response<Account> response = accountApi.addUserAccount(userId, account).execute();
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     account = response.body();
                     accountDao.insert(account);
+                    return true;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return false;
+        }
+    }
+
+    public static class ChangeAccountAsyncTask extends LocalDatabaseCallbackAsyncTask<Void, Void, Boolean> {
+        private Long userId;
+        private Long accountId;
+
+        public ChangeAccountAsyncTask(LocalDatabase localDatabase, OnPostExecuteFunctionFunctionalInterface<Boolean> onPostExecuteFunctionFunctionalInterface, Long userId, Long accountId) {
+            super(localDatabase, onPostExecuteFunctionFunctionalInterface);
+            this.userId = userId;
+            this.accountId = accountId;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            AccountApi accountApi = RetrofitClient.getApi(AccountApi.class);
+            MessageDao messageDao = localDatabase.messageDao();
+            FolderDao folderDao = localDatabase.folderDao();
+            RuleDao ruleDao = localDatabase.ruleDao();
+            AccountDao accountDao = localDatabase.accountDao();
+
+
+            try {
+                Response<Account> response = accountApi.getAccount(accountId).execute();
+                if (response.isSuccessful()) {
+                    Account account = response.body();
+
+                    folderDao.deleteTableAccountFolder();
+                    folderDao.deleteTableFolderInnerFolders();
+                    folderDao.deleteTableFolderMessage();
+                    messageDao.deleteTable();
+                    folderDao.deleteTable();
+                    ruleDao.deleteTable();
+
+                    accountDao.insert(account);
+
+
                     return true;
                 }
             } catch (IOException e) {

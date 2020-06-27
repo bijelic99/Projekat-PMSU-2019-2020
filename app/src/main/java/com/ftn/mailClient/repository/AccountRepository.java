@@ -37,13 +37,13 @@ public class AccountRepository extends Repository<Account, AccountDao> {
 
     @Override
     public LiveData<List<Account>> getAll() {
-        return null;
+        return dao.getAccounts();
     }
 
     @Override
     public LiveData<Account> getById(Long id) {
         LiveData<Account> accountLiveData = dao.getLiveDataAccountById(id);
-        if(accountLiveData.getValue() == null) fetchAccount(id);
+        if (accountLiveData.getValue() == null) fetchAccount(id);
 
         return accountLiveData;
     }
@@ -53,19 +53,19 @@ public class AccountRepository extends Repository<Account, AccountDao> {
         return null;
     }
 
-    public void fetchAccount(Long id){
+    public void fetchAccount(Long id) {
         new AccountAsyncTasks.FetchAccountAsyncTask(database).execute(id);
     }
 
-    public LiveData<List<FolderMetadata>> getAccountFolders(Long id){
+    public LiveData<List<FolderMetadata>> getAccountFolders(Long id) {
         return dao.getAccountFolders(id);
     }
 
-    public LiveData<FetchStatus> syncAccountFolders(Long accountId){
+    public LiveData<FetchStatus> syncAccountFolders(Long accountId) {
         MutableLiveData<FetchStatus> fetchStatus = new MutableLiveData<>(FetchStatus.FETCHING);
         new AccountAsyncTasks.FetchAccountFoldersAsyncTask(database,
                 isSuccess -> {
-                    if(isSuccess) fetchStatus.setValue(FetchStatus.DONE);
+                    if (isSuccess) fetchStatus.setValue(FetchStatus.DONE);
                     else fetchStatus.setValue(FetchStatus.ERROR);
                 }).execute(accountId);
         return fetchStatus;
@@ -75,7 +75,7 @@ public class AccountRepository extends Repository<Account, AccountDao> {
         return dao.getAccountMessages();
     }
 
-    public LiveData<List<Tag>> getAccountTags(){
+    public LiveData<List<Tag>> getAccountTags() {
         return dao.getAccountTags();
     }
 
@@ -86,7 +86,7 @@ public class AccountRepository extends Repository<Account, AccountDao> {
         return fetchStatusMutableLiveData;
     }
 
-    public LiveData<FetchStatus> fetchAccountTags(Long accountID){
+    public LiveData<FetchStatus> fetchAccountTags(Long accountID) {
         MutableLiveData<FetchStatus> fetchStatusMutableLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
         new AccountAsyncTasks.FetchAccountTagsAsyncTask(database, x -> fetchStatusMutableLiveData.setValue(x ? FetchStatus.DONE : FetchStatus.ERROR))
                 .execute(accountID);
@@ -96,6 +96,12 @@ public class AccountRepository extends Repository<Account, AccountDao> {
     public LiveData<FetchStatus> insertNewAccount(Account account, Long userId) {
         MutableLiveData<FetchStatus> mutableLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
         new AccountAsyncTasks.AddNewUserAccountAsyncTask(database, value -> mutableLiveData.setValue(value ? FetchStatus.DONE : FetchStatus.ERROR), userId).execute(account);
+        return mutableLiveData;
+    }
+
+    public LiveData<FetchStatus> changeAccount(Long userId, Long accountId) {
+        MutableLiveData<FetchStatus> mutableLiveData = new MutableLiveData<>(FetchStatus.FETCHING);
+        new AccountAsyncTasks.ChangeAccountAsyncTask(database, value -> mutableLiveData.setValue(value ? FetchStatus.DONE : FetchStatus.ERROR), userId, accountId).execute();
         return mutableLiveData;
     }
 }

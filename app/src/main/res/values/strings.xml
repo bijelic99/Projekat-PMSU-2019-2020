@@ -152,4 +152,7 @@
     <string name="accaount_add_successful">Account added sucessfully</string>
     <string name="account_add_error">Failed to add new account</string>
     <string name="add_new_account">Add new account</string>
+    <string name="select_account">Choose an account</string>
+    <string name="change_account_error">Error while changing an account</string>
+    <string name="account_change_success">Account changed successfully</string>
 </resources>
