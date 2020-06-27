@@ -12,27 +12,35 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ftn.mailClient.R;
-import com.ftn.mailClient.model.Folder;
-import com.ftn.mailClient.model.FolderElement;
-import com.ftn.mailClient.model.Message;
+import com.ftn.mailClient.model.*;
+import com.ftn.mailClient.utill.FolderContentsComparatorInterface;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FolderContentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private List<Object> contents;
+
+    private List<Identifiable> contents;
+
     Context context;
 
-    public List<Object> getContents() {
-        return contents;
-    }
 
-    public void setContents(List<Object> contents) {
-        this.contents = contents;
-    }
 
-    public FolderContentRecyclerViewAdapter(Context context, List<Object> contents){
+    public FolderContentRecyclerViewAdapter(Context context){
         this.context = context;
-        this.contents = contents;
+        contents = new ArrayList<>();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void add(List<Identifiable> identifiables){
+        contents.addAll(identifiables);
+        contents = Stream.concat(contents.stream(), identifiables.stream())
+                .distinct().sorted(FolderContentsComparatorInterface::folderContentsComparator)
+                .collect(Collectors.toList());
+        notifyDataSetChanged();
     }
 
     @Override
@@ -81,7 +89,7 @@ public class FolderContentRecyclerViewAdapter extends RecyclerView.Adapter<Recyc
             }
             case FOLDER:{
                 FoldersListRecyclerViewAdapter.FolderViewHolder vh = (FoldersListRecyclerViewAdapter.FolderViewHolder) holder;
-                vh.setFolder((Folder) contents.get(position));
+                vh.setFolder((FolderMetadata) contents.get(position));
                 vh.bindData();
                 return;
             }

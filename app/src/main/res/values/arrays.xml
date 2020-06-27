@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="pref_syncConnectionTypes_entries">
+        <item>1 min</item>
+        <item>5 min</item>
+        <item>10 min</item>
+        <item>1 h</item>
+        <item>10 h</item>
+    </string-array>
+
+    <integer-array name="pref_syncConnectionTypes_values">
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>60</item>
+        <item>600</item>
+    </integer-array>
+
+
+    <string-array name="pref_sort_by_date_entries">
+        <item>Ascending</item>
+        <item>Descending</item>
+    </string-array>
+
+    <string-array name="pref_sort_by_date_values">
+        <item>true</item>
+        <item>false</item>
+    </string-array>
+
+    <array name="tagColorArray">
+        <item>@color/red</item>
+        <item>@color/green</item>
+        <item>@color/blue</item>
+    </array>
+</resources>

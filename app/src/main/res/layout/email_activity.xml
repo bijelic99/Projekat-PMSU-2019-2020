@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto"
+              tools:context=".activities.contactsActivity.fragments.ContactFragment"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="@dimen/padding_8dp"
+              android:orientation="vertical"
+>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/from"
+                  android:paddingRight="@dimen/padding_8dp"
+        />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:text="@string/john_doe"
+                  android:id="@+id/from"
+        />
+
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/email_to"
+                  android:paddingRight="@dimen/padding_8dp"
+        />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:text="@string/john_doe"
+                  android:id="@+id/to"/>
+
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/email_cc"
+                  android:paddingRight="@dimen/padding_8dp"
+        />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:text="@string/john_doe"
+                  android:id="@+id/cc"/>
+
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/email_subject"
+                  android:paddingRight="@dimen/padding_8dp"
+        />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:text="@string/john_doe"
+                  android:id="@+id/subject"
+        />
+
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/email_tags"
+                  android:paddingRight="@dimen/padding_8dp"
+        />
+        <HorizontalScrollView android:layout_width="0dp" android:layout_height="wrap_content"
+                              android:layout_weight="1">
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/tag_cg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleLine="true"/>
+        </HorizontalScrollView>
+
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/email_attachments"
+                  android:paddingRight="@dimen/padding_8dp"
+        />
+        <HorizontalScrollView android:layout_width="0dp" android:layout_height="wrap_content"
+                              android:layout_weight="1">
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/attachment_cg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:singleLine="true"/>
+        </HorizontalScrollView>
+
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp"
+                  android:layout_weight="1"
+                  android:orientation="vertical">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/email_content"
+                  android:paddingRight="@dimen/padding_8dp"
+                  android:paddingBottom="@dimen/padding_8dp"
+        />
+        <ScrollView android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:clipToPadding="false"
+                    android:padding="2dp"
+        >
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:elevation="20dp"
+                      android:text="@string/john_doe"
+                      android:id="@+id/content"
+            />
+        </ScrollView>
+
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/email_datetime"
+                  android:paddingRight="@dimen/padding_8dp"
+        />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:text="@string/john_doe"
+                  android:id="@+id/date_time"
+        />
+    </LinearLayout>
+</LinearLayout>

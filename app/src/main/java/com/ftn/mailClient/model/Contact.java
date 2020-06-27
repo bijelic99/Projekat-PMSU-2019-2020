@@ -1,13 +1,20 @@
 package com.ftn.mailClient.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.TypeConverters;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ftn.mailClient.utill.converters.PhotoTypeConverter;
 
+@Entity
 public class Contact extends Identifiable {
     private String firstName;
     private String lastName;
     private String displayName;
     private String email;
+    @TypeConverters(PhotoTypeConverter.class)
     private Photo photo;
     private String format;
 
@@ -20,6 +27,8 @@ public class Contact extends Identifiable {
         this.photo = photo;
         this.format = format;
     }
+
+    @Ignore
     public Contact() {
         this(null, null, null, null, null, null, null);
     }
@@ -28,22 +37,27 @@ public class Contact extends Identifiable {
     public String getFirstName() {
         return firstName;
     }
+
     @JsonGetter("first")
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+
     @JsonProperty("last")
     public String getLastName() {
         return lastName;
     }
+
     @JsonGetter("last")
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
     @JsonProperty("display")
     public String getDisplayName() {
         return displayName;
     }
+
     @JsonGetter("display")
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
@@ -71,5 +85,11 @@ public class Contact extends Identifiable {
 
     public void setFormat(String format) {
         this.format = format;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return ((displayName != null) && !displayName.isEmpty()) ? displayName : (((lastName != null) && !lastName.isEmpty() && (firstName != null) && !firstName.isEmpty()) ? (firstName + " " + lastName) : (((lastName != null) && !lastName.isEmpty()) ? lastName : (((firstName != null) && !firstName.isEmpty()) ? firstName : (((email != null) && !email.isEmpty()) ? email : ""))));
     }
 }

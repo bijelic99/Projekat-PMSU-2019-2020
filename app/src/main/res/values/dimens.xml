@@ -3,4 +3,19 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="rec_view_horizontal_margin">4dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="smallPadding">20dp</dimen>
+    <dimen name="standardElevation">20dp</dimen>
+    <dimen name="rec_view_padding">6dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
+    <dimen name="chip_padding">4dp</dimen>
+    <dimen name="dropdown_list_text_size">24sp</dimen>
+    <dimen name="dropdown_list_bottom_padding">8dp</dimen>
+    <dimen name="dropdown_list_email_size">12sp</dimen>
+    <dimen name="create_email_row_height">24dp</dimen>
+    <dimen name="create_email_label_r_padding">4dp</dimen>
+    <dimen name="attachment_chip_icon_padding">8dp</dimen>
+    <dimen name="frame_layout_content_padding">4dp</dimen>
+    <dimen name="dialog_padding">8dp</dimen>
+    <dimen name="dialog_input_height">48dp</dimen>
+    <dimen name="padding_8dp">8dp</dimen>
 </resources>

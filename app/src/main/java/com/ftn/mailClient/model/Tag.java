@@ -1,13 +1,17 @@
 package com.ftn.mailClient.model;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@Entity
 @JsonIgnoreProperties({"color", "textColor"})
 public class Tag extends Identifiable {
     private  String name;
     private  String color;
     private  String textColor;
 
+    @Ignore
     public Tag(){
         color = "white";
         textColor = "black";
@@ -20,6 +24,7 @@ public class Tag extends Identifiable {
         this.textColor = "black";
     }
 
+    @Ignore
     public Tag(Long id, String name, String color, String textColor) {
         super(id);
         this.name = name;

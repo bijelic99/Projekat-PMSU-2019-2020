@@ -1,5 +1,6 @@
 package com.ftn.mailClient.retrofit;
 
+import com.ftn.mailClient.authorization.AuthorizationInterceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -8,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 public class RetrofitClient <T extends Api>{
 
-    private static final String BASE_URL = "http://192.168.1.250:8080/";
+    public static final String BASE_URL = "http://192.168.0.11:8080/";
 
     private Class<T> tClass;
 
@@ -19,6 +20,7 @@ public class RetrofitClient <T extends Api>{
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .connectTimeout(60, TimeUnit.SECONDS)
                     .readTimeout(2, TimeUnit.MINUTES)
+                    .addInterceptor(new AuthorizationInterceptor())
                     .build();
 
             this.retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
