@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.ftn.mailClient.R;
 import com.ftn.mailClient.model.Message;
 import com.ftn.mailClient.repository.AccountRepository;
+import com.ftn.mailClient.utill.FilterEmail;
 import com.ftn.mailClient.utill.enums.FetchStatus;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class AccountEmailsViewModel extends AndroidViewModel {
     private AccountRepository accountRepository;
     private LiveData<List<Message>> messages;
     private Long accountId;
+    private MutableLiveData<FilterEmail> filterEmailMutableLiveData;
 
     public AccountEmailsViewModel(@NonNull Application application) {
         super(application);
@@ -29,6 +31,7 @@ public class AccountEmailsViewModel extends AndroidViewModel {
             accountId = sharedPreferences.getLong(application.getString(R.string.user_account_id), -55L);
         }
         else Toast.makeText(application, R.string.need_to_choose_an_account, Toast.LENGTH_LONG).show();
+        filterEmailMutableLiveData = new MutableLiveData<>(null);
     }
 
     public LiveData<List<Message>> getMessages() {
@@ -45,4 +48,11 @@ public class AccountEmailsViewModel extends AndroidViewModel {
         else return new MutableLiveData<>(FetchStatus.DONE);
     }
 
+    public void setFilter(FilterEmail filter) {
+        filterEmailMutableLiveData.setValue(filter);
+    }
+
+    public MutableLiveData<FilterEmail> getFilterEmailMutableLiveData() {
+        return filterEmailMutableLiveData;
+    }
 }
