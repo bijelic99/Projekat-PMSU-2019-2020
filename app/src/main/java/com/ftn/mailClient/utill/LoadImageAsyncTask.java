@@ -19,7 +19,7 @@ public class LoadImageAsyncTask extends CallbackAsyncTask<String, Void, Bitmap> 
         Bitmap bitmap = null;
         InputStream in = null;
         try {
-            if(url.matches("^/api/images/.*$")) url = RetrofitClient.BASE_URL+url;
+            url = RetrofitClient.BASE_URL+url;
             in = new java.net.URL(url).openStream();
             bitmap = BitmapFactory.decodeStream(in);
             return bitmap;

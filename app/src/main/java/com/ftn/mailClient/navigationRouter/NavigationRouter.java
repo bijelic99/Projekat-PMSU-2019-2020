@@ -45,8 +45,8 @@ public interface NavigationRouter {
                 changeAccountDialog.show(activity.getSupportFragmentManager(), "Change account dialog");
             }
             case R.id.settings:{
-                Intent set = new Intent(context, SettingsActivity.class);
-                context.startActivity(set);
+                /*Intent set = new Intent(context, SettingsActivity.class);
+                context.startActivity(set);*/
                 return true;
             }
             default: return false;
